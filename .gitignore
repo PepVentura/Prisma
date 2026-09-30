@@ -1,27 +1,20 @@
-# ===================================================================
-# SteamMachine UM790
-# OpenSCAD
-# ===================================================================
+# Prisma — OpenSCAD / impresión 3D
 
-# Archivos temporales de OpenSCAD
+# Temporales de OpenSCAD y editores
 *.bak
 *~
-
-# Miniaturas del sistema
-Thumbs.db
-.DS_Store
-
-# Archivos temporales del editor
 .vscode/
 .idea/
 
-# STL generados (se subirán solo las versiones oficiales)
-stl/build/
-stl/tmp/
+# Sistema
+Thumbs.db
+.DS_Store
 
-# Archivos temporales
-*.tmp
-*.temp
+# Exportaciones generadas (se suben solo las versiones oficiales en stl/)
+*.stl
+!stl/**/*.stl
+*.3mf
+*.gcode
 
-# Artefactos generados por el verificador de colisiones del ensamblaje virtual
-openscad/reference/checks/_generated/
+# Python
+__pycache__/

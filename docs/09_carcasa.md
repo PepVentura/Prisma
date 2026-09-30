@@ -1,11 +1,15 @@
 # 09 — Carcasa
 Orden de desarrollo:
-1. volumétrico;
-2. marco de pantalla;
-3. cámara acústica;
+1. volumétrico — **v0.3 hecho** (perfil, zonas, cámara en L, comprobación de interferencias);
+2. marco de pantalla — siguiente paso: medir la Waveshare real (espesor, pestañas, conectores);
+3. cámara acústica — paredes, refuerzos, junta y pasamuros;
 4. estructura interna;
 5. piel exterior;
 6. fijaciones;
 7. ventilación;
 8. detalles estéticos;
 9. STL de producción.
+
+## Notas para la división en piezas (impresión)
+- La altura de 250 mm y el frontal inclinado hacen pensar en varias piezas: cámara acústica (pieza estanca propia), bahía superior con tapa desmontable y marco frontal de la pantalla.
+- La tapa de la bahía da acceso de servicio a la Pi y al resto de la electrónica sin abrir la cámara.
