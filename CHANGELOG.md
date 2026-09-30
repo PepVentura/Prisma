@@ -2,6 +2,8 @@
 ## v0.3.1
 - Pantalla con las cotas del plano oficial de Waveshare: 124,27 mm de alto con pestañas, taladros a 156,90 × 114,96 mm y posición exacta de HDMI, micro-USB e interruptor.
 - PCB modelado con pestañas y hueco central.
+- Medidas de calibre: taladros de 3,0 mm (→ M2.5) y grosor de 9,5 mm + 7 mm del HDMI.
+- Marco de pantalla de prueba imprimible: `enclosure/openscad/marco_pantalla_prueba.scad` y `stl/marco_pantalla_prueba_v0_1.stl`.
 
 ## v0.3
 - Nuevo perfil lateral: frontal inferior vertical + frontal superior inclinado 18° para la pantalla (D015).

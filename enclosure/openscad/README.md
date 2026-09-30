@@ -24,4 +24,6 @@ Da el volumen neto de la cámara y avisa de cualquier interferencia, o de un com
 - división en piezas imprimibles y fijaciones;
 - rejillas de ventilación reales.
 
+`marco_pantalla_prueba.scad` es el marco de prueba de la pantalla (ver `docs/06_pantalla.md`).
+
 `archivo/` contiene la v0.2 tal cual estaba, como referencia.

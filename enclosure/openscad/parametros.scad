@@ -34,7 +34,7 @@ screen_body_h = 106.96;  // alto del PCB entre pestañas (plano)
 screen_tab_gap = 148.9;  // hueco entre pestañas (plano)
 glass_h       = 99.8;    // alto del cristal (foto)
 glass_z0      = 16.4;    // borde inferior del cristal sobre el borde inferior de las pestañas (foto)
-screen_t      = 8;       // cara del cristal → cara delantera del PCB (foto: ≈9,5 hasta la trasera del PCB)
+screen_t      = 7.9;     // cara del cristal → cara delantera del PCB (medido: 9,5 hasta la trasera del PCB)
 screen_pcb_t  = 1.6;
 screen_comp_t = 4;       // componentes generales detrás del PCB
 screen_active_w = 154.21; screen_active_h = 85.92;   // área visible 1024×600
@@ -43,13 +43,13 @@ screen_active_z0 = glass_z0 + 9.0; // margen inferior ≈ 9,0 (superior ≈ 4,9)
 // Taladros de fijación (plano): 156,90 × 114,96 mm entre centros, a 4,0 mm de los laterales
 screen_hole_dx = 156.9; screen_hole_dz = 114.96;
 screen_hole_z0 = (screen_h - screen_hole_dz) / 2;   // 4,655
-screen_hole_d = 3.2;     // diámetro: medir (M3 → 3,2)
+screen_hole_d = 3.0;     // medido → tornillos M2.5
 // Conectores en el canto derecho (plano), medidos desde el borde superior de las pestañas:
 // HDMI 18–34 mm, micro-USB táctil 41–49 mm, interruptor 54–62 mm
 screen_conn_top = 15;
 screen_conn_bot = 65;
 screen_conn_proud = 2;   // el HDMI sobresale ≈2 mm del canto
-screen_conn_depth = 7;   // altura del HDMI detrás del PCB
+screen_conn_depth = 7;   // altura del HDMI detrás del PCB (medido)
 plug_clear = 15;         // hueco lateral para clavijas acodadas a 90°
 screen_margin = 3;       // del inicio del plano inclinado al borde inferior de las pestañas
 

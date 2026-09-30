@@ -20,10 +20,9 @@ Las cotas del PCB, los taladros y los conectores salen del plano oficial de Wave
 | Alto del cristal | ≈ 99,8 mm | foto |
 | Área visible | 154,21 × 85,92 mm | hoja de datos |
 | Margen cristal → área visible | izq. ≈ 3,6 · der. ≈ 7,1 · sup. ≈ 4,9 · inf. ≈ 9,0 mm | foto |
-| Cristal → cara trasera del PCB | ≈ 9,5 mm | foto |
-| Conectores detrás del PCB | ≈ 7 mm (HDMI) | foto |
-
-Falta medir con calibre el diámetro de los taladros (se asume M3 → 3,2 mm) y el grosor.
+| Cristal → cara trasera del PCB | 9,5 mm | medido |
+| Conectores detrás del PCB | 7 mm (HDMI) | medido |
+| Diámetro de los taladros | 3,0 mm → tornillos M2.5 | medido |
 
 ## Conectores
 Mirando la pantalla de frente, con el flex del LCD abajo:
@@ -38,3 +37,23 @@ Por eso hacen falta **clavijas acodadas** (D021):
 El modelo reserva 15 mm libres a la derecha del conector. Con la pantalla centrada, ese hueco llega justo a la pared interior. Cuando elijamos los cables concretos hay que confirmar que su clavija acodada cabe en 15 mm; si no, habría que desplazar la pantalla un par de milímetros a la izquierda o ensanchar la carcasa. Por esto mismo los laterales ya no se estrechan.
 
 El interruptor de retroiluminación queda accesible solo con la carcasa abierta. Déjalo en ON.
+
+## Marco de prueba
+`enclosure/openscad/marco_pantalla_prueba.scad` → `stl/marco_pantalla_prueba_v0_1.stl` (171,5 × 130,9 × 9,9 mm, ≈55 cm³).
+
+Sirve para comprobar el encaje real antes de imprimir la carcasa:
+- ventana = área visible + 0,5 mm por lado, con chaflán de 1,5 mm hacia delante;
+- 2 mm de material delante del cristal; el cristal entra desde atrás con 0,3 mm de holgura;
+- el PCB solo apoya en 4 resaltes y se atornilla con **M2.5 × 6 autorroscantes** (agujero de 2,2 mm; cambiar `pilot_d` a 3,5 si prefieres insertos M2.5);
+- hueco bajo el cristal para el flex del LCD;
+- el canto derecho queda libre para los conectores.
+
+**Impresión:** cara vista sobre la cama y sin soportes. PLA o PETG, capa de 0,2 mm y 3 perímetros.
+
+**Qué comprobar al montarla:**
+1. El cristal entra sin forzar y no baila (holgura: `fit`).
+2. La ventana no tapa píxeles: enciende la pantalla y mira los cuatro bordes (margen: `win_margin`; si falta, revisa `screen_active_x0` y `screen_active_z0`).
+3. Los taladros coinciden y el PCB queda plano sobre los resaltes, sin presionar el cristal.
+4. El flex de abajo no roza.
+
+![Marco, cara trasera](img/marco_pantalla_trasera.png)
