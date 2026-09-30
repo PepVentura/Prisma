@@ -150,8 +150,8 @@ module pr() {
 }
 
 pi_pos   = [8, 72, bay_floor_z];
-buck_pos = [pi_pos[0] + pi_w + port_clear + 2, outer_d - wall - buck_d - 3, bay_floor_z];
-dac_pos  = [buck_pos[0], buck_pos[1] - dac_d - 4, bay_floor_z];
+buck_pos = [pi_pos[0] + pi_w + port_clear + 2, outer_d - wall - buck_d - 6, bay_floor_z];
+dac_pos  = [buck_pos[0] + buck_w + 10, outer_d - wall - dac_d - 10, bay_floor_z];
 kabd_pos = [98, outer_d - wall - kabd_d - 2, bracket_z + 3];
 
 module pi5()  { color([0.1, 0.45, 0.15]) cut() translate(pi_pos)   cube([pi_w, pi_d, pi_h]); }
@@ -181,20 +181,17 @@ module led_bar() {
 
 module mics() {
     color([0.8, 0.2, 0.2]) cut()
-        for (k = [0 : mic_count - 1])
-            translate([outer_w / 2 + (k - (mic_count - 1) / 2) * mic_spacing, top_setback + 45, outer_h - wall - 6])
-                cylinder(d = mic_d, h = 6);
+        translate([(outer_w - mic_w) / 2, mic_y, outer_h - wall - 1 - mic_h]) cube([mic_w, mic_d, mic_h]);
 }
-module camera() {
-    color([0.9, 0.9, 0.9]) cut() translate([outer_w / 2, top_setback + 24, outer_h - wall - 8])
-        cylinder(d = cam_d, h = 8);
-}
+// Cámara opcional: sin sitio en el techo con el XVF3800; posición pendiente
+module camera() { }
 
 // Zonas de ventilación (solo bahía de electrónica, D017) — referencia visual
 module vents() {
     color([1, 0.4, 0.1, 0.35]) cut() {
-        translate([20, outer_d - wall - 0.5, bay_floor_z + 8]) cube([130, wall + 1, 45]);     // trasera superior
-        translate([60, outer_d - 70, outer_h - wall - 0.5]) cube([110, 55, wall + 1]);       // techo, zona trasera
+        translate([20, outer_d - wall - 0.5, bay_floor_z + 8]) cube([130, wall + 1, 45]);   // trasera superior
+        for (x = [-0.5, outer_w - wall - 0.5])                                               // laterales
+            translate([x, 80, bay_floor_z + 8]) cube([wall + 1, 55, 40]);
     }
 }
 

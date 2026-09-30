@@ -11,12 +11,12 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 - Dayton DMA105-4 — propuesto
 - Dayton DMA105-PR — propuesto
 - Dayton KABD-250 — propuesto
-- DAC I²S→analógico — pendiente
-- Matriz de 2–4 micrófonos — pendiente
+- DAC GY-PCM5102 (PCM5102A, I²S) — propuesto
+- ReSpeaker Lite USB (2 micrófonos con AEC) — propuesto
 - WS2812B, 8–12 LEDs — propuesto
 - Cámara — opcional
-- Fuente externa 24 V — pendiente
-- Buck 24→5 V — pendiente
+- Fuente Mean Well GST60A24-P1J (24 V, 60 W) — propuesta
+- Conversor Pololu D36V50F5 (24→5 V, 5,5 A) — propuesto
 
 ## Arquitectura
 ```text
@@ -29,7 +29,7 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
 
 ## Distribución (v0.3)
 ```text
-              techo: micrófonos · cámara · salida de aire
+              techo: micrófonos (ReSpeaker Lite)
            ┌───────────────────────────┐
           ╱   bahía: Pi 5 · KABD · DAC │ ← rejilla + DC 24 V
  pantalla╱      ┌──────────────────────┤
