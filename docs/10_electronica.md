@@ -23,7 +23,7 @@ Fuente 24 V externa (GST60A24, 60 W)
 | Micrófonos | **ReSpeaker Lite USB** (XMOS XU316, 2 micrófonos) | Cancelación de eco, supresión de ruido y ganancia automática por hardware, por USB. El XVF3800 (4 micrófonos) es mejor, pero su placa de 99 mm no cabe bajo el techo con la pantalla inclinada delante | 86 × 35 mm |
 | Conversor 24 → 5 V | **Pololu D36V50F5** | 5 V, 5,5 A, entrada de 5,5 a 50 V, 80–95 % de rendimiento, muy compacto | 25,4 × 25,4 × 9,5 mm |
 | Fuente | **Mean Well GST60A24-P1J** | 24 V, 2,5 A, 60 W, de sobremesa, clavija 5,5 × 2,1 mm. Da un 60 % de margen sobre el pico calculado | externa |
-| Cámara | **Raspberry Pi Camera Module 3** (normal o gran angular) | Oficial, autofoco, 12 MP y HDR; se conecta al puerto CSI de la Pi 5 con el cable específico para la Pi 5 (22 → 15 pines) | 25 × 24 × 11,5 mm (12,4 la gran angular) |
+| Cámara | **OV5647 5 MP** (compatible con la cámara oficial v1.3; ya la tienes) | Foco fijo, 1080p. Suficiente para detectar caras y videollamadas. La Camera Module 3 (autofoco, 12 MP) tiene la misma placa y encaja en el mismo soporte | 25 × 24 mm, unos 9 mm de fondo |
 | LEDs | Barra WS2812B (8–12) + **SN74AHCT125** | La Pi da 3,3 V y los WS2812B esperan 5 V en datos: el 74AHCT125 adapta el nivel | — |
 
 ## Presupuesto de consumo (estimación)
@@ -93,7 +93,7 @@ Opciones descartadas:
 - comparte la inclinación de 18° de la pantalla, así que apunta ligeramente hacia arriba, hacia la cara de quien está sentado a la mesa;
 - está lo más lejos posible del altavoz.
 
-**Coste:** la franja libre sobre el cristal era de 12 mm y la placa mide 24 mm. La carcasa crece **16 mm de alto (250 → 266 mm)**. La cámara acústica no cambia (≈3,3 L).
+**Coste:** la franja libre sobre el cristal era de 12 mm y la placa (25 × 24 mm, igual en la OV5647 y en la Camera Module 3) mide 24. La carcasa crece **16 mm de alto (250 → 266 mm)**. La cámara acústica no cambia (≈3,3 L).
 
 **Montaje:** la placa se atornilla por detrás del frontal (taladros M2 de la cámara) con el objetivo en un agujero de 8 mm. El cable plano baja por detrás de la pantalla hasta el conector CSI de la Pi.
 

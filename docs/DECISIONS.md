@@ -25,5 +25,8 @@
 | D022 | Filtro paso alto a ≈40 Hz en la Pi (CamillaDSP/PipeWire) para proteger el altavoz por debajo de la sintonía | Propuesta |
 | D023 | LEDs WS2812B por SPI (GPIO10) con adaptador de nivel SN74AHCT125 | Propuesta |
 | D024 | Cancelación de eco por hardware en el ReSpeaker Lite; alternativa por software en PipeWire | Propuesta |
-| D025 | Cámara Raspberry Pi Camera Module 3 centrada sobre la pantalla, en el frontal inclinado (mira al usuario con la inclinación de la pantalla). La carcasa crece 16 mm de alto para alojarla | Propuesta |
+| D025 | Cámara OV5647 5 MP (compatible v1.3; la Camera Module 3 también encaja) centrada sobre la pantalla, en el frontal inclinado (mira al usuario con la inclinación de la pantalla). La carcasa crece 16 mm de alto para alojarla | Propuesta |
 | D026 | Tapa deslizante de privacidad sobre la cámara, integrada en el frontal (guía en cola de milano), más LED de aviso cuando la cámara está activa | Cerrada |
+| D027 | Carcasa en 4 piezas: cubeta acústica (PLA), bandeja (PLA), caja superior de la cámara (PETG) y capucha desmontable (PLA). La Kobra X imprime 260 mm y la carcasa mide 266 | Propuesta |
+| D028 | Estrías horizontales de 1,6 × 0,8 mm cada 4 mm en laterales y trasera de la capucha; las rejillas son estrías pasantes | Cerrada |
+| D029 | Uniones de la capucha: 2 pasadores delanteros en la bandeja y 2 tornillos M3 avellanados traseros a insertos de la caja superior | Propuesta |

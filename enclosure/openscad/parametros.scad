@@ -83,7 +83,8 @@ bracket_z = bay_floor_z + pi_h + 3;   // balda para el KABD-250, por encima de P
 port_clear = 20;                      // hueco delante de los puertos de la Pi para clavijas acodadas
 
 // Entrada DC (fuente externa 24 V, D003) — conector de panel
-dc_d = 12; dc_depth = 20;
+dc_d = 11.2; dc_depth = 20;   // conector DC de panel 5,5 × 2,1 (taladro de 11 mm)
+dc_x = 30; dc_z = bay_floor_z + 65;   // trasera, por encima de la rejilla
 
 // Iluminación y captación
 led_bar_w = 140; led_bar_h = 5;  led_bar_z = 116.5;
@@ -92,11 +93,20 @@ led_bar_w = 140; led_bar_h = 5;  led_bar_z = 116.5;
 mic_w = 86; mic_d = 35; mic_h = 8;     // placa + conectores
 mic_spacing = 64;                      // separación aproximada entre micrófonos: verificar en la placa
 mic_y = 97;                            // borde delantero de la placa
-// Cámara (D025): Raspberry Pi Camera Module 3 (normal o gran angular), centrada sobre la
-// pantalla, en el frontal inclinado, mirando al usuario con la misma inclinación que la pantalla
-cam_w = 25; cam_h = 24; cam_t = 12.4;   // placa 25 × 24 mm; 11,5 mm de fondo (12,4 la gran angular)
+mic_rail_gap = 1.8;
+
+// Uniones capucha ↔ bandeja delantera (D029): pasadores en las esquinas delanteras
+pin_block = 9; pin_d = 3; pin_len = 4; pin_hole_d = 3.3;                    // la placa se desliza en raíles justo bajo el techo
+// Cámara (D025): OV5647 5 MP (compatible con la cámara oficial v1.3), centrada sobre la
+// pantalla, en el frontal inclinado, mirando al usuario con la misma inclinación que la pantalla.
+// La Camera Module 3 tiene la misma placa: para usarla basta con subir cam_standoff y cam_t.
+cam_w = 25; cam_h = 24; cam_t = 9;      // placa 25 × 24 mm; fondo total aprox. (OV5647)
 cam_gap = 3;                            // separación entre el borde superior del cristal y la placa
 cam_lens_d = 8;                         // agujero para el objetivo
+// Taladros M2 de la placa (patrón común de las cámaras oficiales: 21 × 12,5 mm).
+// El objetivo queda a la altura de la fila superior de taladros, 14,5 mm sobre el borde inferior.
+cam_hole_dx = 21; cam_hole_dz = 12.5; cam_lens_from_bottom = 14.5;
+cam_standoff = 5;                       // cara interior del frontal → cara delantera de la placa (≈ alto del objetivo OV5647: medir)
 
 // ---------------------------------------------------------------------------
 // Visualización

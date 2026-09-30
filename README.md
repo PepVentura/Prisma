@@ -14,7 +14,7 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 - DAC GY-PCM5102 (PCM5102A, I²S) — propuesto
 - ReSpeaker Lite USB (2 micrófonos con AEC) — propuesto
 - WS2812B, 8–12 LEDs — propuesto
-- Raspberry Pi Camera Module 3, sobre la pantalla — propuesta
+- Cámara OV5647 5 MP, sobre la pantalla — disponible
 - Fuente Mean Well GST60A24-P1J (24 V, 60 W) — propuesta
 - Conversor Pololu D36V50F5 (24→5 V, 5,5 A) — propuesto
 
@@ -49,6 +49,8 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
 `enclosure/openscad/prisma_volumetrica_v0_3.scad` es una maqueta de distribución, no la carcasa final.
 
 `tools/comprobar_volumetrico.py` mide el volumen neto de la cámara y comprueba interferencias entre componentes.
+
+`enclosure/openscad/capucha.scad` es la primera pieza imprimible: la capucha (ver `docs/14_capucha.md`).
 
 `tools/simulacion_audio.py` simula la respuesta en graves del altavoz y el radiador en la cámara (ver `docs/05_audio.md`).
 

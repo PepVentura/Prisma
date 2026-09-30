@@ -1,4 +1,10 @@
 # Changelog
+## v0.4
+- Capucha v0.1 imprimible (`stl/capucha_v0_1.stl`): estrías de 4 mm, rejillas integradas, ventana y resaltes de la pantalla, cámara con guía de tapa, ranura y difusor LED, micrófonos con raíles, conector DC, ventilador opcional y uniones.
+- División de la carcasa en 4 piezas (D027), estrías (D028) y uniones (D029).
+- Cámara: OV5647 (la que hay); el soporte admite también la Camera Module 3.
+- Nuevo `tools/comprobar_capucha.py`.
+
 ## v0.3.3
 - Cámara Raspberry Pi Camera Module 3 centrada sobre la pantalla, en el frontal inclinado (D025).
 - Carcasa 16 mm más alta (250 → 266 mm) para alojarla; la cámara acústica no cambia.

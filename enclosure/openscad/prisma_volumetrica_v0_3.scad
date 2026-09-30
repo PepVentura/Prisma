@@ -62,8 +62,12 @@ module chamber_walls() {
     color([0.35, 0.35, 0.4]) cut() intersection() {
         body(wall - 0.01);
         union() {
-            // techo del bloque inferior (suelo de la zona de pantalla)
-            translate([-1, -1, chamber_low_top]) cube([outer_w + 2, chamber_up_front + 1, wall_int]);
+            // techo del bloque inferior (suelo de la zona de pantalla), con los agujeros ciegos de los pasadores
+            difference() {
+                translate([-1, -1, chamber_low_top]) cube([outer_w + 2, chamber_up_front + 1, wall_int]);
+                for (x = [wall + pin_block / 2, outer_w - wall - pin_block / 2])
+                    translate([x, wall + pin_block / 2, chamber_low_top + wall_int - pin_len - 0.5]) cylinder(d = pin_hole_d, h = pin_len + 1);
+            }
             // pared frontal del bloque superior
             translate([-1, chamber_up_front - wall_int, chamber_low_top])
                 cube([outer_w + 2, wall_int, chamber_up_top + wall_int - chamber_low_top]);
@@ -170,7 +174,7 @@ module pi_port_clear() {
 }
 
 module dc_jack() {
-    color([0.9, 0.7, 0.1]) cut() translate([30, outer_d - dc_depth, bay_floor_z + 45])
+    color([0.9, 0.7, 0.1]) cut() translate([dc_x, outer_d - dc_depth, dc_z])
         rotate([-90, 0, 0]) cylinder(d = dc_d, h = dc_depth);
 }
 
@@ -180,18 +184,26 @@ module led_bar() {
 }
 
 module mics() {
-    color([0.8, 0.2, 0.2]) cut()
-        translate([(outer_w - mic_w) / 2, mic_y, outer_h - wall - 1 - mic_h]) cube([mic_w, mic_d, mic_h]);
+    // placa en los raíles bajo el techo; componentes por debajo, lejos de los bordes
+    color([0.8, 0.2, 0.2]) cut() {
+        translate([(outer_w - mic_w) / 2, mic_y, outer_h - wall - mic_rail_gap + 0.1]) cube([mic_w, mic_d, 1.6]);
+        translate([(outer_w - mic_w) / 2 + 3, mic_y + 5, outer_h - wall - mic_rail_gap + 0.1 - (mic_h - 1.6)])
+            cube([mic_w - 6, mic_d - 10, mic_h - 1.6]);
+    }
 }
 // Cámara opcional: sin sitio en el techo con el XVF3800; posición pendiente
 // Cámara sobre la pantalla, en el plano inclinado (coordenadas locales de la pantalla)
 cam_s0 = glass_z0 + glass_h + cam_gap;   // borde inferior de la placa sobre el borde inferior de las pestañas
 module camera() {
-    color([0.2, 0.7, 0.3]) cut() on_screen_plane()
-        translate([outer_w / 2 - screen_x0 - cam_w / 2, 0, cam_s0]) cube([cam_w, cam_t, cam_h]);
+    // placa a cam_standoff de la cara interior, objetivo hacia el frontal y componentes detrás
+    color([0.2, 0.7, 0.3]) cut() on_screen_plane() {
+        translate([outer_w / 2 - screen_x0 - cam_w / 2, cam_standoff, cam_s0]) cube([cam_w, 1, cam_h]);
+        translate([outer_w / 2 - screen_x0 - cam_w / 2 + 3, cam_standoff + 1, cam_s0 + 3]) cube([cam_w - 6, cam_t - cam_standoff - 1, cam_h - 6]);
+        translate([outer_w / 2 - screen_x0, 0.5, cam_s0 + cam_lens_from_bottom]) rotate([-90, 0, 0]) cylinder(d = 8.5, h = cam_standoff - 0.5);
+    }
     // objetivo: agujero en el frontal
     color([0.9, 0.9, 0.9]) cut() on_screen_plane()
-        translate([outer_w / 2 - screen_x0, 0.01, cam_s0 + cam_h / 2]) rotate([90, 0, 0])
+        translate([outer_w / 2 - screen_x0, 0.01, cam_s0 + cam_lens_from_bottom]) rotate([90, 0, 0])
             cylinder(d = cam_lens_d, h = wall / cos(screen_angle) + 0.02);
 }
 
@@ -199,7 +211,7 @@ module camera() {
 // recorrido de 14 mm hacia la derecha. Solo visual; la geometría está en tapa_camara_prueba.scad
 module camera_shutter() {
     color([0.95, 0.75, 0.2]) cut() on_screen_plane()
-        translate([outer_w / 2 - screen_x0 - 8, -wall / cos(screen_angle), cam_s0 + cam_h / 2 - 6])
+        translate([outer_w / 2 - screen_x0 - 8, -wall / cos(screen_angle), cam_s0 + cam_lens_from_bottom - 6])
             cube([16, 1.4, 12]);
 }
 

@@ -6,7 +6,7 @@ Audio;Dayton DMA105-PR;1;Propuesto;Al cerrar diseño
 Amplificación;Dayton KABD-250;1;Propuesto;Al cerrar diseño
 Audio;GY-PCM5102 (DAC I²S PCM5102A);1;Propuesto;Al cerrar diseño
 Micrófonos;ReSpeaker Lite USB (2 micrófonos, XU316);1;Propuesto;Al cerrar diseño
-Cámara;Raspberry Pi Camera Module 3 (normal o gran angular) + cable Pi 5 22→15 pines;1;Propuesto;Al cerrar diseño
+Cámara;OV5647 5 MP (compatible v1.3) + cable 22→15 pines para Pi 5;1;Disponible;Comprobar el cable
 LEDs;WS2812B;8–12;Propuesto;Al cerrar diseño
 Alimentación;Mean Well GST60A24-P1J (24 V, 60 W, externa);1;Propuesto;Al cerrar diseño
 Alimentación;Conector DC de panel 24 V;1;En estudio;Al cerrar diseño
@@ -19,4 +19,7 @@ Cableado;Cable micro-USB acodado → USB-A (táctil);1;Necesario;Al cerrar dise�
 Mecánica;Tornillos M2.5 × 6 autorroscantes (pantalla);4;Necesario;Comprar ahora
 Electrónica;Adaptador de nivel SN74AHCT125 + resistencia 330 Ω + condensador 1000 µF (LEDs);1;Propuesto;Al cerrar diseño
 Cableado;Cable USB-C corto solo alimentación (Pololu → Pi 5);1;Necesario;Al cerrar diseño
+Mecánica;Tornillos M2 × 5 autorroscantes (cámara);4;Necesario;Comprar ahora
+Mecánica;Tornillos M3 avellanados + insertos M3 (capucha);2;Necesario;Comprar ahora
+Filamento;PLA o PETG natural/translúcido (difusor LED);poco;Necesario;Comprar ahora
 Mecánica;Inserts/tornillos M3;varios;Necesario;Al cerrar diseño
