@@ -18,4 +18,5 @@
 | Acústica | Junta de estanqueidad (burlete EPDM fino) | 1 | Propuesto | Al cerrar diseño |
 | Cableado | Cable HDMI plano A → micro-HDMI con cabezales a 90° | 1 | Necesario | Al cerrar diseño |
 | Cableado | Cable micro-USB acodado → USB-A (táctil) | 1 | Necesario | Al cerrar diseño |
+| Mecánica | Tornillos M2.5 × 6 autorroscantes (pantalla) | 4 | Necesario | Comprar ahora |
 | Mecánica | Inserts/tornillos M3 | varios | Necesario | Al cerrar diseño |

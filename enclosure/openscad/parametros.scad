@@ -19,32 +19,39 @@ front_split_z = 122;  // altura donde empieza el frontal inclinado
 top_setback   = (outer_h - front_split_z) * tan(screen_angle); // ≈ 41,6
 
 // ---------------------------------------------------------------------------
-// Pantalla Waveshare 7" HDMI LCD (C) Rev4.1 — medida sobre fotos de la unidad real
-// (±1–2 mm; confirmar con calibre). Montada en HORIZONTAL; mirando de frente, el
-// flex del LCD queda abajo y los conectores (HDMI, micro-USB táctil, interruptor
-// de retroiluminación) en el canto DERECHO, en la mitad superior.
-// Coordenadas locales: x desde el borde izquierdo del cristal, z desde el borde
-// inferior de las pestañas, y hacia atrás desde la cara del cristal.
+// Pantalla Waveshare 7" HDMI LCD (C) Rev4.1
+// Cotas del PCB, taladros y conectores: plano oficial de Waveshare.
+// Cristal y área visible: medidos sobre fotos de la unidad real (±1 mm).
+// Montada en HORIZONTAL; mirando de frente, el flex del LCD queda abajo y los
+// conectores (HDMI, micro-USB táctil, interruptor de retroiluminación) en el
+// canto DERECHO, en la mitad superior.
+// Coordenadas locales: x desde el borde izquierdo, z desde el borde inferior de
+// las pestañas, y hacia atrás desde la cara del cristal.
 // ---------------------------------------------------------------------------
-screen_w      = 164.9;   // ancho del cristal (el elemento más ancho)
-screen_h      = 119;     // alto total con pestañas de fijación (hoja de datos: 124,27 — verificar)
-glass_h       = 98.6;    // alto del cristal
-glass_z0      = 13.3;    // borde inferior del cristal sobre el borde inferior de las pestañas
-screen_t      = 8;       // cara del cristal → cara delantera del PCB (cristal + LCD + marco metálico)
+screen_w      = 164.9;   // ancho total (plano)
+screen_h      = 124.27;  // alto total con pestañas (plano)
+screen_body_h = 106.96;  // alto del PCB entre pestañas (plano)
+screen_tab_gap = 148.9;  // hueco entre pestañas (plano)
+glass_h       = 99.8;    // alto del cristal (foto)
+glass_z0      = 16.4;    // borde inferior del cristal sobre el borde inferior de las pestañas (foto)
+screen_t      = 7.9;     // cara del cristal → cara delantera del PCB (medido: 9,5 hasta la trasera del PCB)
 screen_pcb_t  = 1.6;
 screen_comp_t = 4;       // componentes generales detrás del PCB
 screen_active_w = 154.21; screen_active_h = 85.92;   // área visible 1024×600
-screen_active_x0 = 3.6;  // margen izquierdo cristal → área visible (derecho ≈ 7,1)
-screen_active_z0 = glass_z0 + 8.2;  // margen inferior ≈ 8,2 (superior ≈ 4,5)
-// Taladros de fijación (4, en pestañas): separación medida ≈ 151 × 113 mm
-screen_hole_dx = 151; screen_hole_dz = 113; screen_hole_z0 = 2.8; screen_hole_d = 3.2;
-// Conectores en el canto derecho: HDMI (13–30 mm desde arriba), micro-USB (37–43), interruptor (49–58)
-screen_conn_top = 8;     // desde el borde superior de las pestañas
-screen_conn_bot = 62;
-screen_conn_proud = 1;   // lo que sobresalen del borde del cristal
-screen_conn_depth = 7;   // altura del HDMI detrás del PCB
+screen_active_x0 = 3.6;            // margen izquierdo cristal → área visible (derecho ≈ 7,1)
+screen_active_z0 = glass_z0 + 9.0; // margen inferior ≈ 9,0 (superior ≈ 4,9)
+// Taladros de fijación (plano): 156,90 × 114,96 mm entre centros, a 4,0 mm de los laterales
+screen_hole_dx = 156.9; screen_hole_dz = 114.96;
+screen_hole_z0 = (screen_h - screen_hole_dz) / 2;   // 4,655
+screen_hole_d = 3.0;     // medido → tornillos M2.5
+// Conectores en el canto derecho (plano), medidos desde el borde superior de las pestañas:
+// HDMI 18–34 mm, micro-USB táctil 41–49 mm, interruptor 54–62 mm
+screen_conn_top = 15;
+screen_conn_bot = 65;
+screen_conn_proud = 2;   // el HDMI sobresale ≈2 mm del canto
+screen_conn_depth = 7;   // altura del HDMI detrás del PCB (medido)
 plug_clear = 15;         // hueco lateral para clavijas acodadas a 90°
-screen_margin = 6;       // del inicio del plano inclinado al borde inferior de las pestañas
+screen_margin = 3;       // del inicio del plano inclinado al borde inferior de las pestañas
 
 // ---------------------------------------------------------------------------
 // Cámara acústica en L (D016)

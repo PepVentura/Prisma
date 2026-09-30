@@ -109,7 +109,11 @@ module screen() {
         translate([0, 0, glass_z0]) cube([screen_w, screen_t, glass_h]);
     color([0.1, 0.25, 0.5]) cut() on_screen_plane()
         difference() {
-            translate([1.5, screen_t, 0]) cube([screen_w - 4.5, screen_pcb_t, screen_h]);
+            union() {
+                translate([0, screen_t, (screen_h - screen_body_h) / 2]) cube([screen_w, screen_pcb_t, screen_body_h]);
+                for (x = [0, screen_w - (screen_w - screen_tab_gap) / 2], z = [0, (screen_h + screen_body_h) / 2])
+                    translate([x, screen_t, z]) cube([(screen_w - screen_tab_gap) / 2, screen_pcb_t, (screen_h - screen_body_h) / 2]);
+            }
             for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
                 translate([(screen_w - screen_hole_dx) / 2 + dx, screen_t - 1, screen_hole_z0 + dz])
                     rotate([-90, 0, 0]) cylinder(d = screen_hole_d, h = screen_pcb_t + 2);
@@ -127,12 +131,12 @@ module screen_connectors() {
     color([0.85, 0.55, 0.1]) cut() on_screen_plane()
         translate([0, 0, screen_h - screen_conn_bot]) {
             // conectores asomando por el canto + clavijas acodadas
-            translate([screen_w - 3, screen_t, 0])
-                cube([3 + screen_conn_proud + plug_clear, screen_pcb_t + screen_conn_depth + 1,
+            translate([screen_w, screen_t, 0])
+                cube([screen_conn_proud + plug_clear, screen_pcb_t + screen_conn_depth + 1,
                       screen_conn_bot - screen_conn_top]);
             // cuerpo de los conectores detrás del PCB
             translate([screen_w - 26, screen_t + screen_pcb_t, 0])
-                cube([23, screen_conn_depth + 1, screen_conn_bot - screen_conn_top]);
+                cube([26, screen_conn_depth + 1, screen_conn_bot - screen_conn_top]);
         }
 }
 
