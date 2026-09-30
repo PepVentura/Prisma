@@ -14,7 +14,7 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 - DAC GY-PCM5102 (PCM5102A, I²S) — propuesto
 - ReSpeaker Lite USB (2 micrófonos con AEC) — propuesto
 - WS2812B, 8–12 LEDs — propuesto
-- Cámara — opcional
+- Raspberry Pi Camera Module 3, sobre la pantalla — propuesta
 - Fuente Mean Well GST60A24-P1J (24 V, 60 W) — propuesta
 - Conversor Pololu D36V50F5 (24→5 V, 5,5 A) — propuesto
 

@@ -8,7 +8,7 @@
 | Amplificación | Dayton KABD-250 | 1 | Propuesto | Al cerrar diseño |
 | Audio | GY-PCM5102 (DAC I²S PCM5102A) | 1 | Propuesto | Al cerrar diseño |
 | Micrófonos | ReSpeaker Lite USB (2 micrófonos, XU316) | 1 | Propuesto | Al cerrar diseño |
-| Cámara | Compatible Pi | 1 | Opcional | Opcional |
+| Cámara | Raspberry Pi Camera Module 3 (normal o gran angular) + cable Pi 5 22→15 pines | 1 | Propuesto | Al cerrar diseño |
 | LEDs | WS2812B | 8–12 | Propuesto | Al cerrar diseño |
 | Alimentación | Mean Well GST60A24-P1J (24 V, 60 W, externa) | 1 | Propuesto | Al cerrar diseño |
 | Alimentación | Conector DC de panel 24 V | 1 | En estudio | Al cerrar diseño |
