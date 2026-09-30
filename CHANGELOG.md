@@ -1,4 +1,8 @@
 # Changelog
+## v0.3.1
+- Pantalla con las cotas del plano oficial de Waveshare: 124,27 mm de alto con pestañas, taladros a 156,90 × 114,96 mm y posición exacta de HDMI, micro-USB e interruptor.
+- PCB modelado con pestañas y hueco central.
+
 ## v0.3
 - Nuevo perfil lateral: frontal inferior vertical + frontal superior inclinado 18° para la pantalla (D015).
 - Cámara acústica en L: ≈3,3 L netos medidos sobre el modelo. Con el esquema de v0.2 se quedaba en ≈2,5 L (D016).
