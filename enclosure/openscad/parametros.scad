@@ -66,7 +66,7 @@ bracing_allow_l   = 0.10; // reserva para refuerzos, espuma y cableado
 // Audio
 // ---------------------------------------------------------------------------
 speaker_d = 105; speaker_depth = 48;   // DMA105-4 (marco / fondo total)
-pr_d      = 104; pr_depth      = 53;   // DMA105-PR
+pr_d      = 104; pr_depth      = 55.1; // DMA105-PR (Dayton: marco 104,1 mm, recorte 98,4 mm, fondo 55,1 mm)
 audio_center_z = (wall + chamber_low_top) / 2;  // ≈ 57
 
 // ---------------------------------------------------------------------------

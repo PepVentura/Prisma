@@ -50,4 +50,6 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
 
 `tools/comprobar_volumetrico.py` mide el volumen neto de la cámara y comprueba interferencias entre componentes.
 
+`tools/simulacion_audio.py` simula la respuesta en graves del altavoz y el radiador en la cámara (ver `docs/05_audio.md`).
+
 Consulta `docs/DECISIONS.md`, `docs/08_distribucion.md` y `docs/BOM.md`.
