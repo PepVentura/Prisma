@@ -1,4 +1,10 @@
 # Changelog
+## v0.3.2
+- Electrónica propuesta: DAC GY-PCM5102, ReSpeaker Lite USB, Pololu D36V50F5 y Mean Well GST60A24 (D011–D014), con presupuesto de consumo y cableado en `docs/10_electronica.md`.
+- LEDs por SPI con adaptador de nivel (D023); cancelación de eco (D024); filtro paso alto en la Pi (D022).
+- Simulación de graves (`tools/simulacion_audio.py`): radiador pasivo con ≈10 g, sintonía ≈43 Hz.
+- Modelo: DAC, conversor y micrófonos con sus medidas reales; ventilación trasera y lateral; cámara opcional sin posición.
+
 ## v0.3.1
 - Pantalla con las cotas del plano oficial de Waveshare: 124,27 mm de alto con pestañas, taladros a 156,90 × 114,96 mm y posición exacta de HDMI, micro-USB e interruptor.
 - PCB modelado con pestañas y hueco central.

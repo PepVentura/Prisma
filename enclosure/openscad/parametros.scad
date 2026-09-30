@@ -77,8 +77,8 @@ bay_floor_z = chamber_up_top + wall_int;   // 175
 // Pi 5 en orientación normal: USB/Ethernet hacia la derecha (+X), micro-HDMI y USB-C hacia la pantalla (−Y)
 pi_w = 85; pi_d = 56; pi_h = 25;   // h con Active Cooler
 kabd_w = 91.4; kabd_d = 68.6; kabd_h = 23;
-dac_w = 45; dac_d = 35; dac_h = 15;
-buck_w = 60; buck_d = 35; buck_h = 20;
+dac_w = 32; dac_d = 14; dac_h = 10;   // GY-PCM5102 (PCM5102A), salida jack 3,5 mm
+buck_w = 25.4; buck_d = 25.4; buck_h = 9.5;   // Pololu D36V50F5 (5 V, 5,5 A)
 bracket_z = bay_floor_z + pi_h + 3;   // balda para el KABD-250, por encima de Pi, buck y DAC
 port_clear = 20;                      // hueco delante de los puertos de la Pi para clavijas acodadas
 
@@ -87,8 +87,12 @@ dc_d = 12; dc_depth = 20;
 
 // Iluminación y captación
 led_bar_w = 140; led_bar_h = 5;  led_bar_z = 116.5;
-mic_count = 4; mic_d = 8; mic_spacing = 45;
-cam_d = 10;
+// ReSpeaker Lite USB (XU316: 2 micrófonos, AEC, supresión de ruido): placa 86 × 35 mm
+// justo bajo el techo, con 2 agujeros en la tapa. El XVF3800 (Ø 99 mm) no cabe con la pantalla inclinada.
+mic_w = 86; mic_d = 35; mic_h = 8;     // placa + conectores
+mic_spacing = 64;                      // separación aproximada entre micrófonos: verificar en la placa
+mic_y = 97;                            // borde delantero de la placa
+cam_d = 10;                     // cámara opcional: posición pendiente
 
 // ---------------------------------------------------------------------------
 // Visualización

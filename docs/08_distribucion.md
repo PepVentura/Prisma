@@ -18,15 +18,15 @@ Envolvente de trabajo: **205 × 250 × 145 mm** (ancho × alto × fondo).
 | Interior inferior + superior-trasero | Cámara acústica en L (D016) |
 | Trasera inferior | DMA105-PR (D018) |
 | Bahía superior (z ≥ 175 mm) | Suelo: Pi 5 con Active Cooler (izquierda), buck y DAC (derecha). Balda encima: KABD-250. Huecos de 20 mm delante de los puertos de la Pi |
-| Trasera superior | Rejilla de ventilación + entrada DC 24 V (D017, D019) |
-| Techo | Micrófonos (4) y cámara opcional delante; rejilla de salida de aire detrás |
+| Trasera superior y laterales (altura de la bahía) | Rejillas de ventilación + entrada DC 24 V en la trasera (D017, D019) |
+| Techo | ReSpeaker Lite (86 × 35 mm) justo bajo el techo, zona trasera, con 2 agujeros para los micrófonos. Cámara opcional: posición pendiente |
 
 ![Sección lateral v0.3](img/v0_3_seccion_lateral.png)
 
 ![Bahía de electrónica](img/v0_3_bahia.png)
 
 ## Criterios
-- Todo el calor queda en la bahía superior. Entra aire por la rejilla trasera y sale por el techo (convección natural). Nada de ventiladores junto a la cámara.
+- Todo el calor queda en la bahía superior, ventilada por rejillas en la trasera y en los laterales. Nada de ventiladores junto a la cámara.
 - La Pi va en orientación normal. Sus USB miran a la derecha, hacia el hueco libre (ahí va el cable táctil). Los micro-HDMI y el USB-C miran hacia la pantalla.
 - El cable HDMI va del canto derecho de la pantalla, delante del KABD-250, hasta el micro-HDMI de la Pi.
 - Micrófonos lo más lejos posible del altavoz y desacoplados de la carcasa.
