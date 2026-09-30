@@ -1,4 +1,8 @@
 # Changelog
+## v0.3.3
+- Cámara Raspberry Pi Camera Module 3 centrada sobre la pantalla, en el frontal inclinado (D025).
+- Carcasa 16 mm más alta (250 → 266 mm) para alojarla; la cámara acústica no cambia.
+
 ## v0.3.2
 - Electrónica propuesta: DAC GY-PCM5102, ReSpeaker Lite USB, Pololu D36V50F5 y Mean Well GST60A24 (D011–D014), con presupuesto de consumo y cableado en `docs/10_electronica.md`.
 - LEDs por SPI con adaptador de nivel (D023); cancelación de eco (D024); filtro paso alto en la Pi (D022).

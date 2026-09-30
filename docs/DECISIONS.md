@@ -9,7 +9,7 @@
 | D006 | DMA105-PR con ≈10 g de masa añadida (sintonía ≈43 Hz, validado por simulación) | Propuesta |
 | D007 | KABD-250 | Propuesta |
 | D008 | Cámara acústica independiente y estanca | Cerrada |
-| D009 | Envolvente 205×250×145 mm (validada en v0.3: da ≈3,3 L netos) | Provisional |
+| D009 | Envolvente 205×266×145 mm (250 hasta v0.3.2; +16 mm por la cámara). Cámara acústica ≈3,3 L netos | Provisional |
 | D010 | OpenSCAD | Cerrada |
 | D011 | DAC GY-PCM5102 (PCM5102A) por I²S → AUX del KABD-250 | Propuesta |
 | D012 | Micrófonos ReSpeaker Lite USB (2 micrófonos, AEC por hardware) bajo el techo | Propuesta |
@@ -25,3 +25,4 @@
 | D022 | Filtro paso alto a ≈40 Hz en la Pi (CamillaDSP/PipeWire) para proteger el altavoz por debajo de la sintonía | Propuesta |
 | D023 | LEDs WS2812B por SPI (GPIO10) con adaptador de nivel SN74AHCT125 | Propuesta |
 | D024 | Cancelación de eco por hardware en el ReSpeaker Lite; alternativa por software en PipeWire | Propuesta |
+| D025 | Cámara Raspberry Pi Camera Module 3 centrada sobre la pantalla, en el frontal inclinado (mira al usuario con la inclinación de la pantalla). La carcasa crece 16 mm de alto para alojarla | Propuesta |

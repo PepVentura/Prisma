@@ -6,7 +6,7 @@
 // Envolvente exterior (D009, provisional)
 // ---------------------------------------------------------------------------
 outer_w = 205;
-outer_h = 250;
+outer_h = 266;   // 250 hasta v0.3.2: +16 mm para alojar la cámara sobre la pantalla (D025)
 outer_d = 145;
 
 wall      = 3;    // pared exterior
@@ -92,7 +92,11 @@ led_bar_w = 140; led_bar_h = 5;  led_bar_z = 116.5;
 mic_w = 86; mic_d = 35; mic_h = 8;     // placa + conectores
 mic_spacing = 64;                      // separación aproximada entre micrófonos: verificar en la placa
 mic_y = 97;                            // borde delantero de la placa
-cam_d = 10;                     // cámara opcional: posición pendiente
+// Cámara (D025): Raspberry Pi Camera Module 3 (normal o gran angular), centrada sobre la
+// pantalla, en el frontal inclinado, mirando al usuario con la misma inclinación que la pantalla
+cam_w = 25; cam_h = 24; cam_t = 12.4;   // placa 25 × 24 mm; 11,5 mm de fondo (12,4 la gran angular)
+cam_gap = 3;                            // separación entre el borde superior del cristal y la placa
+cam_lens_d = 8;                         // agujero para el objetivo
 
 // ---------------------------------------------------------------------------
 // Visualización

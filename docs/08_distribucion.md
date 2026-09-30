@@ -1,5 +1,5 @@
 # 08 — Distribución (v0.3)
-Envolvente de trabajo: **205 × 250 × 145 mm** (ancho × alto × fondo).
+Envolvente de trabajo: **205 × 266 × 145 mm** (ancho × alto × fondo). Hasta v0.3.2 medía 250 mm de alto; los 16 mm extra son para la cámara (D025).
 
 ![Vista frontal v0.3](img/v0_3_iso_frontal.png)
 
@@ -13,6 +13,7 @@ Envolvente de trabajo: **205 × 250 × 145 mm** (ancho × alto × fondo).
 |---|---|
 | Frontal inferior | DMA105-4, rejilla frontal |
 | Franja entre altavoz y pantalla | Barra LED WS2812B (z ≈ 116–122 mm) |
+| Franja sobre la pantalla | Cámara Raspberry Pi Camera Module 3, centrada y con la misma inclinación que la pantalla (D025) |
 | Frontal superior inclinado | Waveshare 7" en horizontal. Conectores en el canto derecho, mitad superior, con 15 mm libres para clavijas acodadas |
 | Detrás de la pantalla | Los conectores quedan a la altura de la bahía: los cables no pasan por la zona de la cámara |
 | Interior inferior + superior-trasero | Cámara acústica en L (D016) |

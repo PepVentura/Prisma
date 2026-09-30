@@ -184,7 +184,16 @@ module mics() {
         translate([(outer_w - mic_w) / 2, mic_y, outer_h - wall - 1 - mic_h]) cube([mic_w, mic_d, mic_h]);
 }
 // Cámara opcional: sin sitio en el techo con el XVF3800; posición pendiente
-module camera() { }
+// Cámara sobre la pantalla, en el plano inclinado (coordenadas locales de la pantalla)
+cam_s0 = glass_z0 + glass_h + cam_gap;   // borde inferior de la placa sobre el borde inferior de las pestañas
+module camera() {
+    color([0.2, 0.7, 0.3]) cut() on_screen_plane()
+        translate([outer_w / 2 - screen_x0 - cam_w / 2, 0, cam_s0]) cube([cam_w, cam_t, cam_h]);
+    // objetivo: agujero en el frontal
+    color([0.9, 0.9, 0.9]) cut() on_screen_plane()
+        translate([outer_w / 2 - screen_x0, 0.01, cam_s0 + cam_h / 2]) rotate([90, 0, 0])
+            cylinder(d = cam_lens_d, h = wall / cos(screen_angle) + 0.02);
+}
 
 // Zonas de ventilación (solo bahía de electrónica, D017) — referencia visual
 module vents() {

@@ -11,6 +11,7 @@ Fuente 24 V externa (GST60A24, 60 W)
           │      ├─ I²S ──► GY-PCM5102 (DAC) ──► jack 3,5 mm ──► AUX del KABD-250
           │      ├─ HDMI + USB ──► pantalla Waveshare 7"
           │      ├─ USB ──► ReSpeaker Lite (micrófonos)
+          │      ├─ CSI ──► Camera Module 3 (sobre la pantalla)
           │      └─ SPI (GPIO10) ──► 74AHCT125 ──► barra WS2812B
           └─► alimentación de la barra WS2812B
 ```
@@ -22,6 +23,7 @@ Fuente 24 V externa (GST60A24, 60 W)
 | Micrófonos | **ReSpeaker Lite USB** (XMOS XU316, 2 micrófonos) | Cancelación de eco, supresión de ruido y ganancia automática por hardware, por USB. El XVF3800 (4 micrófonos) es mejor, pero su placa de 99 mm no cabe bajo el techo con la pantalla inclinada delante | 86 × 35 mm |
 | Conversor 24 → 5 V | **Pololu D36V50F5** | 5 V, 5,5 A, entrada de 5,5 a 50 V, 80–95 % de rendimiento, muy compacto | 25,4 × 25,4 × 9,5 mm |
 | Fuente | **Mean Well GST60A24-P1J** | 24 V, 2,5 A, 60 W, de sobremesa, clavija 5,5 × 2,1 mm. Da un 60 % de margen sobre el pico calculado | externa |
+| Cámara | **Raspberry Pi Camera Module 3** (normal o gran angular) | Oficial, autofoco, 12 MP y HDR; se conecta al puerto CSI de la Pi 5 con el cable específico para la Pi 5 (22 → 15 pines) | 25 × 24 × 11,5 mm (12,4 la gran angular) |
 | LEDs | Barra WS2812B (8–12) + **SN74AHCT125** | La Pi da 3,3 V y los WS2812B esperan 5 V en datos: el 74AHCT125 adapta el nivel | — |
 
 ## Presupuesto de consumo (estimación)
@@ -74,6 +76,28 @@ El KABD-250 recomienda 4 A porque está pensado para 2 × 50 W. Aquí solo se us
 - **Filtro paso alto de 40 Hz (D022) y ecualización:** en la Pi, con CamillaDSP o un filtro de PipeWire. Así no hace falta el programador DSPB-ICP1 para el DSP del KABD-250, que se queda con sus ajustes por defecto y los potenciómetros.
 - **Cancelación de eco:** el ReSpeaker Lite cancela el eco por hardware si recibe como referencia el mismo audio que suena. La música sale por el DAC, así que PipeWire envía una copia al ReSpeaker por USB; su salida queda sin conectar. Si esa vía no funciona bien, la alternativa es la cancelación de eco por software de PipeWire (`module-echo-cancel`, WebRTC), que funciona con cualquier micrófono.
 
+## Cámara (D025)
+**Ubicación:** centrada en la franja del frontal inclinado, justo encima del cristal de la pantalla.
+
+Opciones descartadas:
+| Ubicación | Por qué no |
+|---|---|
+| Techo | Mira hacia arriba y ya lo ocupan los micrófonos |
+| Franja de LEDs, entre pantalla y altavoz | Solo 11 mm de alto, demasiado baja (vería al usuario desde abajo) y pegada al altavoz, que la haría vibrar |
+| Laterales | Descentrada: la cara del usuario saldría de perfil y el seguimiento del avatar quedaría torcido |
+| Módulo espía diminuto en los 12 mm libres sobre la pantalla | Cabría sin cambiar la carcasa, pero con un sensor antiguo (OV5647, sin autofoco) |
+
+**Por qué encima de la pantalla:**
+- mira de frente al usuario cuando mira la pantalla, como una webcam de portátil;
+- queda a la mayor altura del aparato;
+- comparte la inclinación de 18° de la pantalla, así que apunta ligeramente hacia arriba, hacia la cara de quien está sentado a la mesa;
+- está lo más lejos posible del altavoz.
+
+**Coste:** la franja libre sobre el cristal era de 12 mm y la placa mide 24 mm. La carcasa crece **16 mm de alto (250 → 266 mm)**. La cámara acústica no cambia (≈3,3 L).
+
+**Montaje:** la placa se atornilla por detrás del frontal (taladros M2 de la cámara) con el objetivo en un agujero de 8 mm. El cable plano baja por detrás de la pantalla hasta el conector CSI de la Pi.
+
+**Privacidad:** conviene una tapa deslizante impresa sobre el objetivo, y que el software encienda un LED de la barra mientras la cámara esté activa.
+
 ## Pendiente
 - Confirmar la separación real de los micrófonos del ReSpeaker Lite para situar los agujeros del techo.
-- Cámara opcional: sin sitio en el techo; posición por decidir.
