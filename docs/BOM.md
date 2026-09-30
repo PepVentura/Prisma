@@ -10,7 +10,12 @@
 | Micrófonos | Matriz 2–4 micrófonos | 1 | En estudio | No comprar todavía |
 | Cámara | Compatible Pi | 1 | Opcional | Opcional |
 | LEDs | WS2812B | 8–12 | Propuesto | Al cerrar diseño |
-| Alimentación | Fuente externa 24 V | 1 | En estudio | No comprar todavía |
+| Alimentación | Fuente externa 24 V (fuera de la carcasa) | 1 | En estudio | No comprar todavía |
+| Alimentación | Conector DC de panel 24 V | 1 | En estudio | Al cerrar diseño |
 | Alimentación | Buck 24→5 V | 1 | En estudio | No comprar todavía |
 | Refrigeración | Pi 5 Active Cooler | 1 | Necesario | Comprar ahora |
+| Acústica | Espuma/relleno acústico para la cámara | 1 | Propuesto | Al cerrar diseño |
+| Acústica | Junta de estanqueidad (burlete EPDM fino) | 1 | Propuesto | Al cerrar diseño |
+| Cableado | Cable HDMI plano A → micro-HDMI con cabezales a 90° | 1 | Necesario | Al cerrar diseño |
+| Cableado | Cable micro-USB acodado → USB-A (táctil) | 1 | Necesario | Al cerrar diseño |
 | Mecánica | Inserts/tornillos M3 | varios | Necesario | Al cerrar diseño |

@@ -1,7 +1,9 @@
 # Prisma
 Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", avatar 3D y audio integrado.
 
-**Estado actual: hardware y volumétrico v0.2.** Las cotas provisionales deben verificarse antes de fabricar piezas definitivas.
+**Estado actual: volumétrico v0.3.** Las cotas provisionales deben verificarse antes de fabricar piezas definitivas.
+
+![Prisma v0.3](docs/img/v0_3_iso_frontal.png)
 
 ## Hardware
 - Raspberry Pi 5 8 GB — confirmado
@@ -25,9 +27,27 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
                  └── cámara opcional
 ```
 
-La electrónica queda separada de la cámara acústica. La fuente AC/DC será externa.
+## Distribución (v0.3)
+```text
+              techo: micrófonos · cámara · salida de aire
+           ┌───────────────────────────┐
+          ╱   bahía: Pi 5 · KABD · DAC │ ← rejilla + DC 24 V
+ pantalla╱      ┌──────────────────────┤
+   18°  ╱ canal │ cámara (parte alta)  │
+       ╱ cables │                      │
+ LEDs ├─────────┘                      │
+      │                                │
+ DMA105-4 ◄  cámara acústica ≈3,3 L  ►  DMA105-PR
+      └────────────────────────────────┘
+   frente                            trasera
+```
+
+- La electrónica queda separada de la cámara acústica, que es estanca.
+- La fuente AC/DC es externa: dentro solo entra 24 V.
 
 ## CAD
-`enclosure/openscad/` contiene el volumétrico v0.2. Es una maqueta de distribución, no la carcasa final.
+`enclosure/openscad/prisma_volumetrica_v0_3.scad` es una maqueta de distribución, no la carcasa final.
 
-Consulta `docs/DECISIONS.md` y `docs/BOM.md`.
+`tools/comprobar_volumetrico.py` mide el volumen neto de la cámara y comprueba interferencias entre componentes.
+
+Consulta `docs/DECISIONS.md`, `docs/08_distribucion.md` y `docs/BOM.md`.
