@@ -26,3 +26,4 @@
 | D023 | LEDs WS2812B por SPI (GPIO10) con adaptador de nivel SN74AHCT125 | Propuesta |
 | D024 | Cancelación de eco por hardware en el ReSpeaker Lite; alternativa por software en PipeWire | Propuesta |
 | D025 | Cámara Raspberry Pi Camera Module 3 centrada sobre la pantalla, en el frontal inclinado (mira al usuario con la inclinación de la pantalla). La carcasa crece 16 mm de alto para alojarla | Propuesta |
+| D026 | Tapa deslizante de privacidad sobre la cámara, integrada en el frontal (guía en cola de milano), más LED de aviso cuando la cámara está activa | Cerrada |

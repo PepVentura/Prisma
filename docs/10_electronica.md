@@ -97,7 +97,13 @@ Opciones descartadas:
 
 **Montaje:** la placa se atornilla por detrás del frontal (taladros M2 de la cámara) con el objetivo en un agujero de 8 mm. El cable plano baja por detrás de la pantalla hasta el conector CSI de la Pi.
 
-**Privacidad:** conviene una tapa deslizante impresa sobre el objetivo, y que el software encienda un LED de la barra mientras la cámara esté activa.
+**Privacidad (D026): tapa deslizante obligatoria.**
+- Corredera de 16 × 12 mm en una guía en cola de milano rebajada 1,6 mm en el frontal. Queda casi enrasada y no se puede perder.
+- Se desliza 14 mm hacia la derecha para descubrir el objetivo. Dos resaltes marcan las posiciones abierta y cerrada.
+- Pieza de prueba para ajustar holguras antes del frontal definitivo: `enclosure/openscad/tapa_camara_prueba.scad` → `stl/tapa_camara_prueba_v0_1.stl`. Se imprimen la placa y la corredera planas, sin soportes; si la corredera va dura o floja, ajusta `clear`.
+- Además, el software encenderá un LED de la barra mientras la cámara esté activa.
+
+![Tapa de la cámara](img/tapa_camara_prueba.png)
 
 ## Pendiente
 - Confirmar la separación real de los micrófonos del ReSpeaker Lite para situar los agujeros del techo.

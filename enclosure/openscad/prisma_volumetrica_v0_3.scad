@@ -195,6 +195,14 @@ module camera() {
             cylinder(d = cam_lens_d, h = wall / cos(screen_angle) + 0.02);
 }
 
+// Tapa deslizante de la cámara (D026): guía en cola de milano rebajada en el frontal,
+// recorrido de 14 mm hacia la derecha. Solo visual; la geometría está en tapa_camara_prueba.scad
+module camera_shutter() {
+    color([0.95, 0.75, 0.2]) cut() on_screen_plane()
+        translate([outer_w / 2 - screen_x0 - 8, -wall / cos(screen_angle), cam_s0 + cam_h / 2 - 6])
+            cube([16, 1.4, 12]);
+}
+
 // Zonas de ventilación (solo bahía de electrónica, D017) — referencia visual
 module vents() {
     color([1, 0.4, 0.1, 0.35]) cut() {
@@ -231,7 +239,7 @@ module component(name) {
 module scene() {
     if (show_screen) { screen(); screen_active(); screen_connectors(); }
     if (show_audio)  { speaker(); pr(); }
-    if (show_electronics) { pi5(); pi_port_clear(); kabd(); bracket(); buck(); dac(); dc_jack(); led_bar(); mics(); camera(); vents(); }
+    if (show_electronics) { pi5(); pi_port_clear(); kabd(); bracket(); buck(); dac(); dc_jack(); led_bar(); mics(); camera(); camera_shutter(); vents(); }
     chamber_walls();
     if (show_chamber_air) color([0.2, 0.7, 1, 0.35]) cut() chamber_air();
     if (show_shell) color([0.15, 0.15, 0.17, 0.25]) cut() shell();
