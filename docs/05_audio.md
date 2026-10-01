@@ -8,7 +8,9 @@
 ## Cámara acústica (D008, D016)
 Forma en L:
 - bloque inferior: ancho y fondo completos, de z = 3 a z = 111 mm;
-- bloque superior-trasero: desde y = 64 mm hasta la trasera, de z = 111 a z = 170 mm, detrás de la pantalla.
+- bloque superior-trasero: desde y = 60 mm hasta la trasera, de z = 111 a z = 176 mm, detrás de la pantalla.
+
+**Actualización v0.4:** con la cubeta real (anillos de montaje y aire delante de los conos), el neto final es de unos **3,1 L**. Repetida la simulación con 3,1 L, los resultados no cambian de forma apreciable. Ver `docs/15_cubeta.md`.
 
 Volumen medido sobre el modelo v0.3 (`tools/comprobar_volumetrico.py`):
 

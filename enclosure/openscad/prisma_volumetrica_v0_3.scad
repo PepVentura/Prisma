@@ -80,11 +80,11 @@ module chamber_walls() {
 
 // Volumen desplazado por los transductores dentro de la cámara (aprox. conservadora)
 module speaker_displacement() {
-    translate([outer_w / 2, wall, audio_center_z]) rotate([-90, 0, 0])
+    translate([outer_w / 2, drv_flange_y, audio_center_z]) rotate([-90, 0, 0])
         cylinder(d1 = speaker_d * 0.9, d2 = 50, h = speaker_depth);
 }
 module pr_displacement() {
-    translate([outer_w / 2, outer_d - wall, audio_center_z]) rotate([90, 0, 0])
+    translate([outer_w / 2, pr_flange_y, audio_center_z]) rotate([90, 0, 0])
         cylinder(d1 = pr_d * 0.95, d2 = 70, h = pr_depth);
 }
 
@@ -144,13 +144,20 @@ module screen_connectors() {
         }
 }
 
+// Altavoz y radiador montados por dentro (D030): marco apoyado en el anillo, cono hacia la rejilla
 module speaker() {
-    color([0.18, 0.18, 0.18]) cut() translate([outer_w / 2, 0, audio_center_z]) rotate([-90, 0, 0])
-        cylinder(d = speaker_d, h = speaker_depth + wall);
+    color([0.18, 0.18, 0.18]) cut() translate([outer_w / 2, 0, audio_center_z]) rotate([-90, 0, 0]) {
+        translate([-drv_frame / 2, -drv_frame / 2, drv_flange_y]) cube([drv_frame, drv_frame, 4]);
+        translate([0, 0, drv_flange_y]) cylinder(d = 85, h = speaker_depth - 1);
+        translate([0, 0, drv_flange_y - 3]) cylinder(d = 86, h = 3.01);          // suspensión y cono
+    }
 }
 module pr() {
-    color([0.25, 0.25, 0.28]) cut() translate([outer_w / 2, outer_d, audio_center_z]) rotate([90, 0, 0])
-        cylinder(d = pr_d, h = pr_depth + wall);
+    color([0.25, 0.25, 0.28]) cut() translate([outer_w / 2, outer_d, audio_center_z]) rotate([90, 0, 0]) {
+        translate([-pr_frame / 2, -pr_frame / 2, outer_d - pr_flange_y]) cube([pr_frame, pr_frame, 4]);
+        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 90, h = pr_depth);
+        translate([0, 0, wall + 1]) cylinder(d = 92, h = outer_d - pr_flange_y - wall - 0.99);   // recorrido del cono (Xmax 9)
+    }
 }
 
 pi_pos   = [8, 72, bay_floor_z];

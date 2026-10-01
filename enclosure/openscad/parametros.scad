@@ -57,22 +57,30 @@ screen_margin = 3;       // del inicio del plano inclinado al borde inferior de 
 // Cámara acústica en L (D016)
 // ---------------------------------------------------------------------------
 chamber_low_top  = 111;  // techo interior del bloque inferior (ancho completo)
-chamber_up_front = 64;   // cara interior frontal del bloque superior-trasero
-chamber_up_top   = 170;  // techo interior del bloque superior-trasero
+chamber_up_front = 60;   // cara interior frontal del bloque superior-trasero
+chamber_up_top   = 176;  // techo interior del bloque superior-trasero
 acoustic_target_l = 3.5; // objetivo 3–4 L netos
 bracing_allow_l   = 0.10; // reserva para refuerzos, espuma y cableado
 
 // ---------------------------------------------------------------------------
 // Audio
 // ---------------------------------------------------------------------------
-speaker_d = 105; speaker_depth = 48;   // DMA105-4 (marco / fondo total)
+speaker_d = 105; speaker_depth = 48;   // DMA105-4 (marco / fondo total; SoundImports: fondo 47,2 mm)
+drv_frame = 104.1; drv_cut = 90;        // marco cuadrado y recorte (3,54") — confirmar con la pieza
+pr_frame  = 104.1; pr_cut  = 98.4;      // DMA105-PR: marco y recorte (3,875")
+// Montaje por dentro detrás de la rejilla (D030): plano del marco a esta distancia de la cara interior
+drv_clear = 7;                          // suspensión (≈3) + Xmax 2,5 + margen
+pr_clear  = 14;                         // suspensión (≈4) + Xmax 9 + margen
+drv_flange_y = wall + drv_clear;
+pr_flange_y  = outer_d - wall - pr_clear;
+bolt_off  = 44.9;                       // taladros en las esquinas: ±44,9 mm (círculo de 5" según la tienda) — medir
 pr_d      = 104; pr_depth      = 55.1; // DMA105-PR (Dayton: marco 104,1 mm, recorte 98,4 mm, fondo 55,1 mm)
 audio_center_z = (wall + chamber_low_top) / 2;  // ≈ 57
 
 // ---------------------------------------------------------------------------
 // Electrónica (bahía superior, sobre la tapa de la cámara)
 // ---------------------------------------------------------------------------
-bay_floor_z = chamber_up_top + wall_int;   // 175
+bay_floor_z = chamber_up_top + wall_int;   // 181
 
 // Pi 5 en orientación normal: USB/Ethernet hacia la derecha (+X), micro-HDMI y USB-C hacia la pantalla (−Y)
 pi_w = 85; pi_d = 56; pi_h = 25;   // h con Active Cooler

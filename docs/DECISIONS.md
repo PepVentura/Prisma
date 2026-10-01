@@ -30,3 +30,4 @@
 | D027 | Carcasa en 4 piezas: cubeta acústica (PLA), bandeja (PLA), caja superior de la cámara (PETG) y capucha desmontable (PLA). La Kobra X imprime 260 mm y la carcasa mide 266 | Propuesta |
 | D028 | Estrías horizontales de 1,6 × 0,8 mm cada 4 mm en laterales y trasera de la capucha; las rejillas son estrías pasantes | Cerrada |
 | D029 | Uniones de la capucha: 2 pasadores delanteros en la bandeja y 2 tornillos M3 avellanados traseros a insertos de la caja superior | Propuesta |
+| D030 | Rejilla de ranuras integrada en la cubeta (delante y detrás); altavoz y radiador montados por dentro sobre anillos de 7 y 14 mm con insertos M3 | Cerrada |

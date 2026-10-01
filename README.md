@@ -3,7 +3,7 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 
 **Estado actual: volumétrico v0.3.** Las cotas provisionales deben verificarse antes de fabricar piezas definitivas.
 
-![Prisma v0.3](docs/img/v0_3_iso_frontal.png)
+![Prisma v0.4](docs/img/prisma_v0_4_frontal.png)
 
 ## Hardware
 - Raspberry Pi 5 8 GB — confirmado
@@ -50,7 +50,7 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
 
 `tools/comprobar_volumetrico.py` mide el volumen neto de la cámara y comprueba interferencias entre componentes.
 
-`enclosure/openscad/capucha.scad` es la primera pieza imprimible: la capucha (ver `docs/14_capucha.md`).
+Piezas imprimibles: la capucha (`enclosure/openscad/capucha.scad`, ver `docs/14_capucha.md`) y la cubeta acústica (`enclosure/openscad/cubeta.scad`, ver `docs/15_cubeta.md`).
 
 `tools/simulacion_audio.py` simula la respuesta en graves del altavoz y el radiador en la cámara (ver `docs/05_audio.md`).
 

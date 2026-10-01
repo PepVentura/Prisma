@@ -24,4 +24,7 @@
 | Mecánica | Tornillos M2 × 5 autorroscantes (cámara) | 4 | Necesario | Comprar ahora |
 | Mecánica | Tornillos M3 avellanados + insertos M3 (capucha) | 2 | Necesario | Comprar ahora |
 | Filamento | PLA o PETG natural/translúcido (difusor LED) | poco | Necesario | Comprar ahora |
+| Mecánica | Insertos M3 de latón + tornillos M3 × 8 (altavoz, radiador y rebordes) | 16 | Necesario | Comprar ahora |
+| Acústica | Junta de espuma de 2 mm (marcos de altavoz y radiador) | 1 | Necesario | Comprar ahora |
+| Filamento | TPU (4 patas) | poco | Necesario | Al imprimir |
 | Mecánica | Inserts/tornillos M3 | varios | Necesario | Al cerrar diseño |

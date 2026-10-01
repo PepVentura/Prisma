@@ -1,4 +1,9 @@
 # Changelog
+## v0.4.1
+- Cubeta acústica v0.1 imprimible (`stl/cubeta_v0_1.stl`): rejilla de ranuras integrada delante y detrás, altavoz y radiador montados por dentro sobre anillos, rebordes para la bandeja y la caja superior, refuerzos y patas de TPU (D030).
+- Parte alta de la cámara más grande (techo 176 mm, pared delantera en 60 mm) para compensar los anillos: ≈3,1 L netos finales.
+- Nuevo `tools/comprobar_cubeta.py`; altavoz y radiador del volumétrico en su posición real.
+
 ## v0.4
 - Capucha v0.1 imprimible (`stl/capucha_v0_1.stl`): estrías de 4 mm, rejillas integradas, ventana y resaltes de la pantalla, cámara con guía de tapa, ranura y difusor LED, micrófonos con raíles, conector DC, ventilador opcional y uniones.
 - División de la carcasa en 4 piezas (D027), estrías (D028) y uniones (D029).
