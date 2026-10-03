@@ -72,6 +72,14 @@ El KABD-250 recomienda 4 A porque está pensado para 2 × 50 W. Aquí solo se us
 - Condensador de 1000 µF entre 5 V y GND en la entrada de la barra.
 - La librería clásica `rpi_ws281x` no funciona en la Pi 5 (su chip de E/S, el RP1, es distinto). Se controla por SPI, por ejemplo con `adafruit-circuitpython-neopixel-spi`.
 
+## Botones (D032)
+| Botón | Conexión |
+|---|---|
+| Volumen − | Pulsador 6 × 6 entre GPIO5 (pin 29) y GND, con *pull-up* interno |
+| Volumen + | Pulsador 6 × 6 entre GPIO6 (pin 31) y GND, con *pull-up* interno |
+| Silencio de micrófonos | Interruptor SS12D00 en serie con el cable rojo (+5 V) del USB del ReSpeaker Lite: los micrófonos se apagan físicamente. Opcional: el otro polo del SS12D00 a GPIO13 (pin 33) para que el software sepa el estado |
+| Encendido | Pulsador al conector `PWR BUT` (J2) de la Pi 5: pulsación corta apaga bien, otra la enciende |
+
 ## Audio: filtro y cancelación de eco
 - **Filtro paso alto de 40 Hz (D022) y ecualización:** en la Pi, con CamillaDSP o un filtro de PipeWire. Así no hace falta el programador DSPB-ICP1 para el DSP del KABD-250, que se queda con sus ajustes por defecto y los potenciómetros.
 - **Cancelación de eco:** el ReSpeaker Lite cancela el eco por hardware si recibe como referencia el mismo audio que suena. La música sale por el DAC, así que PipeWire envía una copia al ReSpeaker por USB; su salida queda sin conectar. Si esa vía no funciona bien, la alternativa es la cancelación de eco por software de PipeWire (`module-echo-cancel`, WebRTC), que funciona con cualquier micrófono.
@@ -93,7 +101,7 @@ Opciones descartadas:
 - comparte la inclinación de 18° de la pantalla, así que apunta ligeramente hacia arriba, hacia la cara de quien está sentado a la mesa;
 - está lo más lejos posible del altavoz.
 
-**Coste:** la franja libre sobre el cristal era de 12 mm y la placa (25 × 24 mm, igual en la OV5647 y en la Camera Module 3) mide 24. La carcasa crece **16 mm de alto (250 → 266 mm)**. La cámara acústica no cambia (≈3,3 L).
+**Espacio:** en v0.5 la cámara cabe en el bisel superior del frontal inclinado; la altura total (262 mm) sale de apilar altavoz, bandeja, pantalla y cámara.
 
 **Montaje:** la placa se atornilla por detrás del frontal (taladros M2 de la cámara) con el objetivo en un agujero de 8 mm. El cable plano baja por detrás de la pantalla hasta el conector CSI de la Pi.
 

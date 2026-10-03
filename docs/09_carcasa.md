@@ -17,5 +17,5 @@ Orden de desarrollo:
 Ver `docs/14_capucha.md` (D027). La capucha v0.1 ya está diseñada; faltan la cubeta, la bandeja y la caja superior.
 
 ## Notas para la división en piezas (impresión)
-- La altura de 266 mm y el frontal inclinado hacen pensar en varias piezas: cámara acústica (pieza estanca propia), bahía superior con tapa desmontable y marco frontal de la pantalla.
+- La altura de 262 mm y el frontal inclinado hacen pensar en varias piezas: cámara acústica (pieza estanca propia), bahía superior con tapa desmontable y marco frontal de la pantalla.
 - La tapa de la bahía da acceso de servicio a la Pi y al resto de la electrónica sin abrir la cámara.

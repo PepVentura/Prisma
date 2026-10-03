@@ -5,7 +5,7 @@ Modelo: Waveshare 7inch HDMI LCD (C) Rev4.1, 1024×600, IPS, táctil capacitivo 
 
 1024×600 es un formato ≈ 17:10. Un vídeo 16:9 ocupa todo el ancho y deja dos franjas negras finas, de unos 12 píxeles, arriba y abajo.
 
-![Frontal v0.3](img/v0_3_frontal_pantalla.png)
+![Frontal v0.5](img/v0_5_frontal_pantalla.png)
 
 ## Medidas
 Las cotas del PCB, los taladros y los conectores salen del plano oficial de Waveshare. Las del cristal y el área visible, de fotos de la unidad real (±1 mm).

@@ -3,7 +3,7 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 
 **Estado actual: volumétrico v0.3.** Las cotas provisionales deben verificarse antes de fabricar piezas definitivas.
 
-![Prisma v0.4](docs/img/prisma_v0_4_frontal.png)
+![Prisma v0.5](docs/img/prisma_v0_5_frontal.png)
 
 ## Hardware
 - Raspberry Pi 5 8 GB — confirmado
@@ -27,23 +27,15 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
                  └── cámara opcional
 ```
 
-## Distribución (v0.3)
-```text
-              techo: micrófonos (ReSpeaker Lite)
-           ┌───────────────────────────┐
-          ╱   bahía: Pi 5 · KABD · DAC │ ← rejilla + DC 24 V
- pantalla╱      ┌──────────────────────┤
-   18°  ╱ canal │ cámara (parte alta)  │
-       ╱ cables │                      │
- LEDs ├─────────┘                      │
-      │                                │
- DMA105-4 ◄  cámara acústica ≈3,3 L  ►  DMA105-PR
-      └────────────────────────────────┘
-   frente                            trasera
-```
+## Diseño (v0.5)
+Frontal inclinado de arriba abajo, aristas redondeadas y negro mate, como el boceto original:
+- **Arriba:** cámara con tapa deslizante y micrófonos en el techo.
+- **Centro:** pantalla de 7" en horizontal.
+- **Debajo:** franja LED y banda de lamas con el altavoz detrás.
+- **Techo:** volumen y silencio de micrófonos.
+- **Trasera:** ventilación, alimentación, botón de encendido y radiador pasivo.
 
-- La electrónica queda separada de la cámara acústica, que es estanca.
-- La fuente AC/DC es externa: dentro solo entra 24 V.
+Medidas: **205 × 262 × 150 mm**. Cámara acústica de ≈3,1 L netos. Dentro de la carcasa solo entra 24 V; la fuente de red es externa.
 
 ## CAD
 `enclosure/openscad/prisma_volumetrica_v0_3.scad` es una maqueta de distribución, no la carcasa final.

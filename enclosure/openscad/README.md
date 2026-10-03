@@ -1,5 +1,5 @@
-# OpenSCAD v0.3
-Abrir `prisma_volumetrica_v0_3.scad`. Todas las cotas están en `parametros.scad`.
+# OpenSCAD v0.5
+Abrir `prisma_volumetrica_v0_5.scad`. Todas las cotas están en `parametros.scad`.
 
 Es un modelo de distribución. No es todavía la carcasa final.
 
@@ -12,7 +12,7 @@ Es un modelo de distribución. No es todavía la carcasa final.
 
 ## Comprobación
 ```bash
-pip install trimesh numpy
+pip install trimesh numpy manifold3d
 python3 tools/comprobar_volumetrico.py
 ```
 Da el volumen neto de la cámara y avisa de cualquier interferencia, o de un componente que se salga de la envolvente. Conviene lanzarlo después de cambiar cualquier cota.
@@ -28,4 +28,4 @@ Da el volumen neto de la cámara y avisa de cualquier interferencia, o de un com
 
 `marco_pantalla_prueba.scad` es el marco de prueba de la pantalla (ver `docs/06_pantalla.md`).
 
-`archivo/` contiene la v0.2 tal cual estaba, como referencia.
+`archivo/` contiene versiones anteriores: v0.2 y `v0_4/` (diseño con estrías y frontal partido).

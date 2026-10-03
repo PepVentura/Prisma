@@ -1,4 +1,12 @@
 # Changelog
+## v0.5
+- Vuelta al boceto original (D031): frontal inclinado 11° continuo, aristas redondeadas, banda de lamas a todo lo ancho bajo la pantalla, laterales lisos y acabado negro mate. Envolvente 205 × 262 × 150 mm.
+- Nuevo volumétrico `prisma_volumetrica_v0_5.scad`: altavoz en el frontal inclinado; parte alta de la cámara acústica tras un tabique paralelo al frontal; ≈3,13 L netos.
+- Capucha v0.2: perforado trasero, botones en el techo (capuchones de 8 mm y silencio deslizante), botón de encendido trasero (D032).
+- Cubeta v0.2: banda de lamas (pasante solo delante del cono), anillo de montaje inclinado.
+- Las comprobaciones de capucha y cubeta usan manifold3d (mucho más rápidas).
+- v0.4 (capucha y cubeta con estrías) archivada en `enclosure/openscad/archivo/v0_4/`.
+
 ## v0.4.1
 - Cubeta acústica v0.1 imprimible (`stl/cubeta_v0_1.stl`): rejilla de ranuras integrada delante y detrás, altavoz y radiador montados por dentro sobre anillos, rebordes para la bandeja y la caja superior, refuerzos y patas de TPU (D030).
 - Parte alta de la cámara más grande (techo 176 mm, pared delantera en 60 mm) para compensar los anillos: ≈3,1 L netos finales.

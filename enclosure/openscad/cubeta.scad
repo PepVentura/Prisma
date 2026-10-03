@@ -1,141 +1,131 @@
-// Prisma — CUBETA ACÚSTICA v0.1 (pieza 1 de la carcasa)
+// Prisma — CUBETA ACÚSTICA v0.2 (pieza 1 de la carcasa) — diseño del boceto original (D031)
 //
-// Parte inferior de la carcasa (z 0–111 mm): bloque inferior de la cámara acústica, con el
-// DMA105-4 delante y el DMA105-PR detrás, ambos montados POR DENTRO detrás de una rejilla de
-// ranuras integrada en la pared (D030). Laterales y trasera con las mismas estrías de 4 mm
-// que la capucha.
+// Parte inferior de la carcasa (z 0–108 mm): bloque inferior de la cámara acústica.
+//  - Frontal inclinado 11° con la banda de lamas a todo lo ancho; detrás, el DMA105-4
+//    montado por dentro sobre un anillo paralelo al frontal (las lamas solo atraviesan la
+//    pared delante del cono; el resto de la banda es decorativo y no abre la cámara).
+//  - Trasera con rejilla circular delante del DMA105-PR, también montado por dentro.
+//  - Rebordes para la bandeja (2a) y la caja superior (2b), refuerzos y patas de TPU.
 //
-// Material: PLA (D027). Impresión: de pie, con el suelo en la cama, sin soportes
-// (las ranuras de la rejilla son puentes de ≤ 30 mm).
-// Montaje: altavoz y radiador se meten por arriba y se atornillan desde dentro con
-// insertos M3 en la pared; junta de espuma de 2 mm entre marco y pared.
-// Encima van la bandeja (2a) y la caja superior (2b), apoyadas en los rebordes interiores.
+// Material: PLA negro mate. Impresión: de pie, suelo en la cama, sin soportes.
 
-use <prisma_volumetrica_v0_3.scad>;
+use <prisma_volumetrica_v0_5.scad>;
 include <parametros.scad>;
 $fn = 48;
 
 pieza = "cubeta";   // "cubeta" | "pata" | "montaje"
 
-// ---------------------------------------------------------------------------
-// Parámetros
-// ---------------------------------------------------------------------------
-H = chamber_low_top;            // 111: unión con la capucha
+H = chamber_low_top;             // 108
 cx = outer_w / 2;
-cz = audio_center_z;            // centro de altavoz y radiador
+fa = front_angle;
 
-// Estrías: misma rejilla que la capucha (surcos en z = 117 − 4k); se deja una franja lisa junto a la unión
-groove_pitch = 4; groove_w = 1.6; groove_d = 0.8;
-groove_top = 105; groove_bottom = 6;
+// Lamas: ranura de 2,4 mm cada 4 mm a lo largo del frontal
+slat_pitch = 4; slat_h = 2.4;
+slat_blind = 1.8;                // profundidad de las lamas decorativas (pared de 3 mm)
+grille_d_drv = 86;               // zona pasante delante del cono
+grille_d_pr = 94; pr_ribs = [-15, 15]; rib_w = 3;
 
-// Rejilla delantera (altavoz) y trasera (radiador)
-slot_h = 2.4;                   // ranura centrada en cada estría (60 % de hueco)
-grille_d_drv = 86;              // algo menor que el recorte del altavoz (90)
-grille_d_pr  = 94;              // algo menor que el recorte del radiador (98,4)
-grille_ribs  = [-15, 15];       // nervios verticales de 3 mm: puentes de ≤ 30 mm
-rib_w = 3;
+mount_zone = 112;                // anillos de montaje
+insert_hole = 4.0; insert_depth = 5;
 
-// Anillos de montaje (por dentro): separan el marco de la rejilla lo justo para que el cono no la toque
-// drv_clear y pr_clear están en parametros.scad
-mount_zone = 112;               // cuadrado del anillo (marco de 104 mm + margen)
-baffle_t = wall + pr_clear;     // fondo máximo que atraviesan las ranuras
-insert_hole = 4.0; insert_depth = 5;   // insertos M3 de latón
-gasket = 2;                     // junta de espuma entre marco y pared (no se modela)
-
-// Rebordes interiores para la bandeja y la caja superior
 ledge_w = 7; ledge_h = 6;
+side_ribs_y = [55, 105]; side_rib_t = 4; side_rib_d = 6;
+foot_d = 16; foot_pocket = 1.5; foot_h = 5; foot_inset = 20;
 
-// Refuerzos verticales en los laterales
-side_ribs_y = [45, 100]; side_rib_t = 4; side_rib_d = 6;
+module on_front_() rotate([-fa, 0, 0]) children();
+module lower() translate([-1, -1, -1]) cube([outer_w + 2, outer_d + 2, H + 1]);
+module shell_lower() intersection() { component("shell"); lower(); }
 
-// Patas (TPU)
-foot_d = 16; foot_pocket = 1.5; foot_h = 5; foot_inset = 18;
+slat_s = [for (s = [grille_s0 : slat_pitch : grille_s1 - slat_h]) s];
 
-// ---------------------------------------------------------------------------
-module lower(z1 = H) translate([-1, -1, -1]) cube([outer_w + 2, outer_d + 2, z1 + 1]);
-module shell_lower() intersection() { difference() { body(0); body(wall); } lower(); }
-
-function groove_zs() = [for (z = [groove_top - groove_pitch * floor((groove_top - groove_bottom) / groove_pitch) : groove_pitch : groove_top]) z];
-
-module grooves() for (z = groove_zs()) {
-    translate([-1, -1, z]) cube([groove_d + 1, outer_d + 2, groove_w]);
-    translate([outer_w - groove_d, -1, z]) cube([groove_d + 1, outer_d + 2, groove_w]);
-    translate([-1, outer_d - groove_d, z]) cube([outer_w + 2, groove_d + 1, groove_w]);
+// Banda de lamas: decorativa (ciega) en todo el ancho; pasante solo dentro del círculo del cono
+module slats_blind() on_front_() for (s = slat_s)
+    translate([grille_margin_x, -1, s]) cube([outer_w - 2 * grille_margin_x, slat_blind + 1, slat_h]);
+module slats_through() on_front_() intersection() {
+    union() for (s = slat_s) translate([cx - grille_d_drv / 2, -1, s]) cube([grille_d_drv, drv_n + 1, slat_h]);
+    translate([cx, -1, drv_s]) rotate([-90, 0, 0]) cylinder(d = grille_d_drv, h = drv_n + 1);
 }
 
-// Ranuras de la rejilla dentro de un círculo, en la pared delantera (y = 0) o trasera (y = outer_d)
-module grille(d, back = false) {
-    y0 = back ? outer_d - baffle_t - 1 : -1;
+// Anillo del altavoz: paralelo al frontal, de la cara interior (n = wall) al plano del marco (n = drv_n)
+module drv_ring() intersection() {
+    on_front_() difference() {
+        translate([cx - mount_zone / 2, wall - 0.01, drv_s - mount_zone / 2]) cube([mount_zone, drv_n - wall + 0.01, mount_zone]);
+        translate([cx, wall - 1, drv_s]) rotate([-90, 0, 0]) cylinder(d = drv_cut, h = drv_n);
+    }
+    component("body_inner");
+    translate([-1, -1, wall - 0.5]) cube([outer_w + 2, outer_d + 2, H - wall + 0.5]);
+}
+module drv_inserts() on_front_() for (dx = [-bolt_off, bolt_off], ds = [-bolt_off, bolt_off])
+    translate([cx + dx, drv_n - insert_depth, drv_s + ds]) rotate([-90, 0, 0]) cylinder(d = insert_hole, h = insert_depth + 0.01);
+
+// Radiador: anillo en la trasera y rejilla circular con dos nervios
+module pr_ring() intersection() {
     difference() {
-        intersection() {
-            union() for (z = groove_zs()) translate([cx - d / 2, y0, z + groove_w / 2 - slot_h / 2]) cube([d, baffle_t + 2, slot_h]);
-            translate([cx, y0, cz]) rotate([-90, 0, 0]) cylinder(d = d, h = baffle_t + 2);
-        }
-        for (dx = grille_ribs) translate([cx + dx - rib_w / 2, y0 - 1, cz - d / 2]) cube([rib_w, baffle_t + 4, d]);
+        translate([cx - mount_zone / 2, pr_flange_y, wall - 0.01]) cube([mount_zone, outer_d - wall - pr_flange_y + 0.01, H - wall]);
+        translate([cx, pr_flange_y - 1, audio_center_z]) rotate([-90, 0, 0]) cylinder(d = pr_cut, h = outer_d);
     }
+    component("body_inner");
 }
-
-// Anillo: cuadrado con el recorte; el marco apoya en su cara interior
-module mount_ring(back = false) {
-    t = back ? pr_clear : drv_clear;
-    cut = back ? pr_cut : drv_cut;
-    y = back ? outer_d - wall - t : wall - 0.01;
+module pr_grille() difference() {
     intersection() {
-        difference() {
-            translate([cx - mount_zone / 2, y, wall - 0.01]) cube([mount_zone, t + 0.01, H - wall]);
-            translate([cx, y - 1, cz]) rotate([-90, 0, 0]) cylinder(d = cut, h = t + 2);
-        }
-        body(0);
+        union() for (z = [audio_center_z - grille_d_pr / 2 : slat_pitch : audio_center_z + grille_d_pr / 2])
+            translate([cx - grille_d_pr / 2, outer_d - wall - 1, z]) cube([grille_d_pr, wall + 2, slat_h]);
+        translate([cx, outer_d - wall - 1, audio_center_z]) rotate([-90, 0, 0]) cylinder(d = grille_d_pr, h = wall + 2);
     }
+    for (dx = pr_ribs) translate([cx + dx - rib_w / 2, outer_d - wall - 2, audio_center_z - grille_d_pr / 2]) cube([rib_w, wall + 4, grille_d_pr]);
 }
-module inserts(back = false) for (dx = [-bolt_off, bolt_off], dz = [-bolt_off, bolt_off]) {
-    // agujero ciego desde la cara del marco hacia la rejilla
-    y = back ? outer_d - wall - pr_clear - 0.01 : wall + drv_clear - insert_depth;
-    translate([cx + dx, y, cz + dz]) rotate([-90, 0, 0]) cylinder(d = insert_hole, h = insert_depth + 0.01);
-}
+module pr_inserts() for (dx = [-bolt_off, bolt_off], dz = [-bolt_off, bolt_off])
+    translate([cx + dx, pr_flange_y - 0.01, audio_center_z + dz]) rotate([-90, 0, 0]) cylinder(d = insert_hole, h = insert_depth + 0.01);
 
-// Rebordes: laterales completos; delante y detrás solo fuera de los marcos
+// Rebordes: laterales completos (desde detrás del altavoz) y trasero fuera del radiador
 module ledges() {
-    module ledge(x, y, lx, ly) translate([x, y, H - ledge_h]) hull() {
-        translate([0, 0, ledge_h - 0.01]) cube([lx, ly, 0.01]);
-        // chaflán a 45° por debajo para imprimir sin soporte
-        translate([lx == ledge_w && x < cx ? 0 : (lx == ledge_w ? lx - 0.01 : 0), ly == ledge_w && y < outer_d / 2 ? 0 : (ly == ledge_w ? ly - 0.01 : 0), 0])
-            cube([lx == ledge_w ? 0.01 : lx, ly == ledge_w ? 0.01 : ly, 0.01]);
+    module ledge_x(x0, y0, ly, side) translate([x0, y0, H - ledge_h]) hull() {
+        translate([0, 0, ledge_h - 0.01]) cube([ledge_w, ly, 0.01]);
+        translate([side < 0 ? 0 : ledge_w - 0.01, 0, 0]) cube([0.01, ly, 0.01]);
     }
-    ledge(wall - 0.01, wall, ledge_w, outer_d - 2 * wall);                 // lateral izquierdo
-    ledge(outer_w - wall - ledge_w + 0.01, wall, ledge_w, outer_d - 2 * wall); // lateral derecho
-    for (x = [[wall, cx - drv_frame / 2 - 2], [cx + drv_frame / 2 + 2, outer_w - wall]])
-        ledge(x[0], wall - 0.01, x[1] - x[0], ledge_w);                     // delante, fuera del altavoz
-    for (x = [[wall, cx - pr_frame / 2 - 2], [cx + pr_frame / 2 + 2, outer_w - wall]])
-        ledge(x[0], outer_d - wall - ledge_w + 0.01, x[1] - x[0], ledge_w);  // detrás, fuera del radiador
+    module ledge_y(x0, x1) translate([x0, outer_d - wall - ledge_w, H - ledge_h]) hull() {
+        translate([0, 0, ledge_h - 0.01]) cube([x1 - x0, ledge_w, 0.01]);
+        translate([0, ledge_w - 0.01, 0]) cube([x1 - x0, 0.01, 0.01]);
+    }
+    y0 = front_y(H) + wall + 2;
+    intersection() {
+        union() {
+            ledge_x(wall - 0.01, y0, outer_d - wall - y0, -1);
+            ledge_x(outer_w - wall - ledge_w + 0.01, y0, outer_d - wall - y0, 1);
+            ledge_y(wall, cx - pr_frame / 2 - 2);
+            ledge_y(cx + pr_frame / 2 + 2, outer_w - wall);
+        }
+        component("body_inner");
+    }
 }
-// Insertos M3 en los rebordes laterales para atornillar la bandeja y la caja superior
-ledge_inserts_y = [20, 50, 95, 125];
+ledge_inserts_y = [40, 70, 100, 130];
 module ledge_insert_holes() for (x = [wall + ledge_w / 2, outer_w - wall - ledge_w / 2], y = ledge_inserts_y)
     translate([x, y, H - insert_depth]) cylinder(d = insert_hole, h = insert_depth + 0.01);
 
-module side_ribs() for (x = [wall - 0.01, outer_w - wall - side_rib_d + 0.01], y = side_ribs_y)
-    translate([x, y - side_rib_t / 2, wall - 0.01]) cube([side_rib_d, side_rib_t, H - ledge_h - wall]);
+module side_ribs() intersection() {
+    for (x = [wall - 0.01, outer_w - wall - side_rib_d + 0.01], y = side_ribs_y)
+        translate([x, y - side_rib_t / 2, wall - 0.01]) cube([side_rib_d, side_rib_t, H - ledge_h - wall]);
+    component("body_inner");
+}
 
-module foot_pockets() for (x = [foot_inset, outer_w - foot_inset], y = [foot_inset, outer_d - foot_inset])
+module foot_pockets() for (x = [foot_inset, outer_w - foot_inset], y = [foot_inset + 8, outer_d - foot_inset])
     translate([x, y, -0.01]) cylinder(d = foot_d + 0.4, h = foot_pocket + 0.01);
 
 module cubeta() {
     difference() {
-        union() {
-            difference() { shell_lower(); grooves(); }
-            mount_ring(false); mount_ring(true);
-            ledges(); side_ribs();
-        }
-        grille(grille_d_drv, false); grille(grille_d_pr, true);
-        inserts(false); inserts(true);
+        union() { shell_lower(); drv_ring(); pr_ring(); ledges(); side_ribs(); }
+        slats_blind();
+        slats_through();
+        drv_inserts();
+        pr_grille();
+        pr_inserts();
         ledge_insert_holes();
         foot_pockets();
     }
 }
 
-module pata() cylinder(d = foot_d, h = foot_h);   // TPU; se pega en el alojamiento de 1,5 mm
+module pata() cylinder(d = foot_d, h = foot_h);
 
 if (pieza == "cubeta") cubeta();
 if (pieza == "pata") pata();
-if (pieza == "montaje") { color([0.85, 0.85, 0.83]) cubeta(); component("speaker"); component("pr"); }
+if (pieza == "montaje") { color([0.12, 0.12, 0.13]) cubeta(); component("speaker"); component("pr"); }

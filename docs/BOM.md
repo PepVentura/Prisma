@@ -27,4 +27,8 @@
 | Mecánica | Insertos M3 de latón + tornillos M3 × 8 (altavoz, radiador y rebordes) | 16 | Necesario | Comprar ahora |
 | Acústica | Junta de espuma de 2 mm (marcos de altavoz y radiador) | 1 | Necesario | Comprar ahora |
 | Filamento | TPU (4 patas) | poco | Necesario | Al imprimir |
+| Electrónica | Pulsadores táctiles 6 × 6 × 5 mm (volumen −/+, encendido) | 3 | Necesario | Comprar ahora |
+| Electrónica | Interruptor deslizante SS12D00 (silencio de micrófonos) | 1 | Necesario | Comprar ahora |
+| Mecánica | Tornillos M2 × 6 autorroscantes (placa de botones) | 2 | Necesario | Comprar ahora |
+| Filamento | PLA negro mate (carcasa) | 1 kg | Necesario | Comprar ahora |
 | Mecánica | Inserts/tornillos M3 | varios | Necesario | Al cerrar diseño |
