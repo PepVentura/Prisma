@@ -1,16 +1,16 @@
 # Prisma
 Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", avatar 3D y audio integrado.
 
-**Estado actual: volumétrico v0.3.** Las cotas provisionales deben verificarse antes de fabricar piezas definitivas.
+**Estado actual: v0.5.** Capucha y cubeta imprimibles; faltan la bandeja y la caja superior de la cámara acústica. Las cotas del altavoz y del radiador se confirmarán con las piezas reales.
 
 ![Prisma v0.5](docs/img/prisma_v0_5_frontal.png)
 
 ## Hardware
 - Raspberry Pi 5 8 GB — confirmado
 - Waveshare 7inch HDMI LCD (C), 1024×600 — recibido
-- Dayton DMA105-4 — propuesto
-- Dayton DMA105-PR — propuesto
-- Dayton KABD-250 — propuesto
+- Dayton DMA105-4 — pedido
+- Dayton DMA105-PR — pedido
+- Dayton KABD-250 — pedido
 - DAC GY-PCM5102 (PCM5102A, I²S) — propuesto
 - ReSpeaker Lite USB (2 micrófonos con AEC) — propuesto
 - WS2812B, 8–12 LEDs — propuesto
@@ -24,7 +24,7 @@ Pantalla → Raspberry Pi 5 → DAC → KABD-250 → DMA105-4
                  │
                  ├── micrófonos
                  ├── LEDs
-                 └── cámara opcional
+                 └── cámara
 ```
 
 ## Diseño (v0.5)
