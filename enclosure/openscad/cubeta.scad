@@ -6,6 +6,8 @@
 //    pared delante del cono; el resto de la banda es decorativo y no abre la cámara).
 //  - Trasera con rejilla circular delante del DMA105-PR, también montado por dentro.
 //  - Rebordes para la bandeja (2a) y la caja superior (2b), refuerzos y patas de TPU.
+//    Delante, un reborde a todo lo ancho cierra el borde de la bandeja (D034); insertos M3:
+//    2 para la bandeja y 4 en los rebordes laterales para los tubos de la caja superior.
 //  - Franjas de luz en los dos cantos del frontal (D033): ranura de 4 mm + canal cerrado detrás
 //    (separado de la cámara acústica) para la tira WS2812B de 5 mm; abierto solo por arriba.
 //    Los insertos transparentes ("franja_inf") entran deslizando desde arriba.
@@ -102,9 +104,28 @@ module ledges() {
         component("body_inner");
     }
 }
-ledge_inserts_y = [40, 70, 100, 130];
-module ledge_insert_holes() for (x = [wall + ledge_w / 2, outer_w - wall - ledge_w / 2], y = ledge_inserts_y)
+module ledge_insert_holes() for (x = [box_screw_x, outer_w - box_screw_x], y = box_screw_y)
     translate([x, y, H - insert_depth]) cylinder(d = insert_hole, h = insert_depth + 0.01);
+
+// Reborde delantero (D034): apoyo y cierre del borde delantero de la bandeja, a todo lo ancho.
+// Sección en cuña (cara inferior a 45° respecto a la pared) para imprimir sin soportes.
+function inner_front_y(z) = z * tan(fa) + wall / cos(fa);
+module front_ledge() intersection() {
+    translate([wall - 0.01, 0, 0]) rotate([90, 0, 90]) linear_extrude(outer_w - 2 * wall + 0.02)
+        polygon([[inner_front_y(H) - 0.01, H], [inner_front_y(H) + ledge_w, H], [inner_front_y(H - 8), H - 8]]);
+    component("body_inner");
+}
+// Resaltes con inserto para los 2 tornillos de la bandeja
+tray_screw_y = H * tan(fa) + tray_screw_n / cos(fa);
+module tray_bosses() intersection() {
+    for (x = [tray_screw_x, outer_w - tray_screw_x]) hull() {
+        translate([x, tray_screw_y, H - 12]) cylinder(d = 9, h = 12);
+        translate([x - 4.5, inner_front_y(H - 26) - 1, H - 26]) cube([9, 1, 26]);
+    }
+    component("body_inner");
+}
+module tray_insert_holes() for (x = [tray_screw_x, outer_w - tray_screw_x])
+    translate([x, tray_screw_y, H - insert_depth]) cylinder(d = insert_hole, h = insert_depth + 0.01);
 
 module side_ribs() intersection() {
     for (x = [wall - 0.01, outer_w - wall - side_rib_d + 0.01], y = side_ribs_y)
@@ -117,7 +138,7 @@ module foot_pockets() for (x = [foot_inset, outer_w - foot_inset], y = [foot_ins
 
 module cubeta() {
     difference() {
-        union() { shell_lower(); drv_ring(); pr_ring(); ledges(); side_ribs();
+        union() { shell_lower(); drv_ring(); pr_ring(); ledges(); front_ledge(); tray_bosses(); side_ribs();
                   intersection() { component("edge_channel"); lower(); } }
         component("edge_void");
         component("edge_slot");
@@ -127,6 +148,7 @@ module cubeta() {
         pr_grille();
         pr_inserts();
         ledge_insert_holes();
+        tray_insert_holes();
         foot_pockets();
     }
 }

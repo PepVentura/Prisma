@@ -14,7 +14,7 @@ D = os.path.join(ROOT, "enclosure", "openscad")
 MODEL = "prisma_volumetrica_v0_5.scad"
 BED = (260, 260, 260)
 TOL = {"speaker": 5, "pr": 5, "chamber_walls": 60, "edge_leds": 0.5, "edge_inserts": 0.5}
-BOX_2B_L = 0.05     # paredes propias de la caja superior (pieza 2b), aún sin modelar
+BOX_2B_L = 0.07     # paredes de la caja superior (pieza 2b), medidas con tools/comprobar_camara.py
 
 
 def export(expr, out):

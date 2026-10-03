@@ -1,7 +1,7 @@
 # Prisma
 Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", avatar 3D y audio integrado.
 
-**Estado actual: v0.5.1.** Capucha y cubeta imprimibles; faltan la bandeja y la caja superior de la cámara acústica. Las cotas del altavoz y del radiador se confirmarán con las piezas reales.
+**Estado actual: v0.6.** Todas las piezas de la carcasa son imprimibles: cubeta, bandeja, caja superior, capucha y piezas pequeñas. Las cotas del altavoz y del radiador se confirmarán con las piezas reales.
 
 ![Prisma v0.5](docs/img/prisma_v0_5_frontal.png)
 
@@ -43,7 +43,7 @@ Medidas: **205 × 262 × 150 mm**. Cámara acústica de ≈3,1 L netos. Dentro d
 
 `tools/comprobar_volumetrico.py` mide el volumen neto de la cámara y comprueba interferencias entre componentes.
 
-Piezas imprimibles: la capucha (`enclosure/openscad/capucha.scad`, ver `docs/14_capucha.md`) y la cubeta acústica (`enclosure/openscad/cubeta.scad`, ver `docs/15_cubeta.md`).
+Piezas imprimibles: la capucha (`enclosure/openscad/capucha.scad`, ver `docs/14_capucha.md`), la cubeta acústica (`enclosure/openscad/cubeta.scad`, ver `docs/15_cubeta.md`) y la bandeja, la caja superior y la balda del KABD (`bandeja.scad`, `caja_superior.scad`, ver `docs/16_bandeja_caja.md`).
 
 `tools/simulacion_audio.py` simula la respuesta en graves del altavoz y el radiador en la cámara (ver `docs/05_audio.md`).
 

@@ -1,10 +1,10 @@
-# 15 — Cubeta acústica (pieza 1) · v0.3
+# 15 — Cubeta acústica (pieza 1) · v0.4
 
 ![Lateral](img/prisma_v0_5_lateral.png)
 
 Es la parte inferior de la carcasa (z 0–108 mm) y forma el bloque principal de la cámara acústica.
 - **Archivo:** `enclosure/openscad/cubeta.scad`.
-- **STL:** `stl/cubeta_v0_3.stl` (205 × 148 × 108 mm, unos 380 cm³) y `stl/pata_tpu_v0_2.stl` (× 4).
+- **STL:** `stl/cubeta_v0_4.stl` (205 × 148 × 108 mm, unos 390 cm³) y `stl/pata_tpu_v0_2.stl` (× 4).
 
 ## Banda de lamas y altavoz (D030, D031)
 - **Banda de lamas:** el frontal inclinado lleva una banda horizontal de lamas de 2,4 mm cada 4 mm, a todo lo ancho (22 mm de margen por lado).
@@ -17,7 +17,8 @@ Es la parte inferior de la carcasa (z 0–108 mm) y forma el bloque principal de
 ## Resto de la pieza
 | Elemento | Detalle |
 |---|---|
-| Rebordes interiores | En los laterales y en la trasera (fuera del radiador), con chaflán a 45°. Ahí apoyan la bandeja (2a) y la caja superior (2b). Llevan 8 insertos M3 |
+| Rebordes interiores | Delante (a todo lo ancho, D034), en los laterales y en la trasera (fuera del radiador), con chaflán a 45°. Ahí apoyan la bandeja (2a) y la caja superior (2b). 4 insertos M3 en los laterales para los tornillos de la caja |
+| Resaltes de la bandeja | 2, junto al frontal y a 25 mm de cada lateral, con inserto M3 |
 | Refuerzos | 2 nervios verticales por lateral |
 | Patas | 4 alojamientos de 16 mm para patas de TPU de 5 mm |
 | Franjas de luz (D033) | Ranura de 4 mm en cada canto del frontal y canal cerrado detrás para la tira WS2812B. El canal está separado de la cámara acústica y solo se abre por arriba, hacia la capucha. El inserto transparente `franja_inf_v0_1.stl` (2 iguales) entra deslizando desde arriba |
@@ -27,12 +28,12 @@ Es la parte inferior de la carcasa (z 0–108 mm) y forma el bloque principal de
 
 | Concepto | Litros |
 |---|---:|
-| Aire del volumétrico | 3,52 |
-| Ocupado por la cubeta (incluidos los canales de las franjas) | −0,11 |
+| Aire del volumétrico | 3,54 |
+| Ocupado por la cubeta (incluidos los canales de las franjas) | −0,13 |
 | Aire delante de los conos (fuera de la caja) | −0,15 |
 | Reserva (espuma, cableado) | −0,10 |
-| Paredes de la caja superior (2b) | −0,05 |
-| **Neto** | **≈ 3,11** |
+| Paredes de la caja superior (2b, medidas) | −0,07 |
+| **Neto** | **≈ 3,08** (ver `16_bandeja_caja.md`) |
 
 La simulación con 3,1 L ya está hecha (ver `05_audio.md`): radiador + 10 g, sintonía ≈ 44 Hz, ≈ 10 W útiles y ≈ 94 dB a 100 Hz.
 

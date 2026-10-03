@@ -10,6 +10,8 @@ Forma en L:
 - bloque inferior: ancho y fondo completos, de z = 3 a z = 111 mm;
 - bloque superior-trasero: desde y = 60 mm hasta la trasera, de z = 111 a z = 176 mm, detrás de la pantalla.
 
+**Actualización v0.6:** con la bandeja y la caja superior modeladas, el neto medido es de **3,08 L**. Simulación repetida: radiador + 10 g → 43,9 Hz, 10 W y 93,8 dB a 100 Hz. Sin cambios apreciables.
+
 **Actualización v0.5:** con el frontal inclinado (D031) el altavoz queda inclinado 11° hacia el usuario y el neto final es de unos **3,13 L**. Los resultados de la simulación no cambian.
 
 **Actualización v0.4:** con la cubeta real (anillos de montaje y aire delante de los conos), el neto final es de unos **3,1 L**. Repetida la simulación con 3,1 L, los resultados no cambian de forma apreciable. Ver `docs/15_cubeta.md`.

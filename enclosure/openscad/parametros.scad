@@ -130,6 +130,15 @@ edge_ch_n   = 9;                        // fondo del hueco (la tira queda a ≈6
 edge_ch_t   = 1.5;                      // paredes del canal
 edge_ins_clear = 0.15;                  // holgura por lado de los insertos
 
+// Bandeja (2a) y caja superior (2b) de la cámara acústica (D027, D034)
+tray_screw_x = 25;          // 2 tornillos M3 avellanados de la bandeja a insertos en la cubeta (x desde cada lateral)
+tray_screw_n = 10;          // ... a 10 mm detrás de la cara exterior del frontal, en z = chamber_low_top
+tray_front_gap = 1.0;       // holgura delantera: la capucha baja en vertical y su frontal inclinado avanza ≈1 mm en los últimos 5 mm
+box_t   = 2.5;              // paredes de la caja superior (PETG)
+box_gap = 0.3;              // holgura entre la caja y la capucha
+box_screw_y = [80, 135];    // 4 tubos con tornillos M3 × 80 desde el suelo de la bahía hasta los rebordes de la cubeta
+box_screw_x = wall + 3.5;   // centro de los rebordes laterales (6,5)
+
 // Uniones capucha ↔ bandeja delantera (D029)
 pin_block = 9; pin_d = 3; pin_len = 4; pin_hole_d = 3.3;
 pin_n = 19;     // centro de los pasadores detrás del frontal (y = front_y(z bandeja) + pin_n), tras el canal de las franjas

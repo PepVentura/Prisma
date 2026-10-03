@@ -68,8 +68,8 @@ module edge_slot() both_edges() on_front()
 module edge_cable_exit() both_edges() on_front()
     translate([edge_strip_xc - 2, edge_ch_n - 0.01, edge_strip_s1 - 8]) cube([4, edge_ch_t + 1, 6]);
 // inserto transparente: barra que rellena la ranura + pestaña en cuña (45°, imprimible) que se apoya por dentro
-module edge_insert_profile() {
-    a = edge_strip_w / 2 - edge_ins_clear; b = edge_ch_w / 2 - 0.3;
+module edge_insert_profile(c = edge_ins_clear) {
+    a = edge_strip_w / 2 - c; b = edge_ch_w / 2 - 0.3;
     polygon([[-a, 0], [a, 0], [a, wall], [b, wall + b - a], [b, wall + b - a + 0.4], [-b, wall + b - a + 0.4], [-b, wall + b - a], [-a, wall]]);
 }
 module edge_inserts() both_edges() on_front() translate([edge_strip_xc, 0, edge_strip_s0 + edge_ins_clear])
@@ -128,7 +128,7 @@ module pr_displacement() {
 module chamber_air() {
     difference() {
         intersection() { body(wall); chamber_region(); }
-        edge_channel_solid();
+        edge_channel_void();   // (las paredes del canal las descuenta la comprobación de la cubeta)
         speaker_displacement();
         pr_displacement();
     }

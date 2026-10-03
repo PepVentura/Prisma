@@ -33,4 +33,10 @@
 | Electrónica | Interruptor deslizante SS12D00 (silencio de micrófonos) | 1 | Necesario | Comprar ahora |
 | Mecánica | Tornillos M2 × 6 autorroscantes (placa de botones) | 2 | Necesario | Comprar ahora |
 | Filamento | PLA negro mate (carcasa) | 1 kg | Necesario | Comprar ahora |
-| Mecánica | Inserts/tornillos M3 | varios | Necesario | Al cerrar diseño |
+| Mecánica | Insertos M3 de latón (bandeja 2, caja 4 + 2 traseros, balda 4) | 12 | Necesario | Comprar ahora |
+| Mecánica | Tornillos M3 × 80 avellanados (caja superior) | 4 | Necesario | Comprar ahora |
+| Mecánica | Tornillos M3 × 10 avellanados (bandeja) | 2 | Necesario | Comprar ahora |
+| Mecánica | Tornillos M3 × 35 (balda del KABD) | 4 | Necesario | Comprar ahora |
+| Mecánica | Insertos M2.5 + separadores de nailon M2.5 × 3 + tornillos M2.5 × 6 (Pi 5) | 4 | Necesario | Comprar ahora |
+| Acústica | Silicona neutra (paso de cables del altavoz) | 1 | Necesario | Al montar |
+| Filamento | PETG (caja superior, unos 280 g) | 1 bobina | Disponible | — |
