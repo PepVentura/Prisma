@@ -1,4 +1,4 @@
-// Prisma — volumétrico v0.5 (D031: vuelta al boceto original)
+// Prisma — volumétrico v0.5 (D031: vuelta al boceto original; D033: franjas de luz)
 // Maqueta de distribución: envolvente, cámara acústica y componentes.
 //
 //  - Frontal inclinado 11° de arriba abajo, aristas redondeadas (r = 9 mm).
@@ -44,6 +44,39 @@ module cut() {
     else children();
 }
 
+pin_y_ = front_y(chamber_low_top + wall_int) + pin_n;   // pasadores capucha ↔ bandeja (D029)
+
+// ---------------------------------------------------------------------------
+// Franjas de luz de los cantos (D033). Marco local del frontal: x, n, s.
+// Cada franja: ranura en la pared + inserto transparente + canal cerrado detrás con la tira de LEDs.
+// ---------------------------------------------------------------------------
+module both_edges() { children(); translate([outer_w, 0, 0]) mirror([1, 0, 0]) children(); }
+// (entre z 108 y 113 no hay canal: ahí la bandeja, con su muesca, hace de pared)
+module edge_channel_solid() difference() {
+    intersection() {
+        both_edges() on_front() translate([-1, -1, edge_strip_s0 - 3 - edge_ch_t])
+            cube([edge_strip_xc + edge_ch_w / 2 + edge_ch_t + 1, edge_ch_n + edge_ch_t + 1, edge_strip_s1 - edge_strip_s0 + 6 + 2 * edge_ch_t]);
+        body(wall - 0.01);
+    }
+    translate([-1, -1, chamber_low_top]) cube([outer_w + 2, outer_d + 2, wall_int]);
+}
+module edge_channel_void() both_edges() on_front()
+    translate([edge_strip_xc - edge_ch_w / 2, wall - 0.01, edge_strip_s0 - 3]) cube([edge_ch_w, edge_ch_n - wall + 0.01, edge_strip_s1 - edge_strip_s0 + 6]);
+module edge_slot() both_edges() on_front()
+    translate([edge_strip_xc - edge_strip_w / 2, -1, edge_strip_s0]) cube([edge_strip_w, wall + 1.02, edge_strip_s1 - edge_strip_s0]);
+// salida de cables por la trasera del canal, en su extremo superior (a la bahía)
+module edge_cable_exit() both_edges() on_front()
+    translate([edge_strip_xc - 2, edge_ch_n - 0.01, edge_strip_s1 - 8]) cube([4, edge_ch_t + 1, 6]);
+// inserto transparente: barra que rellena la ranura + pestaña en cuña (45°, imprimible) que se apoya por dentro
+module edge_insert_profile() {
+    a = edge_strip_w / 2 - edge_ins_clear; b = edge_ch_w / 2 - 0.3;
+    polygon([[-a, 0], [a, 0], [a, wall], [b, wall + b - a], [b, wall + b - a + 0.4], [-b, wall + b - a + 0.4], [-b, wall + b - a], [-a, wall]]);
+}
+module edge_inserts() both_edges() on_front() translate([edge_strip_xc, 0, edge_strip_s0 + edge_ins_clear])
+    linear_extrude(edge_strip_s1 - edge_strip_s0 - 2 * edge_ins_clear) edge_insert_profile();
+module edge_leds() color([0.9, 0.9, 1]) cut() both_edges() on_front()
+    translate([edge_strip_xc - 2.5, edge_ch_n - 1.6, edge_strip_s0]) cube([5, 1.6, edge_strip_s1 - edge_strip_s0]);
+
 // ---------------------------------------------------------------------------
 // Cámara acústica
 // ---------------------------------------------------------------------------
@@ -66,8 +99,9 @@ module chamber_walls() {
                     difference() { translate([-1, -1, -1]) cube([outer_w + 2, outer_d + 2, outer_h]); behind(part_n + wall_int); }
                 }
                 for (x = [wall + pin_block / 2, outer_w - wall - pin_block / 2])
-                    translate([x, front_y(chamber_low_top + wall_int) + wall + pin_block / 2 + 1, chamber_low_top + wall_int - pin_len - 0.5])
+                    translate([x, pin_y_, chamber_low_top + wall_int - pin_len - 0.5])
                         cylinder(d = pin_hole_d, h = pin_len + 1);
+                edge_channel_void();   // muesca: la bandeja cierra el canal de las franjas entre z 108 y 113
             }
             // tabique inclinado
             intersection() {
@@ -94,6 +128,7 @@ module pr_displacement() {
 module chamber_air() {
     difference() {
         intersection() { body(wall); chamber_region(); }
+        edge_channel_solid();
         speaker_displacement();
         pr_displacement();
     }
@@ -213,13 +248,19 @@ module component(name) {
     else if (name == "chamber_walls") chamber_walls();
     else if (name == "chamber_air")   chamber_air();
     else if (name == "body_inner")    body(wall);
+    else if (name == "edge_channel")  edge_channel_solid();
+    else if (name == "edge_void")     edge_channel_void();
+    else if (name == "edge_slot")     edge_slot();
+    else if (name == "edge_exit")     edge_cable_exit();
+    else if (name == "edge_inserts")  edge_inserts();
+    else if (name == "edge_leds")     edge_leds();
     else if (name == "shell")         shell();
 }
 
 module scene() {
     if (show_screen) { screen(); screen_active(); screen_connectors(); }
     if (show_audio)  { speaker(); pr(); }
-    if (show_electronics) { pi5(); pi_port_clear(); kabd(); bracket(); buck(); dac(); dc_jack(); power_button(); top_buttons(); led_bar(); mics(); camera(); }
+    if (show_electronics) { pi5(); pi_port_clear(); kabd(); bracket(); buck(); dac(); dc_jack(); power_button(); top_buttons(); led_bar(); edge_leds(); mics(); camera(); }
     chamber_walls();
     if (show_chamber_air) color([0.2, 0.7, 1, 0.35]) cut() chamber_air();
     if (show_shell) color([0.15, 0.15, 0.17, 0.25]) cut() shell();

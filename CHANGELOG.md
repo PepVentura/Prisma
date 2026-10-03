@@ -1,4 +1,11 @@
 # Changelog
+## v0.5.1
+- Franjas de luz en los dos cantos del frontal (D033): insertos impresos en filamento transparente y tiras WS2812B de 5 mm detrás, en un canal cerrado separado de la cámara acústica. El color depende del estado del asistente (tabla en `docs/11_software.md`).
+- Difusor de la barra LED en transparente.
+- Capucha v0.3 y cubeta v0.3 con las ranuras y los canales; nuevos insertos `franja_inf_v0_1.stl` y `franja_sup_v0_1.stl`.
+- Pasadores capucha ↔ bandeja 19 mm por detrás del frontal para dejar sitio al canal; la bandeja lleva una muesca que cierra el canal.
+- Consumo de los LEDs limitado por software a 0,6 A. Cámara: ≈3,11 L netos.
+
 ## v0.5
 - Vuelta al boceto original (D031): frontal inclinado 11° continuo, aristas redondeadas, banda de lamas a todo lo ancho bajo la pantalla, laterales lisos y acabado negro mate. Envolvente 205 × 262 × 150 mm.
 - Nuevo volumétrico `prisma_volumetrica_v0_5.scad`: altavoz en el frontal inclinado; parte alta de la cámara acústica tras un tabique paralelo al frontal; ≈3,13 L netos.

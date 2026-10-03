@@ -1,4 +1,4 @@
-// Prisma — CUBETA ACÚSTICA v0.2 (pieza 1 de la carcasa) — diseño del boceto original (D031)
+// Prisma — CUBETA ACÚSTICA v0.3 (pieza 1 de la carcasa) — diseño del boceto original (D031)
 //
 // Parte inferior de la carcasa (z 0–108 mm): bloque inferior de la cámara acústica.
 //  - Frontal inclinado 11° con la banda de lamas a todo lo ancho; detrás, el DMA105-4
@@ -6,14 +6,18 @@
 //    pared delante del cono; el resto de la banda es decorativo y no abre la cámara).
 //  - Trasera con rejilla circular delante del DMA105-PR, también montado por dentro.
 //  - Rebordes para la bandeja (2a) y la caja superior (2b), refuerzos y patas de TPU.
+//  - Franjas de luz en los dos cantos del frontal (D033): ranura de 4 mm + canal cerrado detrás
+//    (separado de la cámara acústica) para la tira WS2812B de 5 mm; abierto solo por arriba.
+//    Los insertos transparentes ("franja_inf") entran deslizando desde arriba.
 //
 // Material: PLA negro mate. Impresión: de pie, suelo en la cama, sin soportes.
+// Insertos: PETG o PLA natural/transparente, con la cara vista sobre la cama.
 
 use <prisma_volumetrica_v0_5.scad>;
 include <parametros.scad>;
 $fn = 48;
 
-pieza = "cubeta";   // "cubeta" | "pata" | "montaje"
+pieza = "cubeta";   // "cubeta" | "pata" | "franja_inf" | "montaje"
 
 H = chamber_low_top;             // 108
 cx = outer_w / 2;
@@ -113,7 +117,10 @@ module foot_pockets() for (x = [foot_inset, outer_w - foot_inset], y = [foot_ins
 
 module cubeta() {
     difference() {
-        union() { shell_lower(); drv_ring(); pr_ring(); ledges(); side_ribs(); }
+        union() { shell_lower(); drv_ring(); pr_ring(); ledges(); side_ribs();
+                  intersection() { component("edge_channel"); lower(); } }
+        component("edge_void");
+        component("edge_slot");
         slats_blind();
         slats_through();
         drv_inserts();
@@ -126,6 +133,13 @@ module cubeta() {
 
 module pata() cylinder(d = foot_d, h = foot_h);
 
+// Inserto transparente inferior (imprimir 2): tramo de la franja hasta la unión, tumbado con la cara vista abajo
+module franja_inf() for (i = [0, 1]) translate([0, i * 10, 0])
+    multmatrix([[0, 0, 1, -edge_strip_s0], [1, 0, 0, -edge_strip_xc], [0, 1, 0, 0]]) rotate([fa, 0, 0])
+        intersection() { component("edge_inserts"); translate([-1, -50, -1]) cube([outer_w / 2, outer_d + 100, H + 1]); }
+
 if (pieza == "cubeta") cubeta();
 if (pieza == "pata") pata();
-if (pieza == "montaje") { color([0.12, 0.12, 0.13]) cubeta(); component("speaker"); component("pr"); }
+if (pieza == "franja_inf") franja_inf();
+if (pieza == "montaje") { color([0.12, 0.12, 0.13]) cubeta(); component("speaker"); component("pr");
+    color([0.85, 0.95, 1, 0.6]) intersection() { component("edge_inserts"); lower(); } }

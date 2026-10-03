@@ -1,7 +1,7 @@
 # Prisma
 Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", avatar 3D y audio integrado.
 
-**Estado actual: v0.5.** Capucha y cubeta imprimibles; faltan la bandeja y la caja superior de la cámara acústica. Las cotas del altavoz y del radiador se confirmarán con las piezas reales.
+**Estado actual: v0.5.1.** Capucha y cubeta imprimibles; faltan la bandeja y la caja superior de la cámara acústica. Las cotas del altavoz y del radiador se confirmarán con las piezas reales.
 
 ![Prisma v0.5](docs/img/prisma_v0_5_frontal.png)
 
@@ -13,7 +13,7 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 - Dayton KABD-250 — pedido
 - DAC GY-PCM5102 (PCM5102A, I²S) — propuesto
 - ReSpeaker Lite USB (2 micrófonos con AEC) — propuesto
-- WS2812B, 8–12 LEDs — propuesto
+- WS2812B: barra de 8–12 LEDs y dos franjas de tira de 5 mm en los cantos (D033) — propuesto
 - Cámara OV5647 5 MP, sobre la pantalla — disponible
 - Fuente Mean Well GST60A24-P1J (24 V, 60 W) — propuesta
 - Conversor Pololu D36V50F5 (24→5 V, 5,5 A) — propuesto
@@ -32,6 +32,7 @@ Frontal inclinado de arriba abajo, aristas redondeadas y negro mate, como el boc
 - **Arriba:** cámara con tapa deslizante y micrófonos en el techo.
 - **Centro:** pantalla de 7" en horizontal.
 - **Debajo:** franja LED y banda de lamas con el altavoz detrás.
+- **Cantos del frontal:** dos franjas transparentes iluminadas por LEDs; el color indica el estado (escucha, pensando, silencio…).
 - **Techo:** volumen y silencio de micrófonos.
 - **Trasera:** ventilación, alimentación, botón de encendido y radiador pasivo.
 

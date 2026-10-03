@@ -1,16 +1,20 @@
-// Prisma — CAPUCHA v0.2 (pieza 3 de la carcasa) — diseño del boceto original (D031)
+// Prisma — CAPUCHA v0.3 (pieza 3 de la carcasa) — diseño del boceto original (D031)
 //
 // Todo lo que queda por encima de la cubeta (z > 108 mm): frontal inclinado con la franja
 // LED, la pantalla y la cámara; laterales lisos con aristas redondeadas; trasera con
 // perforado de ventilación, conector DC y botón de encendido; techo con micrófonos,
 // botones de volumen e interruptor de silencio.
 //
+// Franjas de luz (D033): ranura de 4 mm en los cantos del frontal + canal detrás para la tira
+// WS2812B, con salida de cables a la bahía por arriba; el inserto "franja_sup" entra por abajo.
+//
 // Material: PLA negro mate (D027). Impresión: BOCA ABAJO, con el techo sobre la cama.
 // Medidas: 205 × 150 × 154 mm (cabe en la Kobra X).
 //
 // Piezas en este archivo (variable `pieza`):
 //   "capucha", "capucha_impresion" (ya girada), "difusor", "corredera",
-//   "capuchon" (botón de 8 mm), "deslizador" (mando del silencio), "placa_botones", "montaje"
+//   "capuchon" (botón de 8 mm), "deslizador" (mando del silencio), "placa_botones",
+//   "franja_sup" (inserto transparente de las franjas, imprimir 2), "montaje"
 
 use <prisma_volumetrica_v0_5.scad>;
 include <parametros.scad>;
@@ -61,7 +65,7 @@ screen_holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz]) [hole_x
 cam_holes = [for (dx = [-cam_hole_dx / 2, cam_hole_dx / 2], dz = [0, -cam_hole_dz]) [cam_x + dx, cam_lz + dz]];
 mic_cx = [outer_w / 2 - mic_spacing / 2, outer_w / 2 + mic_spacing / 2];
 mic_cy = mic_y + mic_d / 2;
-pin_y = (pin_z) * tan(fa) + wall + pin_block / 2 + 1;
+pin_y = pin_z * tan(fa) + pin_n;
 
 module on_front_() rotate([-fa, 0, 0]) children();
 // marco local de la pantalla (cara interior del frontal, borde inferior de las pestañas)
@@ -167,6 +171,8 @@ module capucha() {
                 for (h = cam_holes) screen_boss(h[0], h[1], cam_boss_d, cam_standoff, cam_pilot_d, 5);
             }
             intersection() { union() { mic_rails(); front_pin_blocks(); top_button_bosses(); power_bosses(); } component("body_inner"); }
+            // canal de la franja: empieza sobre la bandeja, que lo cierra entre z 108 y 113
+            intersection() { component("edge_channel"); translate([-1, -1, pin_z]) cube([outer_w + 2, outer_d + 2, outer_h]); }
             for (x = [wall, outer_w - wall - pin_block])
                 translate([x + pin_block / 2, pin_y, pin_z - pin_len]) cylinder(d = pin_d, h = pin_len + 0.01);
         }
@@ -174,6 +180,9 @@ module capucha() {
         screen_window();
         on_screen() { translate([cam_x, 1, cam_lz]) rotate([90, 0, 0]) cylinder(d = cam_lens_d, h = wall + 2); guide(); }
         led_slot();
+        component("edge_void");
+        component("edge_slot");
+        component("edge_exit");
         mic_holes();
         top_button_holes();
         power_hole();
@@ -186,7 +195,7 @@ module capucha() {
 // ---------------------------------------------------------------------------
 // Piezas pequeñas
 // ---------------------------------------------------------------------------
-module difusor() {   // translúcido: rellena la ranura; la pestaña se pega por dentro
+module difusor() {   // transparente (D033): rellena la ranura; la pestaña se pega por dentro
     cube([led_slot_w - 0.3, led_slot_h - 0.3, wall]);
     translate([-diff_flange, -diff_flange, wall]) cube([led_slot_w - 0.3 + 2 * diff_flange, led_slot_h - 0.3 + 2 * diff_flange, diff_flange_t]);
 }
@@ -233,7 +242,12 @@ if (pieza == "corredera") corredera();
 if (pieza == "capuchon") { capuchon(0); translate([14, 0, 0]) capuchon(1); translate([28, 0, 0]) capuchon(2); }
 if (pieza == "deslizador") deslizador();
 if (pieza == "placa_botones") placa_botones();
+// Inserto transparente superior (imprimir 2), tumbado con la cara vista sobre la cama
+if (pieza == "franja_sup") for (i = [0, 1]) translate([edge_strip_s0 - split_z / cos(fa), i * 10, 0])
+    multmatrix([[0, 0, 1, -edge_strip_s0], [1, 0, 0, -edge_strip_xc], [0, 1, 0, 0]]) rotate([fa, 0, 0])
+        intersection() { component("edge_inserts"); translate([-1, -50, split_z]) cube([outer_w / 2, outer_d + 100, outer_h]); }
 if (pieza == "montaje") {
     color([0.12, 0.12, 0.13]) capucha();
     component("screen"); component("camera"); component("mics"); component("led_bar");
+    color([0.85, 0.95, 1, 0.6]) intersection() { component("edge_inserts"); upper(); }
 }

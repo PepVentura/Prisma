@@ -14,7 +14,7 @@ D = os.path.join(ROOT, "enclosure", "openscad")
 MODEL = "prisma_volumetrica_v0_5.scad"
 BED = (260, 260, 260)
 COMPONENTS = ["screen", "screen_conn", "pi_port_clear", "pi5", "kabd", "buck", "dac", "bracket",
-              "led_bar", "mics", "camera", "speaker", "pr", "chamber_walls"]
+              "led_bar", "edge_leds", "edge_inserts", "mics", "camera", "speaker", "pr", "chamber_walls"]
 # contactos buscados: los resaltes tocan el PCB de la pantalla y la placa de la cámara;
 # los tabiques del volumétrico se solapan 0,01 mm con la pared exterior
 TOLERANCE_MM3 = {"screen": 5, "camera": 5, "chamber_walls": 60}

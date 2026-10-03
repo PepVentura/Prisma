@@ -9,7 +9,9 @@
 | Audio | GY-PCM5102 (DAC I²S PCM5102A) | 1 | Propuesto | Al cerrar diseño |
 | Micrófonos | ReSpeaker Lite USB (2 micrófonos, XU316) | 1 | Propuesto | Al cerrar diseño |
 | Cámara | OV5647 5 MP (compatible v1.3) + cable 22→15 pines para Pi 5 | 1 | Disponible | Comprobar el cable |
-| LEDs | WS2812B | 8–12 | Propuesto | Al cerrar diseño |
+| LEDs | Barra WS2812B (bajo la pantalla) | 8–12 | Propuesto | Al cerrar diseño |
+| LEDs | Tira WS2812B de 5 mm, 160 LED/m, 5 V (mejor la versión COB/FCOB: luz continua sin puntos) | 1 m (se usan ≈0,95 m) | Propuesto | Al cerrar diseño |
+| LEDs | Conectores JST-GH o JST-SH de 3 pines (unión cubeta ↔ capucha de cada franja) | 2 | Propuesto | Al cerrar diseño |
 | Alimentación | Mean Well GST60A24-P1J (24 V, 60 W, externa) | 1 | Propuesto | Al cerrar diseño |
 | Alimentación | Conector DC de panel 24 V | 1 | En estudio | Al cerrar diseño |
 | Alimentación | Pololu D36V50F5 (24 → 5 V, 5,5 A) | 1 | Propuesto | Al cerrar diseño |
@@ -23,7 +25,7 @@
 | Cableado | Cable USB-C corto solo alimentación (Pololu → Pi 5) | 1 | Necesario | Al cerrar diseño |
 | Mecánica | Tornillos M2 × 5 autorroscantes (cámara) | 4 | Necesario | Comprar ahora |
 | Mecánica | Tornillos M3 avellanados + insertos M3 (capucha) | 2 | Necesario | Comprar ahora |
-| Filamento | PLA o PETG natural/translúcido (difusor LED) | poco | Necesario | Comprar ahora |
+| Filamento | PETG o PLA transparente (difusor de la barra y franjas, D033) | poco | Necesario | Comprar ahora |
 | Mecánica | Insertos M3 de latón + tornillos M3 × 8 (altavoz, radiador y rebordes) | 16 | Necesario | Comprar ahora |
 | Acústica | Junta de espuma de 2 mm (marcos de altavoz y radiador) | 1 | Necesario | Comprar ahora |
 | Filamento | TPU (4 patas) | poco | Necesario | Al imprimir |

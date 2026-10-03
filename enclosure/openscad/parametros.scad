@@ -119,8 +119,20 @@ mic_spacing = 64;                      // verificar en la placa
 mic_y = 97;
 mic_rail_gap = 1.8;
 
+// Franjas de luz en los cantos del frontal (D033): insertos transparentes en una ranura de la
+// pared y, detrás, un canal cerrado con una tira WS2812B de 5 mm que da el color según el estado
+edge_strip_w  = 4;                      // ancho visible de la franja
+edge_strip_xc = corner_r + 1.5 + edge_strip_w / 2;   // centro, desde cada lateral (12,5): justo dentro del redondeo
+edge_strip_s0 = grille_s0;              // empieza a la altura de la banda de lamas
+edge_strip_s1 = 248;                    // y acaba antes del redondeo del techo
+edge_ch_w   = 7;                        // hueco del canal (tira de 5 mm + holgura)
+edge_ch_n   = 9;                        // fondo del hueco (la tira queda a ≈6 mm de la cara exterior)
+edge_ch_t   = 1.5;                      // paredes del canal
+edge_ins_clear = 0.15;                  // holgura por lado de los insertos
+
 // Uniones capucha ↔ bandeja delantera (D029)
 pin_block = 9; pin_d = 3; pin_len = 4; pin_hole_d = 3.3;
+pin_n = 19;     // centro de los pasadores detrás del frontal (y = front_y(z bandeja) + pin_n), tras el canal de las franjas
 
 // Cámara (D025): OV5647 sobre la pantalla
 cam_w = 25; cam_h = 24; cam_t = 9;

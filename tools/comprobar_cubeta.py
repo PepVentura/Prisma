@@ -13,7 +13,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "enclosure", "openscad")
 MODEL = "prisma_volumetrica_v0_5.scad"
 BED = (260, 260, 260)
-TOL = {"speaker": 5, "pr": 5, "chamber_walls": 60}
+TOL = {"speaker": 5, "pr": 5, "chamber_walls": 60, "edge_leds": 0.5, "edge_inserts": 0.5}
 BOX_2B_L = 0.05     # paredes propias de la caja superior (pieza 2b), aún sin modelar
 
 
@@ -39,7 +39,7 @@ def main():
           f"{m.extents[0]:.0f} × {m.extents[1]:.0f} × {m.extents[2]:.0f} mm")
     if not m.is_watertight: problems.append("la malla no está cerrada")
     if any(e > b for e, b in zip(sorted(m.extents), sorted(BED))): problems.append("no cabe en la cama")
-    for c in ["speaker", "pr", "chamber_walls"]:
+    for c in ["speaker", "pr", "chamber_walls", "edge_leds", "edge_inserts"]:
         comp = export(f'component("{c}");', os.path.join(tmp, c + ".stl"))
         v = inter(m, comp)
         if v > TOL[c]: problems.append(f"cubeta ↔ {c}: {v:.0f} mm³")
