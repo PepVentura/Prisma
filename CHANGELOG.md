@@ -1,4 +1,10 @@
 # Changelog
+## v0.6
+- Bandeja (2a) y caja superior (2b) de la cámara acústica, y balda del KABD-250 (D034): `bandeja_v0_1.stl`, `caja_superior_v0_1.stl`, `balda_kabd_v0_1.stl`. Ver `docs/16_bandeja_caja.md`.
+- Cubeta v0.4: reborde delantero para la bandeja, 2 resaltes con inserto y los insertos de los rebordes laterales en y = 80 y 135 mm para los tornillos de la caja.
+- Pieza de prueba de las franjas (`prueba_franja_pared_v0_1.stl` + `prueba_franja_insertos_v0_1.stl`, 3 holguras).
+- Nuevo `tools/comprobar_camara.py`. Volumen neto medido con todas las piezas: 3,08 L (simulación sin cambios apreciables).
+
 ## v0.5.1
 - Franjas de luz en los dos cantos del frontal (D033): insertos impresos en filamento transparente y tiras WS2812B de 5 mm detrás, en un canal cerrado separado de la cámara acústica. El color depende del estado del asistente (tabla en `docs/11_software.md`).
 - Difusor de la barra LED en transparente.

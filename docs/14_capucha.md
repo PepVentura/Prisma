@@ -10,8 +10,8 @@ Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 m
 | Pieza | Medidas | Material | Orientación |
 |---|---|---|---|
 | 1. Cubeta acústica | 205 × 148 × 108 mm | PLA negro mate | De pie |
-| 2a. Bandeja delantera | en diseño | PLA | Plana |
-| 2b. Caja superior de la cámara (suelo de la electrónica) | en diseño | PETG | Boca abajo |
+| 2a. Bandeja delantera | 198 × 28 × 5 mm | PLA | Plana (ver `16_bandeja_caja.md`) |
+| 2b. Caja superior de la cámara (suelo de la electrónica) | 198 × 98 × 79 mm | PETG | Boca abajo (ver `16_bandeja_caja.md`) |
 | **3. Capucha** | **205 × 129 × 154 mm** | **PLA negro mate** | **Boca abajo (techo en la cama)** |
 
 ## Diseño (D031)
