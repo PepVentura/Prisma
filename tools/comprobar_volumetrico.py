@@ -22,7 +22,7 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
-    ROOT, "enclosure", "openscad", "prisma_volumetrica_v0_3.scad")
+    ROOT, "enclosure", "openscad", "prisma_volumetrica_v0_5.scad")
 MODEL = os.path.abspath(MODEL)
 
 TARGET_L = 3.5
@@ -30,9 +30,9 @@ BRACING_L = 0.10
 
 # Componentes sólidos que no deben tocarse entre sí
 COMPONENTS = ["screen", "screen_conn", "pi_port_clear", "speaker", "pr", "pi5",
-              "kabd", "buck", "dac", "bracket", "dc_jack", "led_bar", "mics", "camera"]
+              "kabd", "buck", "dac", "bracket", "dc_jack", "led_bar", "mics", "camera", "power_button", "top_buttons", "edge_channel"]
 # Componentes que atraviesan la pared o la cámara a propósito
-MAY_CROSS_SHELL = {"speaker", "pr", "dc_jack", "camera"}
+MAY_CROSS_SHELL = {"speaker", "pr", "dc_jack", "camera", "edge_channel"}
 MAY_ENTER_CHAMBER = {"speaker", "pr"}
 # Pares que se solapan a propósito
 ALLOWED_PAIRS = set()

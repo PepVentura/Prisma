@@ -6,8 +6,10 @@ Audio;Dayton DMA105-PR;1;Propuesto;Al cerrar diseño
 Amplificación;Dayton KABD-250;1;Propuesto;Al cerrar diseño
 Audio;GY-PCM5102 (DAC I²S PCM5102A);1;Propuesto;Al cerrar diseño
 Micrófonos;ReSpeaker Lite USB (2 micrófonos, XU316);1;Propuesto;Al cerrar diseño
-Cámara;Raspberry Pi Camera Module 3 (normal o gran angular) + cable Pi 5 22→15 pines;1;Propuesto;Al cerrar diseño
-LEDs;WS2812B;8–12;Propuesto;Al cerrar diseño
+Cámara;OV5647 5 MP (compatible v1.3) + cable 22→15 pines para Pi 5;1;Disponible;Comprobar el cable
+LEDs;Barra WS2812B (bajo la pantalla);8–12;Propuesto;Al cerrar diseño
+LEDs;Tira WS2812B de 5 mm, 160 LED/m, 5 V (mejor COB/FCOB);1 m;Propuesto;Al cerrar diseño
+LEDs;Conectores JST-GH o JST-SH de 3 pines (unión de las franjas);2;Propuesto;Al cerrar diseño
 Alimentación;Mean Well GST60A24-P1J (24 V, 60 W, externa);1;Propuesto;Al cerrar diseño
 Alimentación;Conector DC de panel 24 V;1;En estudio;Al cerrar diseño
 Alimentación;Pololu D36V50F5 (24 → 5 V, 5,5 A);1;Propuesto;Al cerrar diseño
@@ -19,4 +21,14 @@ Cableado;Cable micro-USB acodado → USB-A (táctil);1;Necesario;Al cerrar dise�
 Mecánica;Tornillos M2.5 × 6 autorroscantes (pantalla);4;Necesario;Comprar ahora
 Electrónica;Adaptador de nivel SN74AHCT125 + resistencia 330 Ω + condensador 1000 µF (LEDs);1;Propuesto;Al cerrar diseño
 Cableado;Cable USB-C corto solo alimentación (Pololu → Pi 5);1;Necesario;Al cerrar diseño
+Mecánica;Tornillos M2 × 5 autorroscantes (cámara);4;Necesario;Comprar ahora
+Mecánica;Tornillos M3 avellanados + insertos M3 (capucha);2;Necesario;Comprar ahora
+Filamento;PETG o PLA transparente (difusor de la barra y franjas);poco;Necesario;Comprar ahora
+Mecánica;Insertos M3 de latón + tornillos M3 × 8 (altavoz, radiador y rebordes);16;Necesario;Comprar ahora
+Acústica;Junta de espuma de 2 mm (marcos de altavoz y radiador);1;Necesario;Comprar ahora
+Filamento;TPU (4 patas);poco;Necesario;Al imprimir
+Electrónica;Pulsadores táctiles 6 × 6 × 5 mm (volumen −/+, encendido);3;Necesario;Comprar ahora
+Electrónica;Interruptor deslizante SS12D00 (silencio de micrófonos);1;Necesario;Comprar ahora
+Mecánica;Tornillos M2 × 6 autorroscantes (placa de botones);2;Necesario;Comprar ahora
+Filamento;PLA negro mate (carcasa);1 kg;Necesario;Comprar ahora
 Mecánica;Inserts/tornillos M3;varios;Necesario;Al cerrar diseño

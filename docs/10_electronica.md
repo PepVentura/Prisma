@@ -12,8 +12,8 @@ Fuente 24 V externa (GST60A24, 60 W)
           │      ├─ HDMI + USB ──► pantalla Waveshare 7"
           │      ├─ USB ──► ReSpeaker Lite (micrófonos)
           │      ├─ CSI ──► Camera Module 3 (sobre la pantalla)
-          │      └─ SPI (GPIO10) ──► 74AHCT125 ──► barra WS2812B
-          └─► alimentación de la barra WS2812B
+          │      └─ SPI (GPIO10) ──► 74AHCT125 ──► barra ──► franja izq. ──► franja der. (WS2812B)
+          └─► alimentación de los LEDs (inyectada en la barra y en cada franja)
 ```
 
 ## Selección
@@ -23,8 +23,8 @@ Fuente 24 V externa (GST60A24, 60 W)
 | Micrófonos | **ReSpeaker Lite USB** (XMOS XU316, 2 micrófonos) | Cancelación de eco, supresión de ruido y ganancia automática por hardware, por USB. El XVF3800 (4 micrófonos) es mejor, pero su placa de 99 mm no cabe bajo el techo con la pantalla inclinada delante | 86 × 35 mm |
 | Conversor 24 → 5 V | **Pololu D36V50F5** | 5 V, 5,5 A, entrada de 5,5 a 50 V, 80–95 % de rendimiento, muy compacto | 25,4 × 25,4 × 9,5 mm |
 | Fuente | **Mean Well GST60A24-P1J** | 24 V, 2,5 A, 60 W, de sobremesa, clavija 5,5 × 2,1 mm. Da un 60 % de margen sobre el pico calculado | externa |
-| Cámara | **Raspberry Pi Camera Module 3** (normal o gran angular) | Oficial, autofoco, 12 MP y HDR; se conecta al puerto CSI de la Pi 5 con el cable específico para la Pi 5 (22 → 15 pines) | 25 × 24 × 11,5 mm (12,4 la gran angular) |
-| LEDs | Barra WS2812B (8–12) + **SN74AHCT125** | La Pi da 3,3 V y los WS2812B esperan 5 V en datos: el 74AHCT125 adapta el nivel | — |
+| Cámara | **OV5647 5 MP** (compatible con la cámara oficial v1.3; ya la tienes) | Foco fijo, 1080p. Suficiente para detectar caras y videollamadas. La Camera Module 3 (autofoco, 12 MP) tiene la misma placa y encaja en el mismo soporte | 25 × 24 mm, unos 9 mm de fondo |
+| LEDs | Barra WS2812B (8–12) + 2 franjas de tira WS2812B de 5 mm a 160 LED/m (≈36 LEDs cada una, D033) + **SN74AHCT125** | La Pi da 3,3 V y los WS2812B esperan 5 V en datos: el 74AHCT125 adapta el nivel | — |
 
 ## Presupuesto de consumo (estimación)
 **Rama de 5 V**
@@ -35,16 +35,16 @@ Fuente 24 V externa (GST60A24, 60 W)
 | Pantalla Waveshare 7" | 3 W |
 | ReSpeaker Lite | 0,5 W |
 | DAC | < 0,1 W |
-| 12 × WS2812B, brillo limitado al 40 % | 1,5 W (3,6 W al 100 %) |
-| **Total** | **≈ 20 W → 4 A a 5 V** (conversor de 5,5 A: margen de 1,5 A) |
+| ≈84 × WS2812B (barra + franjas), corriente limitada por software a 0,6 A | 3 W (≈25 W si se encendiesen todos en blanco al 100 %: no permitido) |
+| **Total** | **≈ 21,5 W → 4,3 A a 5 V** (conversor de 5,5 A: margen de 1,2 A) |
 
 **Rama de 24 V**
 
 | Consumidor | Pico estimado |
 |---|---:|
-| Conversor (20 W / 0,9) | 22 W |
+| Conversor (21,5 W / 0,9) | 24 W |
 | KABD-250, un canal a ≈10 W (límite del Xmax, ver `05_audio.md`) | 13 W |
-| **Total** | **≈ 35 W** (fuente de 60 W) |
+| **Total** | **≈ 37 W** (fuente de 60 W) |
 
 El KABD-250 recomienda 4 A porque está pensado para 2 × 50 W. Aquí solo se usa un canal y el altavoz no admite más de unos 10 W en graves, así que 2,5 A sobran.
 
@@ -70,7 +70,18 @@ El KABD-250 recomienda 4 A porque está pensado para 2 × 50 W. Aquí solo se us
 ### Barra WS2812B
 - Datos: GPIO10 (SPI0 MOSI, pin 19) → 74AHCT125 alimentado a 5 V → resistencia de 330 Ω → DIN del primer LED.
 - Condensador de 1000 µF entre 5 V y GND en la entrada de la barra.
+- Franjas (D033): cada una son dos tramos, uno en la cubeta (≈15 LEDs) y otro en la capucha (≈21 LEDs), unidos en la junta con un conector JST de 3 pines para poder abrir la carcasa. Los datos bajan por la franja izquierda y vuelven a subir por un hilo fino dentro del canal hasta la franja derecha. Los cables salen a la bahía por el extremo superior de cada canal.
+- Alimentación: 5 V y GND inyectados en la entrada de la barra y en lo alto de cada franja, con cable de 0,5 mm².
+- **Límite de corriente obligatorio en el software:** 0,6 A en total para los LEDs (por ejemplo, brillo global máximo de 0,25 y nunca blanco a tope en todos). Sin ese límite podrían pedir más de 4 A y tumbar la Pi.
 - La librería clásica `rpi_ws281x` no funciona en la Pi 5 (su chip de E/S, el RP1, es distinto). Se controla por SPI, por ejemplo con `adafruit-circuitpython-neopixel-spi`.
+
+## Botones (D032)
+| Botón | Conexión |
+|---|---|
+| Volumen − | Pulsador 6 × 6 entre GPIO5 (pin 29) y GND, con *pull-up* interno |
+| Volumen + | Pulsador 6 × 6 entre GPIO6 (pin 31) y GND, con *pull-up* interno |
+| Silencio de micrófonos | Interruptor SS12D00 en serie con el cable rojo (+5 V) del USB del ReSpeaker Lite: los micrófonos se apagan físicamente. Opcional: el otro polo del SS12D00 a GPIO13 (pin 33) para que el software sepa el estado |
+| Encendido | Pulsador al conector `PWR BUT` (J2) de la Pi 5: pulsación corta apaga bien, otra la enciende |
 
 ## Audio: filtro y cancelación de eco
 - **Filtro paso alto de 40 Hz (D022) y ecualización:** en la Pi, con CamillaDSP o un filtro de PipeWire. Así no hace falta el programador DSPB-ICP1 para el DSP del KABD-250, que se queda con sus ajustes por defecto y los potenciómetros.
@@ -93,7 +104,7 @@ Opciones descartadas:
 - comparte la inclinación de 18° de la pantalla, así que apunta ligeramente hacia arriba, hacia la cara de quien está sentado a la mesa;
 - está lo más lejos posible del altavoz.
 
-**Coste:** la franja libre sobre el cristal era de 12 mm y la placa mide 24 mm. La carcasa crece **16 mm de alto (250 → 266 mm)**. La cámara acústica no cambia (≈3,3 L).
+**Espacio:** en v0.5 la cámara cabe en el bisel superior del frontal inclinado; la altura total (262 mm) sale de apilar altavoz, bandeja, pantalla y cámara.
 
 **Montaje:** la placa se atornilla por detrás del frontal (taladros M2 de la cámara) con el objetivo en un agujero de 8 mm. El cable plano baja por detrás de la pantalla hasta el conector CSI de la Pi.
 

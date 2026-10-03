@@ -1,7 +1,9 @@
-# 08 — Distribución (v0.3)
-Envolvente de trabajo: **205 × 266 × 145 mm** (ancho × alto × fondo). Hasta v0.3.2 medía 250 mm de alto; los 16 mm extra son para la cámara (D025).
+# 08 — Distribución (v0.5)
 
-![Vista frontal v0.3](img/v0_3_iso_frontal.png)
+> v0.5 cambia el perfil (D031): las tablas de abajo describen las zonas, que se mantienen. En el frontal, de abajo arriba van la banda de lamas con el altavoz, la franja LED, la pantalla y la cámara. La parte alta de la cámara acústica queda detrás de un tabique paralelo al frontal, y la electrónica empieza a z = 187 mm.
+Envolvente de trabajo: **205 × 262 × 150 mm** (ancho × alto × fondo), con el frontal inclinado 11° de arriba abajo y aristas redondeadas (D031). La altura sale de apilar en el frontal el altavoz, la bandeja de la cámara acústica, la pantalla y la cámara.
+
+![Prisma v0.5](img/prisma_v0_5_frontal.png)
 
 ## Perfil (D015)
 - Frontal inferior vertical hasta z = 122 mm: bafle del DMA105-4 y barra LED.
@@ -22,9 +24,9 @@ Envolvente de trabajo: **205 × 266 × 145 mm** (ancho × alto × fondo). Hasta 
 | Trasera superior y laterales (altura de la bahía) | Rejillas de ventilación + entrada DC 24 V en la trasera (D017, D019) |
 | Techo | ReSpeaker Lite (86 × 35 mm) justo bajo el techo, zona trasera, con 2 agujeros para los micrófonos. Cámara opcional: posición pendiente |
 
-![Sección lateral v0.3](img/v0_3_seccion_lateral.png)
+![Sección lateral v0.5](img/v0_5_seccion_lateral.png)
 
-![Bahía de electrónica](img/v0_3_bahia.png)
+![Bahía de electrónica](img/v0_5_bahia.png)
 
 ## Criterios
 - Todo el calor queda en la bahía superior, ventilada por rejillas en la trasera y en los laterales. Nada de ventiladores junto a la cámara.
