@@ -29,8 +29,9 @@
 | Mecánica | Insertos M3 de latón + tornillos M3 × 8 (altavoz, radiador y rebordes) | 16 | Necesario | Comprar ahora |
 | Acústica | Junta de espuma de 2 mm (marcos de altavoz y radiador) | 1 | Necesario | Comprar ahora |
 | Filamento | TPU (4 patas) | poco | Necesario | Al imprimir |
-| Electrónica | Pulsadores táctiles 6 × 6 × 5 mm (volumen −/+, encendido) | 3 | Necesario | Comprar ahora |
-| Electrónica | Interruptor deslizante SS12D00 (silencio de micrófonos) | 1 | Necesario | Comprar ahora |
+| Electrónica | Pulsadores táctiles 6 × 6 mm, **5 mm de alto**, 4 patas de inserción (Omron B3F-1020 o genérico «6x6x5 mm DIP») (volumen −/+, encendido) | 3 | Necesario | Comprar ahora |
+| Electrónica | Trozo de placa perforada (botón de encendido trasero) | 1 | Necesario | Comprar ahora |
+| Electrónica | Interruptor deslizante **SS12D00G3** (palanca de 3 mm; silencio de micrófonos) | 1 | Necesario | Comprar ahora |
 | Mecánica | Tornillos M2 × 6 autorroscantes (placa de botones) | 2 | Necesario | Comprar ahora |
 | Filamento | PLA negro mate (carcasa) | 1 kg | Necesario | Comprar ahora |
 | Mecánica | Insertos M3 de latón (bandeja 2, caja 4 + 2 traseros, balda 4) | 12 | Necesario | Comprar ahora |

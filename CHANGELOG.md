@@ -3,6 +3,7 @@
 - Bandeja (2a) y caja superior (2b) de la cámara acústica, y balda del KABD-250 (D034): `bandeja_v0_1.stl`, `caja_superior_v0_1.stl`, `balda_kabd_v0_1.stl`. Ver `docs/16_bandeja_caja.md`.
 - Cubeta v0.4: reborde delantero para la bandeja, 2 resaltes con inserto y los insertos de los rebordes laterales en y = 80 y 135 mm para los tornillos de la caja.
 - Pieza de prueba de las franjas (`prueba_franja_pared_v0_1.stl` + `prueba_franja_insertos_v0_1.stl`, 3 holguras).
+- Botones: referencias (Omron B3F-1020 y SS12D00G3) y corrección de alturas: los capuchones y el mando del silencio eran 1,2 mm cortos y la placa hundía los pulsadores 1 mm (`capuchones_botones_v0_2`, `deslizador_silencio_v0_2`, `placa_botones_v0_2`).
 - Nuevo `tools/comprobar_camara.py`. Volumen neto medido con todas las piezas: 3,08 L (simulación sin cambios apreciables).
 
 ## v0.5.1

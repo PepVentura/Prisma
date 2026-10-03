@@ -209,9 +209,10 @@ module corredera() {
         for (x = [1.5, slider_l - 2.3]) translate([x - 0.1, -w / 2 - 2, -0.01]) cube([1, w + 4, detent + 0.1]);
     }
 }
-// Capuchón de 8 mm: asoma 0,5 mm; pestaña interior que lo retiene; símbolo grabado (0 = −, 1 = +, 2 = liso)
+// Capuchón de 8 mm: la pestaña queda bajo el techo y la cara superior asoma 0,5 mm;
+// símbolo grabado (0 = −, 1 = +, 2 = liso)
 module capuchon(symbol = 0) {
-    h = wall + cap_proud;
+    h = cap_flange_t + wall + cap_proud;
     difference() {
         union() { cylinder(d = btn_cap_d, h = h); cylinder(d = cap_flange, h = cap_flange_t); }
         translate([0, 0, h - 0.5]) {
@@ -220,19 +221,33 @@ module capuchon(symbol = 0) {
         }
     }
 }
-// Mando del interruptor deslizante: encaja en la palanca de un SS12D00 (agujero 1,6 × 1,6)
+// Mando del interruptor deslizante: encaja en la palanca de un SS12D00G3 (1,5 × 1,5 × 3 mm)
+knob_flange_t = 1; lever_engage = 2.3;
 module deslizador() difference() {
-    union() { translate([-mute_knob[0] / 2, -mute_knob[1] / 2, 0]) cube([mute_knob[0], mute_knob[1], wall + cap_proud]);
-              translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, 1]); }
-    translate([-0.85, -0.85, -0.01]) cube([1.7, 1.7, 2.5]);
+    union() { translate([-mute_knob[0] / 2, -mute_knob[1] / 2, 0]) cube([mute_knob[0], mute_knob[1], knob_flange_t + wall + cap_proud]);
+              translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, knob_flange_t]); }
+    translate([-0.85, -0.85, -0.01]) cube([1.7, 1.7, lever_engage + 0.3]);
 }
-// Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 6 × 6 y el SS12D00
-module placa_botones() difference() {
-    translate([-btn_plate[0] / 2, -7 - 9 + 7, 0]) translate([0, btn_y[0] - btn_y[0], 0]) cube([btn_plate[0], btn_plate[1], btn_plate[2]]);
-    for (p = btn_plate_holes) translate([p[0] - btn_x, p[1] - btn_y[0], -1]) cylinder(d = 2.4, h = 5);
-    for (y = btn_y) translate([-3.1, y - btn_y[0] - 3.1, 1]) cube([6.2, 6.2, 2]);                 // alojamiento pulsadores
-    translate([-1.9, mute_y - btn_y[0] - 4.4, 0.6]) cube([3.8, 8.8, 2]);                            // alojamiento SS12D00
-    for (y = btn_y) translate([-4, y - btn_y[0] - 1, -1]) cube([1, 2, 5]);                          // pasos de cables
+// Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 6 × 6 × 5 mm apoyados
+// en la cara superior, con sus 4 patas por taladros de 1,2 mm (se sueldan los cables por debajo),
+// y el SS12D00G3 sobre un suplemento para que la palanca entre 2,3 mm en el mando.
+ss_body = [4, 8, 3.8]; ss_lever_h = 3;
+ss_riser = (outer_h - wall - knob_flange_t + lever_engage) - (ss_body[2] + ss_lever_h) - (btn_plate_z + btn_plate[2]);   // ≈ 0,9
+module placa_botones() {
+    y0 = btn_plate_holes[0][1] - 7;          // borde de la placa (coordenadas del techo)
+    translate([0, -y0, 0]) {
+        difference() {
+            union() {
+                translate([btn_x - btn_plate[0] / 2, y0, 0]) cube([btn_plate[0], btn_plate[1], btn_plate[2]]);
+                translate([btn_x - (ss_body[0] + 3) / 2, mute_y - (ss_body[1] + 1) / 2, btn_plate[2] - 0.01]) cube([ss_body[0] + 3, ss_body[1] + 1, ss_riser + 0.01]);
+            }
+            for (p = btn_plate_holes) translate([p[0], p[1], -1]) cylinder(d = 2.4, h = 5);
+            for (y = btn_y, dx = [-3.25, 3.25], dy = [-2.25, 2.25]) translate([btn_x + dx, y + dy, -1]) cylinder(d = 1.2, h = 5, $fn = 12);
+            for (dy = [-2.54, 0, 2.54]) translate([btn_x, mute_y + dy, -1]) cylinder(d = 1.2, h = 5, $fn = 12);
+        }
+        // tope lateral del SS12D00 (lo centra sobre el suplemento)
+        for (sx = [-1, 1]) translate([btn_x + sx * (ss_body[0] / 2 + 0.15) + (sx > 0 ? 0 : -1), mute_y - 3, btn_plate[2] + ss_riser - 0.01]) cube([1, 6, 1.5]);
+    }
 }
 
 if (pieza == "capucha") capucha();
@@ -241,7 +256,7 @@ if (pieza == "difusor") difusor();
 if (pieza == "corredera") corredera();
 if (pieza == "capuchon") { capuchon(0); translate([14, 0, 0]) capuchon(1); translate([28, 0, 0]) capuchon(2); }
 if (pieza == "deslizador") deslizador();
-if (pieza == "placa_botones") placa_botones();
+if (pieza == "placa_botones") translate([-btn_x, 0, 0]) placa_botones();
 // Inserto transparente superior (imprimir 2), tumbado con la cara vista sobre la cama
 if (pieza == "franja_sup") for (i = [0, 1]) translate([edge_strip_s0 - split_z / cos(fa), i * 10, 0])
     multmatrix([[0, 0, 1, -edge_strip_s0], [1, 0, 0, -edge_strip_xc], [0, 1, 0, 0]]) rotate([fa, 0, 0])

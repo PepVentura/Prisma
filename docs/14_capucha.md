@@ -36,9 +36,9 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 ## Piezas sueltas
 | STL | Material | Notas |
 |---|---|---|
-| `capuchones_botones_v0_1.stl` | PLA negro | Volumen −, volumen + y uno liso para el encendido. Asoman 0,5 mm y la pestaña interior los retiene |
-| `deslizador_silencio_v0_1.stl` | PLA negro | Mando del SS12D00. Entra a presión en la palanca |
-| `placa_botones_v0_1.stl` | PLA o PETG | Lleva 2 pulsadores de 6 × 6 × 5 mm y el SS12D00. Se fija con 2 tornillos M2 |
+| `capuchones_botones_v0_2.stl` | PLA negro | Volumen −, volumen + y uno liso para el encendido. Asoman 0,5 mm y la pestaña interior los retiene |
+| `deslizador_silencio_v0_2.stl` | PLA negro | Mando del SS12D00G3. Entra a presión en la palanca (2,3 mm) |
+| `placa_botones_v0_2.stl` | PLA o PETG | 2 pulsadores B3F-1020 (6 × 6 × 5 mm) apoyados encima, con las patas por sus taladros, y el SS12D00G3 sobre un suplemento de 0,9 mm. Los cables se sueldan por debajo. Se fija con 2 tornillos M2 |
 | `difusor_led_v0_2.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |
 | `franja_sup_v0_1.stl` | PETG o PLA transparente | Tramo superior de las franjas (2 iguales). Entra deslizando por abajo, antes de montar la capucha; una gota de pegamento lo fija |
 | `tapa_camara_corredera_v0_2.stl` | PLA negro | Usa la holgura que te haya ido bien con la pieza de prueba |

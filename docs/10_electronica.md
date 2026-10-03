@@ -78,9 +78,9 @@ El KABD-250 recomienda 4 A porque está pensado para 2 × 50 W. Aquí solo se us
 ## Botones (D032)
 | Botón | Conexión |
 |---|---|
-| Volumen − | Pulsador 6 × 6 entre GPIO5 (pin 29) y GND, con *pull-up* interno |
+| Volumen − | Pulsador B3F-1020 (6 × 6 × 5 mm) entre GPIO5 (pin 29) y GND, con *pull-up* interno |
 | Volumen + | Pulsador 6 × 6 entre GPIO6 (pin 31) y GND, con *pull-up* interno |
-| Silencio de micrófonos | Interruptor SS12D00 en serie con el cable rojo (+5 V) del USB del ReSpeaker Lite: los micrófonos se apagan físicamente. Opcional: el otro polo del SS12D00 a GPIO13 (pin 33) para que el software sepa el estado |
+| Silencio de micrófonos | Interruptor SS12D00G3 en serie con el cable rojo (+5 V) del USB del ReSpeaker Lite: los micrófonos se apagan físicamente. Opcional: el otro polo del SS12D00 a GPIO13 (pin 33) para que el software sepa el estado |
 | Encendido | Pulsador al conector `PWR BUT` (J2) de la Pi 5: pulsación corta apaga bien, otra la enciende |
 
 ## Audio: filtro y cancelación de eco
