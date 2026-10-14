@@ -49,9 +49,9 @@ screen_active_z0 = glass_z0 + 9.0; // margen inferior ≈ 9,0 (superior ≈ 4,9)
 screen_hole_dx = 156.9; screen_hole_dz = 114.96;    // taladros (plano), a 4,0 mm de los laterales
 screen_hole_z0 = (screen_h - screen_hole_dz) / 2;   // 4,655
 screen_hole_d = 3.0;     // medido → tornillos M2.5
-// Corrección medida con el marco de prueba v0.1 (D035): mirando de frente, el PCB (taladros,
-// pestañas y conectores) está 2,5 mm más a la izquierda respecto al cristal de lo que se suponía
-screen_pcb_dx = -2.5;
+// Corrección medida con el marco de prueba v0.1 (D035): el PCB (taladros, pestañas y conectores)
+// está 2,5 mm más ARRIBA respecto al cristal de lo que se suponía (hacia el lado contrario al flex)
+screen_pcb_dz = 2.5;
 // Conectores en el canto derecho (plano), desde el borde superior de las pestañas:
 // HDMI 18–34 mm, micro-USB táctil 41–49 mm, interruptor 54–62 mm
 screen_conn_top = 15;

@@ -143,7 +143,7 @@ module on_screen_plane() on_front() translate([screen_x0, wall, screen_s0]) chil
 
 module screen() {
     color([0.08, 0.08, 0.08]) cut() on_screen_plane() translate([0, 0, glass_z0]) cube([screen_w, screen_t, glass_h]);
-    color([0.1, 0.25, 0.5]) cut() on_screen_plane() translate([screen_pcb_dx, 0, 0]) difference() {
+    color([0.1, 0.25, 0.5]) cut() on_screen_plane() translate([0, 0, screen_pcb_dz]) difference() {
         union() {
             translate([0, screen_t, (screen_h - screen_body_h) / 2]) cube([screen_w, screen_pcb_t, screen_body_h]);
             for (x = [0, screen_w - (screen_w - screen_tab_gap) / 2], z = [0, (screen_h + screen_body_h) / 2])
@@ -152,13 +152,13 @@ module screen() {
         for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
             translate([(screen_w - screen_hole_dx) / 2 + dx, screen_t - 1, screen_hole_z0 + dz]) rotate([-90, 0, 0]) cylinder(d = screen_hole_d, h = screen_pcb_t + 2);
     }
-    color([0.15, 0.3, 0.2]) cut() on_screen_plane() translate([10 + screen_pcb_dx, screen_t + screen_pcb_t, 12]) cube([screen_w - 40, screen_comp_t, screen_h - 24]);
+    color([0.15, 0.3, 0.2]) cut() on_screen_plane() translate([10, screen_t + screen_pcb_t, 12 + screen_pcb_dz]) cube([screen_w - 40, screen_comp_t, screen_h - 24]);
 }
 module screen_active() {
     color([0.25, 0.55, 0.95]) cut() on_screen_plane() translate([screen_active_x0, -0.4, screen_active_z0]) cube([screen_active_w, 0.4, screen_active_h]);
 }
 module screen_connectors() {
-    color([0.85, 0.55, 0.1]) cut() on_screen_plane() translate([screen_pcb_dx, 0, screen_h - screen_conn_bot]) {
+    color([0.85, 0.55, 0.1]) cut() on_screen_plane() translate([0, 0, screen_h - screen_conn_bot + screen_pcb_dz]) {
         translate([screen_w, screen_t, 0]) cube([screen_conn_proud + plug_clear, screen_pcb_t + screen_conn_depth + 1, screen_conn_bot - screen_conn_top]);
         translate([screen_w - 26, screen_t + screen_pcb_t, 0]) cube([26, screen_conn_depth + 1, screen_conn_bot - screen_conn_top]);
     }

@@ -1,6 +1,6 @@
 # Changelog
 ## v0.6.1
-- Pantalla (D035): taladros y PCB 2,5 mm más a la izquierda respecto al cristal, medido con el marco de prueba. Capucha v0.4.
+- Pantalla (D035): taladros y PCB 2,5 mm más arriba respecto al cristal, medido con el marco de prueba. Capucha v0.4.
 - Marco de prueba v0.2: la v0.1 salía en espejo (ventana desplazada).
 
 ## v0.6

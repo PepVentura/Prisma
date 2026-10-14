@@ -42,7 +42,7 @@ El interruptor de retroiluminación queda accesible solo con la carcasa abierta.
 `enclosure/openscad/marco_pantalla_prueba.scad` → `stl/marco_pantalla_prueba_v0_2.stl` (174 × 130,9 × 9,9 mm, ≈58 cm³).
 
 **Resultado de la v0.1 (D035):**
-- **Taladros:** los del PCB caen 2,5 mm más lejos del canto de los conectores que los resaltes. Mirando de frente, el PCB está 2,5 mm más a la izquierda respecto al cristal de lo previsto (`screen_pcb_dx = -2.5`). Corregido en el marco, en la capucha y en el volumétrico.
+- **Taladros:** los resaltes quedaban 2,5 mm más abajo que los taladros del PCB. Con la pantalla en su posición (flex abajo), el PCB está 2,5 mm más arriba respecto al cristal de lo previsto (`screen_pcb_dz = 2.5`). Corregido en el marco, en la capucha y en el volumétrico.
 - **Ventana:** la v0.1 se generó en espejo. Como se imprime boca abajo, la ventana quedaba al revés: se veían 4 mm de borde negro a la derecha y tapaba 3 mm de imagen a la izquierda. La v0.2 está corregida. La capucha no tenía ese error.
 
 Sirve para comprobar el encaje real antes de imprimir la carcasa:

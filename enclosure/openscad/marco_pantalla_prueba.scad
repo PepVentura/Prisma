@@ -1,7 +1,7 @@
 // Prisma — marco de pantalla, PIEZA DE PRUEBA v0.2 (D035)
 // v0.2: la v0.1 salía en espejo (la ventana quedaba desplazada: 4 mm de borde negro a la
 // derecha y 3 mm de imagen tapados a la izquierda). Ahora X va de izquierda a derecha
-// mirando la cara vista, como en la capucha. Taladros 2,5 mm más a la izquierda.
+// mirando la cara vista, como en la capucha. Taladros (y PCB) 2,5 mm más arriba.
 // Waveshare 7" HDMI LCD (C) Rev4.1, montada en horizontal.
 //
 // Sirve para comprobar el encaje real de la pantalla antes de imprimir la carcasa:
@@ -39,9 +39,9 @@ fpc_x0 = 50; fpc_x1 = 115; fpc_drop = 6;   // cubre la posición de la v0.1 (que
 T = skin + screen_t;   // grosor total: cara vista → cara delantera del PCB
 
 // Posiciones derivadas (coordenadas de pantalla)
-hole_x0 = (screen_w - screen_hole_dx) / 2 + screen_pcb_dx;
+hole_x0 = (screen_w - screen_hole_dx) / 2;
 holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
-            [hole_x0 + dx, screen_hole_z0 + dz]];
+            [hole_x0 + dx, screen_hole_z0 + screen_pcb_dz + dz]];
 glass = [0, glass_z0, screen_w, glass_h];                       // x, y, ancho, alto
 win   = [screen_active_x0 - win_margin, screen_active_z0 - win_margin,
          screen_active_w + 2 * win_margin, screen_active_h + 2 * win_margin];
@@ -53,8 +53,8 @@ module rect(r, z0, h, grow = 0) {
 module marco() {
     difference() {
         // placa
-        translate([screen_pcb_dx - fit - frame_wall, -fit - frame_wall, 0])
-            cube([screen_w - screen_pcb_dx + 2 * (fit + frame_wall), screen_h + 2 * (fit + frame_wall), T]);
+        translate([-fit - frame_wall, -fit - frame_wall, 0])
+            cube([screen_w + 2 * (fit + frame_wall), screen_h + screen_pcb_dz + 2 * (fit + frame_wall), T]);
 
         // ventana con chaflán hacia la cara vista
         hull() {
@@ -68,7 +68,7 @@ module marco() {
 
         // rebaje del PCB (contorno completo con pestañas), excepto los resaltes
         difference() {
-            translate([screen_pcb_dx - fit, -fit, T - pcb_relief]) cube([screen_w + 2 * fit, screen_h + 2 * fit, T]);
+            translate([-fit, screen_pcb_dz - fit, T - pcb_relief]) cube([screen_w + 2 * fit, screen_h + 2 * fit, T]);
             for (h = holes) translate([h[0], h[1], 0]) cylinder(d = boss_d, h = T);
         }
 
@@ -84,7 +84,7 @@ module marco() {
 // Referencia visual de la pantalla (no se imprime)
 module pantalla_ref() {
     color([0.1, 0.1, 0.1, 0.6]) rect(glass, skin, screen_t);
-    color([0.1, 0.25, 0.5, 0.6]) translate([screen_pcb_dx, 0, T]) cube([screen_w, screen_h, screen_pcb_t]);
+    color([0.1, 0.25, 0.5, 0.6]) translate([0, screen_pcb_dz, T]) cube([screen_w, screen_h, screen_pcb_t]);
 }
 
 show_ref = false;
