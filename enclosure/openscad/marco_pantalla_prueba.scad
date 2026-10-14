@@ -1,4 +1,7 @@
-// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.1
+// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.2 (D035)
+// v0.2: la v0.1 salía en espejo (la ventana quedaba desplazada: 4 mm de borde negro a la
+// derecha y 3 mm de imagen tapados a la izquierda). Ahora X va de izquierda a derecha
+// mirando la cara vista, como en la capucha. Taladros 2,5 mm más a la izquierda.
 // Waveshare 7" HDMI LCD (C) Rev4.1, montada en horizontal.
 //
 // Sirve para comprobar el encaje real de la pantalla antes de imprimir la carcasa:
@@ -9,8 +12,10 @@
 // Montaje: el cristal entra en el alojamiento desde atrás; el PCB apoya en 4
 // resaltes y se fija con 4 tornillos M2.5 × 6 autorroscantes (o insertos M2.5).
 //
-// Coordenadas: X = ancho de la pantalla, Y = alto (Y = 0 en el borde inferior de las
-// pestañas, flex del LCD abajo), Z = grosor (Z = 0 cara frontal vista).
+// Coordenadas: X = ancho de la pantalla, de izquierda a derecha mirando de frente (conectores
+// a la derecha), Y = alto (Y = 0 en el borde inferior de las pestañas, flex del LCD abajo),
+// Z = grosor (Z = 0 cara frontal vista). Como la cara vista va hacia abajo, la pieza se
+// genera en espejo para que de frente X crezca hacia la derecha.
 
 include <parametros.scad>;
 $fn = 48;
@@ -29,12 +34,12 @@ pilot_d    = 2.2;   // agujero para M2.5 autorroscante (3,5 para inserto M2.5)
 pilot_depth = 6;
 
 // Flex del LCD: sobresale por debajo del cristal, entre LCD y PCB
-fpc_x0 = 50; fpc_x1 = 106; fpc_drop = 6;
+fpc_x0 = 50; fpc_x1 = 115; fpc_drop = 6;   // cubre la posición de la v0.1 (que no rozaba) y su espejo
 
 T = skin + screen_t;   // grosor total: cara vista → cara delantera del PCB
 
 // Posiciones derivadas (coordenadas de pantalla)
-hole_x0 = (screen_w - screen_hole_dx) / 2;
+hole_x0 = (screen_w - screen_hole_dx) / 2 + screen_pcb_dx;
 holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
             [hole_x0 + dx, screen_hole_z0 + dz]];
 glass = [0, glass_z0, screen_w, glass_h];                       // x, y, ancho, alto
@@ -48,8 +53,8 @@ module rect(r, z0, h, grow = 0) {
 module marco() {
     difference() {
         // placa
-        translate([-fit - frame_wall, -fit - frame_wall, 0])
-            cube([screen_w + 2 * (fit + frame_wall), screen_h + 2 * (fit + frame_wall), T]);
+        translate([screen_pcb_dx - fit - frame_wall, -fit - frame_wall, 0])
+            cube([screen_w - screen_pcb_dx + 2 * (fit + frame_wall), screen_h + 2 * (fit + frame_wall), T]);
 
         // ventana con chaflán hacia la cara vista
         hull() {
@@ -63,7 +68,7 @@ module marco() {
 
         // rebaje del PCB (contorno completo con pestañas), excepto los resaltes
         difference() {
-            translate([-fit, -fit, T - pcb_relief]) cube([screen_w + 2 * fit, screen_h + 2 * fit, T]);
+            translate([screen_pcb_dx - fit, -fit, T - pcb_relief]) cube([screen_w + 2 * fit, screen_h + 2 * fit, T]);
             for (h = holes) translate([h[0], h[1], 0]) cylinder(d = boss_d, h = T);
         }
 
@@ -79,9 +84,12 @@ module marco() {
 // Referencia visual de la pantalla (no se imprime)
 module pantalla_ref() {
     color([0.1, 0.1, 0.1, 0.6]) rect(glass, skin, screen_t);
-    color([0.1, 0.25, 0.5, 0.6]) translate([0, 0, T]) cube([screen_w, screen_h, screen_pcb_t]);
+    color([0.1, 0.25, 0.5, 0.6]) translate([screen_pcb_dx, 0, T]) cube([screen_w, screen_h, screen_pcb_t]);
 }
 
 show_ref = false;
-color([0.85, 0.85, 0.88]) marco();
-if (show_ref) pantalla_ref();
+// espejo: vista desde la cara frontal (z < 0), X crece hacia la derecha
+mirror([1, 0, 0]) {
+    color([0.85, 0.85, 0.88]) marco();
+    if (show_ref) pantalla_ref();
+}

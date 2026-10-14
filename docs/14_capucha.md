@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** `stl/capucha_v0_3.stl` y sus piezas sueltas.
+- **STL:** `stl/capucha_v0_4.stl` y sus piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
