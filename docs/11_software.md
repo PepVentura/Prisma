@@ -1,4 +1,6 @@
 # 11 — Software
+Puesta en marcha de la Raspberry: ver `17_raspberry.md`.
+
 Arquitectura prevista:
 `Micrófono → STT → LLM → TTS → audio + lip-sync → avatar`
 
