@@ -48,13 +48,5 @@ Lista la cámara, enseña 5 s de imagen y guarda `~/prueba_camara.jpg`. Si dice 
 1. Revisa el cable: que esté bien metido en los dos extremos y con los contactos del lado correcto.
 2. Si sigue sin verla, en `config.txt` pon `camera_auto_detect=0` y quita el `#` de `dtoverlay=ov5647,cam0`.
 
-## 5. El cerebro: Claude (D036)
-La IA será **Claude por la API**. La suscripción de claude.ai no incluye la API, salvo en los planes **Max y Team**, que desde octubre de 2026 traen créditos mensuales de API: 100 $ (Max 5x) o 200 $ (Max 20x). El plan Pro no los incluye, y entonces la API se paga aparte, por uso.
-- **Con Max:** en claude.ai → Ajustes → Facturación → «Créditos de API», vincula una organización de la Consola (platform.claude.com) y crea allí una clave de API.
-- **Con Pro:** crea una cuenta en la Consola, añade saldo y crea una clave. Para un asistente de casa, con un modelo rápido, el gasto es de céntimos al día.
-
-La voz no la hace Claude:
-- **Voz a texto:** Whisper en la propia Pi (faster-whisper), o un servicio en la nube si va lento.
-- **Texto a voz:** Piper en la propia Pi, que tiene voces en español de buena calidad.
-
-La clave se guardará en `~/.config/prisma/clave_api` (fuera del repositorio) y **nunca** se sube a GitHub.
+## 5. El cerebro
+Todo en local, en la propia Pi, con consultas a Internet a través de SearXNG. La arquitectura y los tiempos de respuesta están en `11_software.md` (D036).
