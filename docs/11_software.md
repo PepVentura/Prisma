@@ -48,8 +48,7 @@ La pantalla de 7" y el altavoz convierten a Prisma también en reproductor. Todo
 |---|---|---|
 | Vídeo y música locales | mpv (carpeta de la Pi o compartida por la red) | Sí |
 | YouTube | mpv + yt-dlp, a pantalla completa | Sí: «pon en YouTube…» busca y reproduce |
-| Spotify | Spotify Connect (librespot/Raspotify), requiere Premium. Prisma aparece como altavoz en la app | Sí, con la API de Spotify y tu cuenta: busca y lanza en Prisma |
-| Amazon Music | No tiene receptor para Linux ni API pública: reproductor web en Chromium (pantalla táctil), o desde el móvil por Bluetooth o AirPlay | Solo pausa, siguiente y volumen |
+| Spotify | Spotify Connect (librespot/Raspotify) con la cuenta Premium. Prisma aparece como altavoz en la app | Sí, con la API de Spotify y tu cuenta: busca y lanza en Prisma |
 | Cualquier app del móvil | Prisma como altavoz Bluetooth y AirPlay (shairport-sync) | Pausa y volumen |
 
 Mientras se ve un vídeo, la IA queda en reposo para no competir por la CPU. La Pi 5 descodifica por hardware HEVC; H.264 lo hace por software, sin problema a la resolución de la pantalla.
