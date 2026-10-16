@@ -1,4 +1,8 @@
 # Changelog
+## v0.6.1
+- Pantalla (D035): taladros y PCB 2,5 mm más arriba respecto al cristal, medido con el marco de prueba. Capucha v0.4.
+- Marco de prueba v0.2: la v0.1 salía en espejo (ventana desplazada).
+
 ## v0.6
 - Bandeja (2a) y caja superior (2b) de la cámara acústica, y balda del KABD-250 (D034): `bandeja_v0_1.stl`, `caja_superior_v0_1.stl`, `balda_kabd_v0_1.stl`. Ver `docs/16_bandeja_caja.md`.
 - Cubeta v0.4: reborde delantero para la bandeja, 2 resaltes con inserto y los insertos de los rebordes laterales en y = 80 y 135 mm para los tornillos de la caja.
