@@ -3,8 +3,8 @@
 Primera fase con lo que ya hay: **Pi 5 + pantalla Waveshare 7" (C) + cámara OV5647**. Los micrófonos, el DAC, los LEDs y los botones se añadirán en pasos siguientes.
 
 ## 1. Grabar el sistema (en tu ordenador)
-1. Instala **Raspberry Pi Imager** (raspberrypi.com/software) y mete la tarjeta microSD (32 GB o más, A2).
-2. Dispositivo: **Raspberry Pi 5**. Sistema: **Raspberry Pi OS (64-bit)**, el normal, con escritorio: la interfaz de Prisma irá en un navegador a pantalla completa.
+1. Instala **Raspberry Pi Imager** (raspberrypi.com/software) y mete la tarjeta microSD: **64 GB, clase A2** (32 GB valen, pero van justos con varios modelos de IA).
+2. Dispositivo: **Raspberry Pi 5**. Sistema: **Raspberry Pi OS (64-bit)**, el normal, con escritorio (D037): la interfaz, los vídeos y YouTube necesitan entorno gráfico (Lite no sirve) y Full trae programas que no se usan. 64 bits por Ollama.
 3. En «Personalización» (el engranaje o «Editar ajustes»):
    - Nombre de equipo: `prisma`.
    - Usuario y contraseña: los que quieras (los scripts no dependen del nombre).
