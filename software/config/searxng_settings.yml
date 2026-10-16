@@ -1,0 +1,14 @@
+# SearXNG para Prisma: solo uso local, respuestas en JSON y en español.
+use_default_settings: true
+general:
+  instance_name: "Prisma"
+server:
+  secret_key: "CAMBIAR_CLAVE"
+  limiter: false
+  image_proxy: false
+search:
+  safe_search: 1
+  default_lang: "es-ES"
+  formats:
+    - html
+    - json
