@@ -10,7 +10,8 @@ CONF="$HOME/.config/prisma"
 mkdir -p "$CONF/searxng"
 
 echo "== 1/4 Ollama =="
-if ! command -v ollama > /dev/null; then
+# Se reinstala si falta el programa o el servicio (p. ej. si se cortó la conexión a mitad)
+if ! command -v ollama > /dev/null || ! systemctl cat ollama.service > /dev/null 2>&1; then
     curl -fsSL https://ollama.com/install.sh | sh
 fi
 # Modelo siempre cargado en memoria y solo accesible desde la propia Pi
@@ -29,7 +30,7 @@ echo "== 2/4 Modelos candidatos: ${MODELOS[*]} =="
 for m in "${MODELOS[@]}"; do ollama pull "$m"; done
 
 echo "== 3/4 Docker =="
-if ! command -v docker > /dev/null; then
+if ! command -v docker > /dev/null || ! systemctl cat docker.service > /dev/null 2>&1; then
     curl -fsSL https://get.docker.com | sh
     sudo usermod -aG docker "$USER"
 fi
