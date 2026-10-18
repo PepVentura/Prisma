@@ -3,19 +3,29 @@
 
   python3 ~/prisma/software/prisma_texto.py            charla (escribe 'salir' para terminar)
   python3 ~/prisma/software/prisma_texto.py --tiempos  muestra el desglose de tiempos en cada respuesta
+  python3 ~/prisma/software/prisma_texto.py --tiempos --resultados   y además lo que lee de cada búsqueda
+
+Memoria: «me llamo…», «recuerda que…», «olvida…» (se guarda en ~/.config/prisma/memoria.json).
 
 Cada trozo de la respuesta aparece cuando Piper ya podría empezar a leerlo.
 """
 import argparse, sys, time, urllib.error
 from nucleo.config import CONFIG
-from nucleo import enrutador, buscador
+from nucleo import enrutador, buscador, memoria
 from nucleo.cerebro import Cerebro
 
 GRIS, AZUL, FIN = "\033[90m", "\033[96m", "\033[0m"
 
 
-def turno(cerebro, texto, tiempos):
+def turno(cerebro, texto, tiempos, resultados=False):
     t0 = time.perf_counter()
+    respuesta = memoria.intenta(texto)          # «me llamo…», «recuerda que…», «olvida…»: sin modelo
+    if respuesta:
+        cerebro.actualiza_sistema()
+        print(f"{AZUL}Prisma:{FIN} {respuesta}")
+        if tiempos:
+            print(f"{GRIS}[memoria · {time.perf_counter() - t0:.2f} s]{FIN}")
+        return
     accion, consulta = enrutador.decide(texto)
     contexto = None
     detalle = []
@@ -28,6 +38,8 @@ def turno(cerebro, texto, tiempos):
                 contexto = f"- Respuesta directa: {directa}\n{contexto}"
             if not contexto:
                 contexto = "- (la búsqueda no ha devuelto resultados)"
+            if resultados:
+                print(f"{GRIS}{contexto}{FIN}")
         except (urllib.error.URLError, TimeoutError) as e:
             detalle.append(f"búsqueda fallida: {e}")
             contexto = "- (no se ha podido buscar en Internet)"
@@ -50,6 +62,7 @@ def turno(cerebro, texto, tiempos):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--tiempos", action="store_true")
+    ap.add_argument("--resultados", action="store_true", help="muestra lo que lee el modelo de cada búsqueda")
     a = ap.parse_args()
     cerebro = Cerebro()
     try:
@@ -67,7 +80,7 @@ def main():
             continue
         if texto.lower() in ("salir", "adiós", "adios", "exit"):
             break
-        turno(cerebro, texto, a.tiempos)
+        turno(cerebro, texto, a.tiempos, a.resultados)
 
 
 if __name__ == "__main__":
