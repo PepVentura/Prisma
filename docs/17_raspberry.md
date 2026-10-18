@@ -198,13 +198,14 @@ Instala raspotify: Prisma aparece como altavoz **«Prisma»** en la app de Spoti
 
 ### Conectar la API de Spotify (controles y órdenes)
 1. En https://developer.spotify.com/dashboard, con tu cuenta Premium: **Create app** → nombre «Prisma», descripción cualquiera, **Redirect URI** `http://127.0.0.1:8080/spotify` (exactamente así), marca **Web API** → **Save**. Copia el **Client ID**.
-2. En la Pi:
-   ```bash
-   git -C ~/prisma pull
-   python3 ~/prisma/software/herramientas/spotify_conecta.py
+2. Abre un túnel desde el portátil a la Pi (en **cmd** de Windows; déjalo abierto):
    ```
-   Pega el Client ID, abre el enlace en el navegador del portátil y acepta. Te llevará a una página que no carga: copia su dirección completa (empieza por `http://127.0.0.1:8080/spotify?code=`) y pégala en la terminal.
-3. `systemctl --user restart prisma`. Si el programa dice que el altavoz «Prisma» no aparece, elígelo una vez en la app de Spotify: desde entonces Prisma recuerda la sesión y puede ponerse música sola.
+   ssh -L 8080:127.0.0.1:8080 pi@prisma.local
+   ```
+   (Con PuTTY: Connection → SSH → Tunnels → Source port `8080`, Destination `127.0.0.1:8080` → Add, y conecta.)
+3. En el navegador del portátil abre **http://127.0.0.1:8080/spotify/conectar**, pega el Client ID y acepta en Spotify. Al volver verás «✓ Spotify conectado».
+   (Alternativa sin túnel: `python3 ~/prisma/software/herramientas/spotify_conecta.py` en la Pi y pegar la dirección de vuelta.)
+4. No hace falta reiniciar nada. Si el programa dice que el altavoz «Prisma» no aparece, elígelo una vez en la app de Spotify: desde entonces Prisma recuerda la sesión y puede ponerse música sola.
 
 Qué se puede hacer después:
 - **Panel «Música»:** anterior, reproducir/pausa, siguiente y volumen. Enseña lo que suena en tu cuenta aunque sea en otro dispositivo.
