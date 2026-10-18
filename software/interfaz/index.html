@@ -105,6 +105,52 @@ form { flex: 1; display: flex; gap: 8px; min-width: 0; }
           font: 600 16px var(--letra); transition: background .5s; }
 button:focus-visible, .chip:focus-visible { outline: 2px solid var(--estado); outline-offset: 2px; }
 
+/* Barra durante la escritura: sin accesos rápidos y justo encima del teclado */
+body.teclado .chip { display: none; }
+body.teclado #barra { position: fixed; left: 26px; right: 26px; bottom: calc(var(--alto-teclado) + 12px); z-index: 7; }
+
+/* Teclado en pantalla (el de la propia interfaz: funciona igual en modo quiosco) */
+:root { --alto-teclado: 262px; }
+#teclado { position: fixed; left: 0; right: 0; bottom: 0; height: var(--alto-teclado); z-index: 7;
+  background: #0b1016ee; border-top: 1px solid var(--linea); padding: 10px 12px 12px;
+  display: grid; grid-template-rows: repeat(4, 1fr); gap: 8px; transform: translateY(105%); transition: transform .22s ease-out;
+  backdrop-filter: blur(6px); }
+body.teclado #teclado { transform: none; }
+.fila { display: flex; gap: 7px; justify-content: center; }
+.tecla { flex: 0 0 89px; background: var(--panel); color: var(--tinta); border: 1px solid var(--linea); border-radius: 10px;
+  font: 22px var(--letra); display: grid; place-items: center; touch-action: manipulation; }
+.tecla:active, .tecla.pulsada { background: color-mix(in srgb, var(--estado) 35%, var(--panel)); }
+.tecla.ancha { flex-basis: 140px; font-size: 17px; }
+.tecla.espacio { flex: 1 1 auto; }
+.tecla.activa { border-color: var(--estado); color: var(--estado); }
+.tecla.enviar { background: var(--estado); color: var(--fondo); font-weight: 600; }
+
+/* Paneles: música y casa */
+.panel { position: fixed; z-index: 6; background: var(--fondo); display: none; }
+body[data-panel="musica"] #panel-musica, body[data-panel="casa"] #panel-casa { display: flex; }
+#panel-musica { left: 448px; right: 26px; top: 84px; bottom: 82px; flex-direction: column; justify-content: center; gap: 18px; }
+#panel-musica .tema { display: flex; gap: 22px; align-items: center; }
+#portada { width: 190px; height: 190px; border-radius: 14px; background: var(--panel) center / cover; flex: none;
+  border: 1px solid var(--linea); display: grid; place-items: center; color: var(--apagado); font-size: 64px; }
+#m-nombre { font-size: 28px; font-weight: 600; line-height: 1.2; }
+#m-artistas { font-size: 20px; color: var(--tinta); margin-top: 6px; }
+#m-album, #m-estado { font-size: 16px; color: var(--tenue); margin-top: 6px; }
+#m-barra { height: 5px; border-radius: 3px; background: var(--linea); overflow: hidden; }
+#m-barra i { display: block; height: 100%; width: 0; background: var(--estado); transition: width 1s linear; }
+#m-ayuda { color: var(--tenue); font-size: 18px; line-height: 1.5; }
+#panel-casa { inset: 0; flex-direction: column; }
+#panel-casa header { height: 46px; display: flex; align-items: center; gap: 14px; padding: 0 14px; border-bottom: 1px solid var(--linea); }
+#panel-casa header span { color: var(--tenue); font-size: 15px; }
+#panel-casa iframe { flex: 1; border: 0; width: 100%; background: var(--panel); }
+.cerrar { background: var(--panel); color: var(--tinta); border: 1px solid var(--linea); border-radius: 18px;
+  padding: 7px 16px; font: 15px var(--letra); }
+.chip.abierto { border-color: var(--escucha); color: var(--escucha); }
+#casa-aviso { position: absolute; inset: 46px 0 0; display: grid; place-content: center; text-align: center; gap: 12px;
+  padding: 40px; color: var(--tenue); font-size: 18px; line-height: 1.5; background: var(--fondo); }
+#casa-aviso b { color: var(--tinta); font-size: 22px; font-weight: 600; }
+#casa-aviso code { color: var(--tinta); background: var(--panel); padding: 2px 8px; border-radius: 6px; font-size: 16px; }
+#panel-casa { position: fixed; }
+
 /* Pantalla de reposo: tras un rato sin uso, reloj grande */
 #reposo { position: absolute; inset: 0; display: none; place-content: center; text-align: center; gap: 6px;
           background: var(--fondo); z-index: 3; font-variant-numeric: tabular-nums; }
@@ -140,20 +186,35 @@ body.dormido #reposo { display: grid; }
   <section id="charla" aria-live="polite">
     <div id="estado-txt">Prisma</div>
     <div id="pregunta"></div>
-    <div id="respuesta">Hola. Pregúntame la hora, el tiempo, las noticias o el fútbol, o charla conmigo.</div>
+    <div id="respuesta">Hola. Pregúntame la hora, el tiempo o las noticias, pon música o charla conmigo.</div>
   </section>
 
   <div id="barra">
     <button class="chip" data-pide="¿Qué tiempo hará hoy?">Tiempo</button>
     <button class="chip" data-pide="Dame las noticias">Noticias</button>
-    <button class="chip" data-pide="¿Cuándo juega la Real?">Fútbol</button>
-    <button class="chip" data-pide="Cuéntame un chiste">Un chiste</button>
+    <button class="chip" data-panel="musica">Música</button>
+    <button class="chip" data-panel="casa">Casa</button>
     <form id="formulario" autocomplete="off">
-      <input id="entrada" placeholder="Escribe aquí…" aria-label="Pregunta para Prisma">
+      <input id="entrada" placeholder="Escribe aquí…" aria-label="Pregunta para Prisma" inputmode="none" enterkeyhint="send">
       <button id="enviar" type="submit">Enviar</button>
     </form>
   </div>
 </main>
+
+<section id="panel-musica" class="panel" aria-label="Música">
+  <div class="tema"><div id="portada">♪</div>
+    <div><div id="m-nombre"></div><div id="m-artistas"></div><div id="m-album"></div><div id="m-estado"></div></div></div>
+  <div id="m-barra"><i></i></div>
+  <div id="m-ayuda"></div>
+</section>
+
+<section id="panel-casa" class="panel" aria-label="Home Assistant">
+  <header><button class="cerrar" data-cierra>← Prisma</button><span>Home Assistant</span></header>
+  <iframe id="ha" title="Home Assistant" allow="fullscreen"></iframe>
+  <div id="casa-aviso">Conectando con Home Assistant…</div>
+</section>
+
+<div id="teclado" aria-hidden="true"></div>
 
 <div id="cabecera"><b id="reloj">--:--</b><span id="fecha"></span></div>
 
@@ -183,7 +244,7 @@ const ETIQUETA = { reposo: "Prisma", escucha: "Te escucho", pensando: "Pensando"
 const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
 const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 const REPOSO_TRAS = 90_000;      // ms sin usarlo hasta la pantalla de reposo
-let ocupado = false, ultimoUso = Date.now(), finHablar = 0;
+let ocupado = false, ultimoUso = Date.now(), finHablar = 0, ha = "";
 
 function pon(estado) {
   document.body.dataset.estado = estado;
@@ -204,7 +265,7 @@ function reloj() {
   $("#reloj").textContent = hm; $("#fecha").textContent = f;
   $("#reposo-hora").textContent = hm; $("#reposo-fecha").textContent = f;
   if (!ocupado && Date.now() - ultimoUso > REPOSO_TRAS && !document.body.classList.contains("dormido")) {
-    document.body.classList.add("dormido"); finHablar = 0; pon("reposo");
+    document.body.classList.add("dormido"); finHablar = 0; pon("reposo"); panel(null); teclado(false);
   }
   if (!ocupado && finHablar && Date.now() > finHablar) { finHablar = 0; pon("reposo"); }
 }
@@ -228,7 +289,7 @@ function escribe(texto) {
 async function pregunta(texto) {
   texto = texto.trim();
   if (!texto || ocupado) return;
-  despierta(); ocupado = true; finHablar = 0;
+  despierta(); ocupado = true; finHablar = 0; teclado(false); $("#entrada").blur();
   $("#pregunta").textContent = texto; $("#respuesta").textContent = ""; $("#entrada").value = "";
   pon("pensando");
   try {
@@ -268,7 +329,8 @@ async function espera() {
       const e = await (await fetch("/api/estado")).json();
       if (e.listo) {
         $("#arranque").remove();
-        if (e.nombre) $("#respuesta").textContent = `Hola, ${e.nombre}. Pregúntame la hora, el tiempo, las noticias o el fútbol, o charla conmigo.`;
+        if (e.nombre) $("#respuesta").textContent = `Hola, ${e.nombre}. Pregúntame la hora, el tiempo o las noticias, pon música o charla conmigo.`;
+        ha = e.home_assistant || "";
         return;
       }
       $("#arranque-txt").textContent = "Cargando el modelo de lenguaje…";
@@ -277,12 +339,125 @@ async function espera() {
   }
 }
 
-document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => pregunta(b.dataset.pide)));
+document.querySelectorAll(".chip[data-pide]").forEach(b => b.addEventListener("click", () => { panel(null); pregunta(b.dataset.pide); }));
+document.querySelectorAll(".chip[data-panel]").forEach(b => b.addEventListener("click", () =>
+  panel(document.body.dataset.panel === b.dataset.panel ? null : b.dataset.panel)));
+document.querySelectorAll("[data-cierra]").forEach(b => b.addEventListener("click", () => panel(null)));
 $("#formulario").addEventListener("submit", e => { e.preventDefault(); pregunta($("#entrada").value); });
 ["pointerdown", "keydown"].forEach(t => addEventListener(t, despierta));
 addEventListener("mousemove", () => document.body.classList.add("raton"), { once: true });
-$("#entrada").addEventListener("focus", () => { if (!ocupado && !finHablar) pon("escucha"); });
+$("#entrada").addEventListener("focus", () => { if (!ocupado && !finHablar) pon("escucha"); teclado(true); });
 $("#entrada").addEventListener("blur", () => { if (!ocupado && !finHablar) pon("reposo"); });
+// Tocar fuera del teclado y de la barra lo esconde
+addEventListener("pointerdown", e => {
+  // (una tecla puede haber redibujado el teclado: su botón ya no está en la página)
+  if (document.body.classList.contains("teclado") && e.target.isConnected && !e.target.closest("#teclado, #barra")) { teclado(false); $("#entrada").blur(); }
+});
+
+
+// ---------- Paneles: música (Spotify Connect) y casa (Home Assistant) ----------
+let sondeoMusica = 0;
+function panel(nombre) {
+  if (nombre) document.body.dataset.panel = nombre; else delete document.body.dataset.panel;
+  document.querySelectorAll(".chip[data-panel]").forEach(b => b.classList.toggle("abierto", b.dataset.panel === nombre));
+  clearInterval(sondeoMusica);
+  if (nombre === "musica") { musica(); sondeoMusica = setInterval(musica, 2000); }
+  if (nombre === "casa") casa();
+  if (nombre) teclado(false);
+}
+
+// Home Assistant se carga una vez y se queda abierto; antes se comprueba que responde y que deja mostrarse aquí
+async function casa() {
+  if ($("#ha").src) return;
+  const aviso = $("#casa-aviso"); aviso.style.display = ""; aviso.textContent = "Conectando con Home Assistant…";
+  let c = {};
+  try { c = await (await fetch("/api/casa")).json(); } catch (e) { c = { motivo: "no_responde" }; }
+  if (c.ok) { $("#ha").src = c.url; aviso.style.display = "none"; return; }
+  aviso.innerHTML = c.motivo === "marcos"
+    ? "<b>Home Assistant no deja mostrarse dentro de Prisma</b><span>Añade esto a <code>configuration.yaml</code> de Home Assistant y reinícialo:</span><code>http:<br>&nbsp;&nbsp;use_x_frame_options: false</code>"
+    : `<b>No encuentro Home Assistant</b><span>Probé <code>${(c.url || "sin dirección").replace(/[<>&]/g, "")}</code>. Pon la dirección correcta en <code>~/.config/prisma/nucleo.json</code>:</span><code>"home_assistant": "http://192.168.1.X:8123"</code>`;
+}
+
+const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+async function musica() {
+  let m = {};
+  try { m = await (await fetch("/api/musica")).json(); } catch (e) { /* servidor reiniciando */ }
+  const hay = m.nombre && (m.estado === "sonando" || m.estado === "pausa" || m.estado === "parada");
+  $("#panel-musica .tema").style.display = hay ? "" : "none";
+  $("#m-barra").style.display = hay && m.duracion_ms ? "" : "none";
+  if (hay) {
+    $("#portada").style.backgroundImage = m.portada ? `url("${m.portada}")` : "";
+    $("#portada").textContent = m.portada ? "" : "♪";
+    $("#m-nombre").textContent = m.nombre; $("#m-artistas").textContent = m.artistas || "";
+    $("#m-album").textContent = m.album || "";
+    $("#m-estado").textContent = { sonando: "Sonando", pausa: "En pausa", parada: "Parada" }[m.estado] +
+      (m.duracion_ms ? ` · ${mmss(m.posicion_ms)} / ${mmss(m.duracion_ms)}` : "");
+    $("#m-barra i").style.width = m.duracion_ms ? Math.min(100, 100 * m.posicion_ms / m.duracion_ms) + "%" : "0";
+  }
+  $("#m-ayuda").textContent = hay ? "Controla la música desde Spotify en el móvil o el ordenador."
+    : m.estado === "conectado" ? "Conectado a Spotify. Elige una canción en la app y sonará aquí."
+    : "Para escuchar música: abre Spotify en el móvil, pulsa el icono del altavoz y elige «Prisma».";
+}
+
+// ---------- Teclado en pantalla ----------
+const LETRAS = [["q","w","e","r","t","y","u","i","o","p"], ["a","s","d","f","g","h","j","k","l","ñ"],
+                ["⇧","z","x","c","v","b","n","m","⌫"], ["123","´","espacio","¿?","Enviar","⌄"]];
+const SIGNOS = [["1","2","3","4","5","6","7","8","9","0"], ["-","/",":",";","(",")","€","&","@","\""],
+                ["#+=",".",",","?","!","'","%","+","⌫"], ["abc","´","espacio","¿?","Enviar","⌄"]];
+const ACENTO = { a: "á", e: "é", i: "í", o: "ó", u: "ú", A: "Á", E: "É", I: "Í", O: "Ó", U: "Ú" };
+let mayus = false, signos = false, tilde = false, borrando = 0;
+
+function pintaTeclado() {
+  const t = $("#teclado"); t.textContent = "";
+  for (const fila of (signos ? SIGNOS : LETRAS)) {
+    const f = document.createElement("div"); f.className = "fila";
+    for (const k of fila) {
+      const b = document.createElement("button"); b.type = "button"; b.className = "tecla"; b.dataset.k = k;
+      b.textContent = k === "espacio" ? "" : (!signos && mayus && k.length === 1 ? k.toUpperCase() : k);
+      if (["⇧", "⌫", "123", "abc", "#+=", "¿?", "⌄", "´"].includes(k)) b.classList.add("ancha");
+      if (k === "espacio") b.classList.add("espacio");
+      if (k === "Enviar") b.classList.add("ancha", "enviar");
+      if ((k === "⇧" && mayus) || (k === "´" && tilde)) b.classList.add("activa");
+      f.append(b);
+    }
+    t.append(f);
+  }
+}
+
+function escribeTecla(k) {
+  const e = $("#entrada");
+  if (k === "⌫") e.value = e.value.slice(0, -1);
+  else if (k === "⇧") { mayus = !mayus; pintaTeclado(); }
+  else if (k === "123" || k === "abc" || k === "#+=") { signos = k !== "abc"; pintaTeclado(); }
+  else if (k === "´") { tilde = !tilde; pintaTeclado(); }
+  else if (k === "¿?") e.value += e.value.includes("¿") && !e.value.endsWith("?") ? "?" : "¿";
+  else if (k === "espacio") e.value += " ";
+  else if (k === "Enviar") pregunta(e.value);
+  else if (k === "⌄") { teclado(false); e.blur(); }
+  else {
+    let c = !signos && mayus ? k.toUpperCase() : k;
+    if (tilde) { c = ACENTO[c] || c; tilde = false; pintaTeclado(); }
+    e.value += c;
+    if (mayus) { mayus = false; pintaTeclado(); }          // mayúscula solo para la siguiente letra
+  }
+}
+
+function teclado(abre) {
+  document.body.classList.toggle("teclado", abre);
+  if (abre) { mayus = $("#entrada").value === ""; signos = false; tilde = false; pintaTeclado(); despierta(); }
+}
+
+// Las teclas no quitan el foco a la caja de texto; ⌫ mantenido borra seguido
+$("#teclado").addEventListener("pointerdown", e => {
+  const b = e.target.closest(".tecla"); if (!b) return;
+  e.preventDefault(); b.classList.add("pulsada"); despierta();
+  escribeTecla(b.dataset.k);
+  if (b.dataset.k === "⌫") borrando = setTimeout(function repite() { escribeTecla("⌫"); borrando = setTimeout(repite, 80); }, 450);
+});
+["pointerup", "pointercancel", "pointerleave"].forEach(t => $("#teclado").addEventListener(t, () => {
+  clearTimeout(borrando); document.querySelectorAll(".tecla.pulsada").forEach(b => b.classList.remove("pulsada"));
+}));
+$("#entrada").addEventListener("pointerdown", () => teclado(true));
 
 pon("reposo"); reloj(); clima(); espera();
 setInterval(reloj, 1000); setInterval(clima, 15 * 60_000);

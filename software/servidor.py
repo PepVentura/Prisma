@@ -21,6 +21,49 @@ RETRATO_PROPIO = os.path.expanduser("~/.config/prisma/retrato")
 RETRATO_MUESTRA = os.path.join(RAIZ, "retrato_muestra")
 
 
+# Lo que suena en Spotify Connect (lo cuenta librespot en cada evento)
+musica = {"estado": None, "cuando": 0.0}
+
+
+def musica_evento(ev):
+    tipo = ev.get("player_event", "")
+    if tipo == "track_changed":
+        musica.update(nombre=ev.get("name"), artistas=(ev.get("artists") or "").replace("\n", ", "),
+                      album=ev.get("album"), portada=(ev.get("covers") or "").split("\n")[0] or None,
+                      duracion_ms=int(ev.get("duration_ms") or 0), posicion_ms=0, cuando=time.time())
+    elif tipo in ("playing", "paused", "seeked", "position_correction"):
+        musica.update(estado="sonando" if tipo != "paused" else "pausa",
+                      posicion_ms=int(ev.get("position_ms") or 0), cuando=time.time())
+        if tipo in ("seeked", "position_correction"):
+            musica["estado"] = musica.get("estado_previo", "sonando")
+    elif tipo in ("stopped", "session_disconnected"):
+        musica.update(estado="parada" if tipo == "stopped" else None, cuando=time.time())
+    elif tipo == "session_connected":
+        musica.update(estado="conectado", usuario=ev.get("user_name"), cuando=time.time())
+    if musica.get("estado") in ("sonando", "pausa"):
+        musica["estado_previo"] = musica["estado"]
+
+
+def musica_actual():
+    m = dict(musica)
+    if m.get("estado") == "sonando":           # posición estimada desde el último aviso
+        m["posicion_ms"] = m.get("posicion_ms", 0) + int((time.time() - m["cuando"]) * 1000)
+    return m
+
+
+def comprueba_casa():
+    """¿Responde Home Assistant y deja mostrarse dentro de la pantalla de Prisma?"""
+    url = CONFIG.get("home_assistant")
+    if not url:
+        return {"ok": False, "motivo": "sin_url"}
+    try:
+        with urllib.request.urlopen(url, timeout=3) as r:
+            xfo = (r.headers.get("X-Frame-Options") or "").upper()
+            return {"ok": not xfo, "motivo": "marcos" if xfo else None, "url": url}
+    except Exception as e:
+        return {"ok": False, "motivo": "no_responde", "url": url, "detalle": str(e)[:120]}
+
+
 def tipo_avatar():
     """Retrato animado propio > personaje 3D propio > retrato de muestra."""
     if os.path.isfile(os.path.join(RETRATO_PROPIO, "retrato.json")):
@@ -57,7 +100,12 @@ class Manejador(BaseHTTPRequestHandler):
         if self.path == "/api/estado":
             m = memoria.carga()
             return self._json({"listo": estado["listo"], "error": estado["error"], "modelo": CONFIG["modelo"],
-                               "nombre": m.get("nombre"), "ciudad": CONFIG["ciudad"]})
+                               "nombre": m.get("nombre"), "ciudad": CONFIG["ciudad"],
+                               "home_assistant": CONFIG.get("home_assistant")})
+        if self.path == "/api/musica":
+            return self._json(musica_actual())
+        if self.path == "/api/casa":
+            return self._json(comprueba_casa())
         if self.path == "/api/tiempo":
             try:
                 return self._json({"texto": tiempo.responde(0, CONFIG["ciudad"])})
@@ -111,6 +159,13 @@ class Manejador(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
+        if self.path == "/api/musica":
+            # Avisos de Spotify Connect (raspotify → herramientas/evento_spotify.py), solo desde la propia Pi
+            if self.client_address[0] != "127.0.0.1":
+                return self.send_error(403)
+            ev = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
+            musica_evento(ev)
+            return self._json({"ok": True})
         if self.path != "/api/preguntar":
             self.send_error(404)
             return
