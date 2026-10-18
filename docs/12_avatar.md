@@ -57,7 +57,7 @@ Copia las imágenes con esos nombres a una carpeta (p. ej. `~/retrato_nuevo/base
 python3 ~/prisma/software/herramientas/prepara_retrato.py ~/retrato_nuevo
 ```
 Si hay `fondo` necesita rembg (`pip install "rembg[cpu]" --break-system-packages`; descarga un modelo de 180 MB la primera vez y tarda ≈1 min en la Pi). También me puedes pasar las imágenes y te las preparo.
-Si no hay `ojos_cerrados` (que sirve para situar la boca), indica la zona de la boca a mano: `--boca X,Y,ANCHO,ALTO` en píxeles de la imagen base.
+Si no hay `ojos_cerrados` (que sirve para situar la boca), indica la zona de la boca a mano: `--boca X,Y,ANCHO,ALTO` en píxeles de la imagen base. Igual con `--ojos` si al cerrar los ojos el generador cambió también la sonrisa.
 Alinea cada variante con la base, detecta qué zona cambia, iguala el color y recorta solo esa zona. Si el generador movió o retocó algo más, se ignora. Crea `~/.config/prisma/retrato/` con `retrato.json`; recarga la pantalla (`F5`).
 En `retrato.json` se pueden ajustar a mano `cabeza` (centro y radio de lo que se balancea), `cuello_y`, `centro` (encuadre), `zoom` y `fondo.centro` (qué parte del decorado se ve).
 
