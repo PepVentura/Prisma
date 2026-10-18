@@ -55,19 +55,24 @@ Todo en local, en la propia Pi, con consultas a Internet a través de SearXNG. L
 ```bash
 bash ~/prisma/software/instalacion/02_ia.sh
 ```
-- Instala **Ollama**, que deja el modelo siempre cargado y solo accesible desde la propia Pi.
-- Descarga tres modelos candidatos para compararlos: `qwen3.5:2b`, `qwen3:1.7b` y `qwen2.5:3b`, unos 7 GB en total. Con `--gemma` añade `gemma4:e2b`, unos 5 GB más; para eso conviene una tarjeta de 64 GB.
+- Instala **Ollama**, que deja el modelo siempre cargado y solo accesible desde la propia Pi, y descarga el modelo de Prisma, **qwen3:1.7b** (D038).
 - Instala **Docker** y **SearXNG**, en el puerto 8888, solo para la Pi, con respuestas en JSON y en español.
+- Si se corta la conexión, vuelve a lanzarlo y continúa donde se quedó.
+- **Si falla la descarga del modelo con un error de certificado** en fin de semana, son los bloqueos de LaLiga a Cloudflare (mira hayahora.futbol). Espera a que acaben los partidos o usa una VPN.
 
-**Prueba de velocidad:**
+**Probar el modelo y una búsqueda:**
 ```bash
-python3 ~/prisma/software/herramientas/prueba_ia.py --comparar
+python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3:1.7b
+python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3:1.7b --buscar "¿quién ganó el último Tour de Francia?"
 ```
-Hace las mismas preguntas a cada modelo y mide cuándo sale la **primera frase completa**, que es cuando Prisma empezaría a hablar, y la velocidad de generación. Al final saca una tabla resumen.
 
-**Charlar por texto con un modelo y probar una búsqueda:**
-```bash
-python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3.5:2b
-python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3.5:2b --buscar "¿quién ganó el último Tour de Francia?"
-```
-Con los resultados (velocidad y calidad de las respuestas en español) elegiremos el modelo definitivo.
+### Resultados en la Pi 5 (18/10/2026)
+| Modelo | 1.er token | 1.ª frase | Generación | Lectura |
+|---|---:|---:|---:|---:|
+| **qwen3:1.7b** | 0,7 s | **3,0 s** | 9,8 tok/s | 155 tok/s |
+| qwen2.5:3b | 1,1 s | 4,8 s | 6,0 tok/s | 91 tok/s |
+| qwen3.5:2b | 2,3 s | 6,6 s | 4,8 tok/s | 33 tok/s |
+
+Búsqueda con qwen3:1.7b ya cargado: 9,1 s hasta la primera frase (SearXNG 3,0 s, lectura de 368 tokens 3,3 s, primera frase 2,8 s). Objetivo con los ajustes del núcleo: 3–4 s. El tiempo meteorológico irá por Open-Meteo, no por el buscador, porque el modelo pequeño inventa detalles cuando la búsqueda no trae el dato.
+
+Para volver a comparar modelos: `bash ~/prisma/software/instalacion/02_ia.sh --comparar` y `python3 ~/prisma/software/herramientas/prueba_ia.py --comparar`.

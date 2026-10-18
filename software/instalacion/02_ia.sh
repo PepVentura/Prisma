@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Prisma — paso 2: IA local (Ollama + modelos candidatos) y buscador SearXNG.
-# Uso (en la Pi):  bash ~/prisma/software/instalacion/02_ia.sh [--gemma]
-#   --gemma  descarga también gemma4:e2b (≈5 GB más; necesita tarjeta de 64 GB)
+# Uso (en la Pi):  bash ~/prisma/software/instalacion/02_ia.sh [--comparar]
+#   Por defecto descarga solo el modelo de Prisma, qwen3:1.7b (D038).
+#   --comparar  descarga también los candidatos para volver a compararlos
 set -euo pipefail
 
-MODELOS=(qwen3.5:2b qwen3:1.7b qwen2.5:3b)
-[[ "${1:-}" == "--gemma" ]] && MODELOS+=(gemma4:e2b)
+MODELOS=(qwen3:1.7b)
+[[ "${1:-}" == "--comparar" ]] && MODELOS+=(qwen2.5:3b qwen3.5:2b)
 CONF="$HOME/.config/prisma"
 mkdir -p "$CONF/searxng"
 
@@ -53,5 +54,5 @@ else
 fi
 
 echo
-echo "Hecho. Prueba los modelos con:"
-echo "   python3 ~/prisma/software/herramientas/prueba_ia.py --comparar"
+echo "Hecho. Prueba el modelo con:"
+echo "   python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3:1.7b"
