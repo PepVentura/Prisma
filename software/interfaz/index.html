@@ -36,6 +36,26 @@ main { position: absolute; inset: 0; display: grid; grid-template-columns: 400px
 /* Cara */
 #cara { grid-row: 1; display: grid; place-items: center; }
 #cara svg { width: 340px; height: 260px; overflow: visible; }
+/* Avatar 3D: sustituye a la cara simple cuando el modelo carga. Fondo original de «puente»:
+   ventanal con estrellas, consolas con luz tenue y un halo del color del estado */
+#cara { position: relative; }
+#escenario { position: absolute; inset: -6px -4px; border-radius: 22px; overflow: hidden; opacity: 0; transition: opacity .8s;
+  background:
+    radial-gradient(60% 45% at 50% 38%, color-mix(in srgb, var(--estado) 22%, transparent), transparent 70%),
+    linear-gradient(180deg, transparent 62%, #0b1622 62.5%, #0e1c2b 76%, #08111a 100%),
+    radial-gradient(1px 1px at 12% 18%, #cfe8ff 60%, transparent), radial-gradient(1px 1px at 33% 9%, #cfe8ff 60%, transparent),
+    radial-gradient(1.5px 1.5px at 71% 22%, #fff 60%, transparent), radial-gradient(1px 1px at 88% 12%, #cfe8ff 60%, transparent),
+    radial-gradient(1px 1px at 57% 31%, #9fc6ff 60%, transparent), radial-gradient(1px 1px at 22% 40%, #9fc6ff 60%, transparent),
+    radial-gradient(1px 1px at 92% 44%, #fff 60%, transparent), radial-gradient(1px 1px at 6% 52%, #cfe8ff 60%, transparent),
+    linear-gradient(180deg, #050a14, #0a1426 60%); }
+#escenario::before { content: ""; position: absolute; left: 0; right: 0; top: 63%; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--estado), transparent); opacity: .55; transition: background .5s; }
+#escenario::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 9%; height: 14%;
+  background: repeating-linear-gradient(90deg, #13314a 0 18px, transparent 18px 26px); opacity: .5; border-radius: 4px; }
+#lienzo3d { position: absolute; inset: -6px -4px; border-radius: 22px; overflow: hidden; }
+#lienzo3d canvas { display: block; width: 100%; height: 100%; }
+body.con-avatar #escenario { opacity: 1; }
+body.con-avatar #cara svg { display: none; }
 .ojo { fill: var(--estado); transition: fill .5s; transform-box: fill-box; transform-origin: center;
        animation: parpadeo 5.5s infinite; }
 .ojo.der { animation-delay: .04s; }
@@ -100,6 +120,8 @@ body.dormido #reposo { display: grid; }
 
 <main>
   <div id="cara" aria-hidden="true">
+    <div id="escenario"></div>
+    <div id="lienzo3d"></div>
     <svg viewBox="0 0 340 260">
       <g id="ojos">
         <rect class="ojo izq" x="78" y="62" width="58" height="84" rx="29"/>
@@ -136,6 +158,17 @@ body.dormido #reposo { display: grid; }
 
 <div id="arranque"><b>PRISMA</b><span id="arranque-txt">Despertando…</span></div>
 
+<script type="importmap">
+{ "imports": { "three": "./lib/three.module.js", "three/addons/": "./lib/addons/",
+               "@pixiv/three-vrm": "./lib/three-vrm.module.js" } }
+</script>
+<script type="module">
+// Avatar 3D. Si no hay WebGL o el modelo no carga, se queda la cara simple.
+import("./avatar.js").then(m => m.inicia()).then(() => {
+  document.body.classList.add("con-avatar");
+  window.avatar.estado(document.body.dataset.estado);
+}).catch(e => console.warn("Avatar no disponible:", e));
+</script>
 <script>
 const $ = s => document.querySelector(s);
 const ETIQUETA = { reposo: "Prisma", escucha: "Te escucho", pensando: "Pensando", buscando: "Buscando",
@@ -150,6 +183,7 @@ function pon(estado) {
   const c = getComputedStyle(document.documentElement).getPropertyValue("--" + (estado === "buscando" ? "pensando" : estado));
   document.documentElement.style.setProperty("--estado", c.trim() || "var(--reposo)");
   $("#estado-txt").textContent = ETIQUETA[estado] || "Prisma";
+  window.avatar && window.avatar.estado(estado);
 }
 
 function despierta() {
