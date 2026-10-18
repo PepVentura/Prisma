@@ -144,3 +144,27 @@ Noticias, tiempo, hora y búsqueda responden en 0,0–0,8 s. Ajustes tras la pru
 - **Preguntas de seguimiento:** «¿y mañana?», «¿y en Bilbao?», «¿y el domingo?», «¿y de TV3?», «¿y el Athletic?» repiten la consulta anterior cambiando solo ese dato.
 - **Tiempo:** ya no dice «llovizna… sin lluvia prevista». Si el cielo anuncia lluvia o la probabilidad pasa del 10 %, da el porcentaje.
 - **Hora:** de 12 a 15 h dice «del mediodía» (antes «12:30 de la mañana»).
+
+## 9. Paso 5: la interfaz en la pantalla
+```bash
+git -C ~/prisma pull
+bash ~/prisma/software/instalacion/04_interfaz.sh
+sudo reboot
+```
+Al encender, la Pi arranca directamente en Prisma a pantalla completa:
+- **Cara** a la izquierda, que cambia con el estado: reposo, escucha, pensando o buscando (ojos arriba y puntos), hablando (boca en movimiento).
+- **Marco de luz** del color del estado, el mismo que llevarán las franjas LED (D033).
+- **Conversación** a la derecha: tu pregunta en gris y la respuesta grande. Las fuentes de las búsquedas, en gris.
+- **Accesos rápidos** (Tiempo, Noticias, Fútbol, Un chiste) y un cuadro para escribir con el teclado. Con la voz desaparecerá la necesidad de teclear.
+- **Reposo:** tras 90 s sin uso, reloj grande con la fecha y el tiempo de hoy. Se despierta al tocar la pantalla o pulsar una tecla.
+
+![Inicio](img/interfaz_inicio.png)
+![Hablando](img/interfaz_hablando.png)
+![Reposo](img/interfaz_reposo.png)
+
+**Útil:**
+- Salir del modo quiosco: `Alt+F4` con un teclado, o por SSH `pkill chromium`.
+- Volver al escritorio normal: `bash ~/prisma/software/instalacion/04_interfaz.sh --quitar`.
+- Ver qué hace el servidor: `journalctl --user -u prisma -f`.
+- Tras un `git pull` con cambios: `systemctl --user restart prisma` y recargar la página (`F5`) o reiniciar.
+- La terminal sigue funcionando para pruebas: `python3 ~/prisma/software/prisma_texto.py --tiempos`.

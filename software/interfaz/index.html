@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prisma</title>
+<style>
+/* Pantalla de 1024 × 600, siempre oscura. Marco de luz alrededor según el estado (D033).
+   Izquierda: la cara. Derecha: la conversación. Abajo: accesos rápidos y escritura. */
+:root {
+  --fondo: #07090d; --panel: #0f141b; --linea: #1d2631;
+  --tinta: #e9eff4; --tenue: #7f8c98; --apagado: #3a4654;
+  --reposo: #5d6b78; --escucha: #22d3ee; --pensando: #9d6cff; --hablando: #22d3ee;
+  --aviso: #ffb020; --error: #ff6b2c; --silencio: #ff3b4f;
+  --estado: var(--reposo);
+  --letra: "Noto Sans", "DejaVu Sans", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--fondo); color: var(--tinta); font-family: var(--letra); overflow: hidden;
+       user-select: none; -webkit-user-select: none; cursor: none; }
+body.raton { cursor: default; }
+
+/* Marco de luz: el mismo color que las franjas LED */
+#marco { position: fixed; inset: 0; pointer-events: none; z-index: 5; border-radius: 6px;
+  box-shadow: inset 0 0 0 3px var(--estado), inset 0 0 38px -6px var(--estado);
+  opacity: .9; transition: box-shadow .5s, opacity .5s; }
+body[data-estado="reposo"] #marco { opacity: .25; }
+body[data-estado="pensando"] #marco, body[data-estado="buscando"] #marco { animation: latido 1.4s ease-in-out infinite; }
+@keyframes latido { 50% { opacity: .45; } }
+
+main { position: absolute; inset: 0; display: grid; grid-template-columns: 400px 1fr;
+       grid-template-rows: 1fr auto; padding: 22px 26px 18px; gap: 14px 22px; }
+
+/* Cara */
+#cara { grid-row: 1; display: grid; place-items: center; }
+#cara svg { width: 340px; height: 260px; overflow: visible; }
+.ojo { fill: var(--estado); transition: fill .5s; transform-box: fill-box; transform-origin: center;
+       animation: parpadeo 5.5s infinite; }
+.ojo.der { animation-delay: .04s; }
+@keyframes parpadeo { 0%, 94%, 100% { transform: scaleY(1); } 96.5% { transform: scaleY(.08); } }
+#ojos { transition: transform .6s cubic-bezier(.3,.7,.3,1); }
+body[data-estado="pensando"] #ojos, body[data-estado="buscando"] #ojos { transform: translate(14px, -10px); }
+body[data-estado="escucha"] .ojo { transform: scale(1.12); animation: none; }
+#boca { fill: none; stroke: var(--estado); stroke-width: 9; stroke-linecap: round; transition: stroke .5s; }
+#boca-abierta { fill: var(--estado); opacity: 0; transition: fill .5s; transform-box: fill-box; transform-origin: center; }
+body[data-estado="hablando"] #boca { opacity: 0; }
+body[data-estado="hablando"] #boca-abierta { opacity: 1; animation: hablar .26s ease-in-out infinite alternate; }
+@keyframes hablar { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
+#puntos circle { fill: var(--estado); opacity: 0; }
+body[data-estado="pensando"] #puntos circle, body[data-estado="buscando"] #puntos circle { animation: punto 1.2s infinite; }
+#puntos circle:nth-child(2) { animation-delay: .2s !important; } #puntos circle:nth-child(3) { animation-delay: .4s !important; }
+@keyframes punto { 0%, 100% { opacity: .15; } 40% { opacity: 1; } }
+
+/* Conversación */
+#charla { grid-row: 1; grid-column: 2; display: flex; flex-direction: column; justify-content: center;
+          gap: 14px; min-width: 0; padding-right: 6px; }
+#cabecera { position: absolute; top: 20px; right: 28px; text-align: right; color: var(--tenue);
+            font-size: 15px; line-height: 1.35; font-variant-numeric: tabular-nums; }
+#cabecera b { color: var(--tinta); font-size: 26px; font-weight: 600; display: block; letter-spacing: .5px; }
+#pregunta { color: var(--tenue); font-size: 18px; min-height: 1.3em; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; }
+#respuesta { font-size: 27px; line-height: 1.38; max-height: 350px; overflow-y: auto; scrollbar-width: none;
+             text-wrap: pretty; }
+#respuesta::-webkit-scrollbar { display: none; }
+#respuesta .fuente { color: var(--tenue); }
+#estado-txt { font-size: 13px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--estado);
+              transition: color .5s; }
+
+/* Barra inferior */
+#barra { grid-column: 1 / 3; display: flex; gap: 10px; align-items: center; }
+.chip { flex: none; background: var(--panel); color: var(--tinta); border: 1px solid var(--linea);
+        border-radius: 22px; padding: 11px 16px; font: 16px var(--letra); }
+.chip:active { border-color: var(--estado); }
+form { flex: 1; display: flex; gap: 8px; min-width: 0; }
+#entrada { flex: 1; min-width: 0; background: var(--panel); color: var(--tinta); border: 1px solid var(--linea);
+           border-radius: 22px; padding: 11px 18px; font: 17px var(--letra); outline: none; }
+#entrada:focus { border-color: var(--estado); }
+#enviar { background: var(--estado); color: var(--fondo); border: 0; border-radius: 22px; padding: 0 20px;
+          font: 600 16px var(--letra); transition: background .5s; }
+button:focus-visible, .chip:focus-visible { outline: 2px solid var(--estado); outline-offset: 2px; }
+
+/* Pantalla de reposo: tras un rato sin uso, reloj grande */
+#reposo { position: absolute; inset: 0; display: none; place-content: center; text-align: center; gap: 6px;
+          background: var(--fondo); z-index: 3; font-variant-numeric: tabular-nums; }
+#reposo .hora { font-size: 150px; font-weight: 300; letter-spacing: 2px; line-height: 1; }
+#reposo .fecha { font-size: 26px; color: var(--tenue); }
+#reposo .clima { font-size: 20px; color: var(--tenue); max-width: 760px; margin: 14px auto 0; }
+body.dormido #reposo { display: grid; }
+
+#arranque { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; z-index: 4;
+            background: var(--fondo); color: var(--tenue); font-size: 20px; gap: 10px; }
+#arranque b { color: var(--tinta); font-size: 34px; font-weight: 500; letter-spacing: 6px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body data-estado="reposo">
+<div id="marco"></div>
+
+<main>
+  <div id="cara" aria-hidden="true">
+    <svg viewBox="0 0 340 260">
+      <g id="ojos">
+        <rect class="ojo izq" x="78" y="62" width="58" height="84" rx="29"/>
+        <rect class="ojo der" x="204" y="62" width="58" height="84" rx="29"/>
+      </g>
+      <path id="boca" d="M128 196 Q170 222 212 196"/>
+      <rect id="boca-abierta" x="140" y="186" width="60" height="30" rx="15"/>
+      <g id="puntos"><circle cx="150" cy="242" r="5"/><circle cx="170" cy="242" r="5"/><circle cx="190" cy="242" r="5"/></g>
+    </svg>
+  </div>
+
+  <section id="charla" aria-live="polite">
+    <div id="estado-txt">Prisma</div>
+    <div id="pregunta"></div>
+    <div id="respuesta">Hola. Pregúntame la hora, el tiempo, las noticias o el fútbol, o charla conmigo.</div>
+  </section>
+
+  <div id="barra">
+    <button class="chip" data-pide="¿Qué tiempo hará hoy?">Tiempo</button>
+    <button class="chip" data-pide="Dame las noticias">Noticias</button>
+    <button class="chip" data-pide="¿Cuándo juega la Real?">Fútbol</button>
+    <button class="chip" data-pide="Cuéntame un chiste">Un chiste</button>
+    <form id="formulario" autocomplete="off">
+      <input id="entrada" placeholder="Escribe aquí…" aria-label="Pregunta para Prisma">
+      <button id="enviar" type="submit">Enviar</button>
+    </form>
+  </div>
+</main>
+
+<div id="cabecera"><b id="reloj">--:--</b><span id="fecha"></span></div>
+
+<div id="reposo"><div class="hora" id="reposo-hora">--:--</div><div class="fecha" id="reposo-fecha"></div>
+  <div class="clima" id="reposo-clima"></div></div>
+
+<div id="arranque"><b>PRISMA</b><span id="arranque-txt">Despertando…</span></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const ETIQUETA = { reposo: "Prisma", escucha: "Te escucho", pensando: "Pensando", buscando: "Buscando",
+                   hablando: "Prisma", aviso: "Aviso", error: "Algo ha fallado" };
+const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const REPOSO_TRAS = 90_000;      // ms sin usarlo hasta la pantalla de reposo
+let ocupado = false, ultimoUso = Date.now(), finHablar = 0;
+
+function pon(estado) {
+  document.body.dataset.estado = estado;
+  const c = getComputedStyle(document.documentElement).getPropertyValue("--" + (estado === "buscando" ? "pensando" : estado));
+  document.documentElement.style.setProperty("--estado", c.trim() || "var(--reposo)");
+  $("#estado-txt").textContent = ETIQUETA[estado] || "Prisma";
+}
+
+function despierta() {
+  ultimoUso = Date.now();
+  document.body.classList.remove("dormido");
+}
+
+function reloj() {
+  const d = new Date(), hm = d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+  const f = `${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}`;
+  $("#reloj").textContent = hm; $("#fecha").textContent = f;
+  $("#reposo-hora").textContent = hm; $("#reposo-fecha").textContent = f;
+  if (!ocupado && Date.now() - ultimoUso > REPOSO_TRAS && !document.body.classList.contains("dormido")) {
+    document.body.classList.add("dormido"); finHablar = 0; pon("reposo");
+  }
+  if (!ocupado && finHablar && Date.now() > finHablar) { finHablar = 0; pon("reposo"); }
+}
+
+async function clima() {
+  try { const r = await (await fetch("/api/tiempo")).json(); if (r.texto) $("#reposo-clima").textContent = r.texto; }
+  catch (e) { /* sin red: el reposo enseña solo la hora */ }
+}
+
+function escribe(texto) {
+  const r = $("#respuesta");
+  const m = texto.match(/^(Según [^:]{2,60}:)(.*)$/s);        // la fuente en gris
+  if (m) { const s = document.createElement("span"); s.className = "fuente"; s.textContent = m[1];
+           r.append(s, document.createTextNode(m[2] + " ")); }
+  else r.append(document.createTextNode(texto + " "));
+  r.scrollTop = r.scrollHeight;
+  // sin voz todavía: «habla» el tiempo que tardaría en leerse (≈15 caracteres por segundo)
+  finHablar = Math.max(finHablar, Date.now()) + Math.max(900, texto.length * 66);
+}
+
+async function pregunta(texto) {
+  texto = texto.trim();
+  if (!texto || ocupado) return;
+  despierta(); ocupado = true; finHablar = 0;
+  $("#pregunta").textContent = texto; $("#respuesta").textContent = ""; $("#entrada").value = "";
+  pon("pensando");
+  try {
+    const resp = await fetch("/api/preguntar", { method: "POST", headers: { "Content-Type": "application/json" },
+                                                 body: JSON.stringify({ texto }) });
+    const lector = resp.body.getReader(), dec = new TextDecoder();
+    let buf = "", buscando = false;
+    for (;;) {
+      const { value, done } = await lector.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let i;
+      while ((i = buf.indexOf("\n\n")) >= 0) {
+        const linea = buf.slice(0, i); buf = buf.slice(i + 2);
+        if (!linea.startsWith("data: ")) continue;
+        const ev = JSON.parse(linea.slice(6));
+        if (ev.tipo === "estado") { pon(ev.estado); buscando = ev.estado === "buscando"; }
+        else if (ev.tipo === "trozo") {
+          if (buscando && ev.texto === "Lo busco…") { $("#respuesta").textContent = "Lo busco…"; continue; }
+          if ($("#respuesta").textContent === "Lo busco…") $("#respuesta").textContent = "";
+          escribe(ev.texto);
+        } else if (ev.tipo === "fin" && ev.texto) { pon("error"); escribe(ev.texto); }
+      }
+    }
+  } catch (e) {
+    pon("error"); $("#respuesta").textContent = "No consigo hablar con mi cerebro. ¿Está en marcha el servidor?";
+    finHablar = Date.now() + 4000;
+  } finally {
+    ocupado = false; ultimoUso = Date.now();
+    if (!finHablar) finHablar = Date.now() + 1500;
+  }
+}
+
+async function espera() {
+  for (;;) {
+    try {
+      const e = await (await fetch("/api/estado")).json();
+      if (e.listo) {
+        $("#arranque").remove();
+        if (e.nombre) $("#respuesta").textContent = `Hola, ${e.nombre}. Pregúntame la hora, el tiempo, las noticias o el fútbol, o charla conmigo.`;
+        return;
+      }
+      $("#arranque-txt").textContent = "Cargando el modelo de lenguaje…";
+    } catch (e) { $("#arranque-txt").textContent = "Esperando al servidor…"; }
+    await new Promise(r => setTimeout(r, 1500));
+  }
+}
+
+document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => pregunta(b.dataset.pide)));
+$("#formulario").addEventListener("submit", e => { e.preventDefault(); pregunta($("#entrada").value); });
+["pointerdown", "keydown"].forEach(t => addEventListener(t, despierta));
+addEventListener("mousemove", () => document.body.classList.add("raton"), { once: true });
+$("#entrada").addEventListener("focus", () => { if (!ocupado && !finHablar) pon("escucha"); });
+$("#entrada").addEventListener("blur", () => { if (!ocupado && !finHablar) pon("reposo"); });
+
+pon("reposo"); reloj(); clima(); espera();
+setInterval(reloj, 1000); setInterval(clima, 15 * 60_000);
+</script>
+</body>
+</html>
