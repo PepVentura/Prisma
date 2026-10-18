@@ -27,6 +27,8 @@ CONFIG = {
          "web": "https://www.deia.eus/", "paginas_rss": ["https://www.deia.eus/rss.html"]},
         {"nombre": "EITB", "alias": ["eitb", "teleberri"],
          "web": "https://www.eitb.eus/es/", "paginas_rss": ["https://www.eitb.eus/es/rss/"]},
+        {"nombre": "TV3", "alias": ["tv3", "tvs", "3cat", "3catinfo", "tres cat"],
+         "web": "https://www.3cat.cat/3catinfo/", "paginas_rss": ["https://www.3cat.cat/rss/"]},
     ],
     "historial": 4,                          # mensajes previos de la charla que se le vuelven a pasar
     "voz_coma_palabras": 4,                  # empieza a hablar en una coma si ya lleva estas palabras
