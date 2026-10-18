@@ -76,3 +76,16 @@ python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3:1.7b --buscar
 Búsqueda con qwen3:1.7b ya cargado: 9,1 s hasta la primera frase (SearXNG 3,0 s, lectura de 368 tokens 3,3 s, primera frase 2,8 s). Objetivo con los ajustes del núcleo: 3–4 s. El tiempo meteorológico irá por Open-Meteo, no por el buscador, porque el modelo pequeño inventa detalles cuando la búsqueda no trae el dato.
 
 Para volver a comparar modelos: `bash ~/prisma/software/instalacion/02_ia.sh --comparar` y `python3 ~/prisma/software/herramientas/prueba_ia.py --comparar`.
+
+## 7. Paso 3: Prisma por texto
+```bash
+git -C ~/prisma pull
+bash ~/prisma/software/instalacion/03_nucleo.sh
+python3 ~/prisma/software/prisma_texto.py --tiempos
+```
+Es el núcleo del asistente sin voz: escribes y responde como lo hará hablando.
+- **Enrutador.** Busca en Internet cuando se lo pides («busca…», «mira si…») o cuando la pregunta depende de datos actuales: hoy, último, precio, quién ganó… Si no, charla con el modelo.
+- **Búsqueda ajustada.** Cada buscador tiene 1,5 s para responder. El modelo lee solo 2 resultados de unos 280 caracteres, o la respuesta directa del buscador y 1 resultado.
+- **Charla.** Recuerda los últimos mensajes y contesta en 1–3 frases. Las instrucciones son fijas para que Ollama no tenga que releerlas.
+- **Voz.** La respuesta aparece por trozos: al final de cada frase, o en una coma si ya lleva unas cuantas palabras. Cada trozo es el momento en que Piper podría empezar a leer.
+- Con `--tiempos` muestra el desglose: búsqueda, lectura, cuándo empezaría a hablar y el total.
