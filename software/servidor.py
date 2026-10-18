@@ -14,6 +14,7 @@ from nucleo.config import CONFIG
 from nucleo.asistente import Asistente
 from nucleo import memoria
 from nucleo.fuentes import tiempo
+from nucleo.fuentes import musica as spotify
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "interfaz")
 asistente = Asistente()
@@ -42,6 +43,22 @@ def musica_evento(ev):
         musica.update(estado="conectado", usuario=ev.get("user_name"), cuando=time.time())
     if musica.get("estado") in ("sonando", "pausa"):
         musica["estado_previo"] = musica["estado"]
+
+
+_cache_musica = {"t": 0.0, "datos": None}
+
+
+def musica_pantalla():
+    """Con la API de Spotify conectada: lo que suena en la cuenta (y se puede controlar).
+    Sin ella: lo que cuenta raspotify cuando suena en Prisma."""
+    if spotify.configurado():
+        if time.time() - _cache_musica["t"] > 1.5:
+            try:
+                _cache_musica.update(t=time.time(), datos=spotify.estado())
+            except Exception as e:
+                _cache_musica.update(t=time.time(), datos={**musica_actual(), "api": True, "error": str(e)[:120]})
+        return _cache_musica["datos"]
+    return musica_actual()
 
 
 def musica_actual():
@@ -103,7 +120,7 @@ class Manejador(BaseHTTPRequestHandler):
                                "nombre": m.get("nombre"), "ciudad": CONFIG["ciudad"],
                                "home_assistant": CONFIG.get("home_assistant")})
         if self.path == "/api/musica":
-            return self._json(musica_actual())
+            return self._json(musica_pantalla())
         if self.path == "/api/casa":
             return self._json(comprueba_casa())
         if self.path == "/api/tiempo":
@@ -159,6 +176,15 @@ class Manejador(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
+        if self.path == "/api/musica/accion":
+            # Botones del panel de música (API de Spotify)
+            d = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
+            try:
+                v = spotify.accion(d.get("accion"), d.get("valor"))
+                _cache_musica["t"] = 0
+                return self._json({"ok": True, "valor": v})
+            except Exception as e:
+                return self._json({"ok": False, "error": str(e)[:200]})
         if self.path == "/api/musica":
             # Avisos de Spotify Connect (raspotify → herramientas/evento_spotify.py), solo desde la propia Pi
             if self.client_address[0] != "127.0.0.1":

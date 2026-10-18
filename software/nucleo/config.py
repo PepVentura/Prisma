@@ -15,6 +15,7 @@ CONFIG = {
     "ciudad": "Donostia",                    # para «¿qué tiempo hará mañana?» sin decir dónde
     "equipo": "Real Sociedad",               # para «¿cómo quedó la Real?» o «¿cuándo juega?»
     "futbol_liga": "PD",                     # LaLiga en football-data.org
+    "spotify_dispositivo": "Prisma",        # nombre del altavoz de raspotify en Spotify Connect
     "home_assistant": "http://homeassistant.local:8123",   # botón «Casa» de la pantalla
     "futbol_clave": "",                      # clave gratuita de football-data.org (ponla en nucleo.json)
     # Periódicos para «noticias»: el primero es el de por defecto. El RSS se descubre solo

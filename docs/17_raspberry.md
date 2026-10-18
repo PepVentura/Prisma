@@ -191,7 +191,22 @@ bash ~/prisma/software/instalacion/05_musica.sh
 systemctl --user restart prisma
 ```
 Instala raspotify: Prisma aparece como altavoz **«Prisma»** en la app de Spotify (Premium). En el móvil: Spotify → icono del altavoz → Prisma. El botón «Música» enseña la canción, el artista, la portada y el avance.
-- Se controla desde la app (pausa, siguiente, volumen). Los controles en la propia pantalla y por voz llegarán con la API de Spotify.
+- Sin más, se controla desde la app. Con la API de Spotify conectada (abajo), también desde la pantalla y por voz o texto.
 - El sonido sale por la salida predeterminada de la Pi; cuando esté montado el DAC (D011) se cambia `LIBRESPOT_DEVICE` en `/etc/raspotify/conf`.
 
 ![Música](img/interfaz_musica.png)
+
+### Conectar la API de Spotify (controles y órdenes)
+1. En https://developer.spotify.com/dashboard, con tu cuenta Premium: **Create app** → nombre «Prisma», descripción cualquiera, **Redirect URI** `http://127.0.0.1:8080/spotify` (exactamente así), marca **Web API** → **Save**. Copia el **Client ID**.
+2. En la Pi:
+   ```bash
+   git -C ~/prisma pull
+   python3 ~/prisma/software/herramientas/spotify_conecta.py
+   ```
+   Pega el Client ID, abre el enlace en el navegador del portátil y acepta. Te llevará a una página que no carga: copia su dirección completa (empieza por `http://127.0.0.1:8080/spotify?code=`) y pégala en la terminal.
+3. `systemctl --user restart prisma`. Si el programa dice que el altavoz «Prisma» no aparece, elígelo una vez en la app de Spotify: desde entonces Prisma recuerda la sesión y puede ponerse música sola.
+
+Qué se puede hacer después:
+- **Panel «Música»:** anterior, reproducir/pausa, siguiente y volumen. Enseña lo que suena en tu cuenta aunque sea en otro dispositivo.
+- **Órdenes** (escritas o, con los micrófonos, habladas): «pon Rosalía», «pon música de Queen», «pon la canción Bohemian Rhapsody», «pon el disco Abbey Road», «pon la lista Jazz clásico», «pausa», «sigue», «siguiente», «la anterior», «sube/baja el volumen», «volumen al 40», «¿qué canción es esta?».
+- Los permisos se guardan en `~/.config/prisma/spotify.json` (solo lectura para tu usuario).
