@@ -138,6 +138,14 @@ body[data-panel="musica"] #panel-musica, body[data-panel="casa"] #panel-casa { d
 #m-barra { height: 5px; border-radius: 3px; background: var(--linea); overflow: hidden; }
 #m-barra i { display: block; height: 100%; width: 0; background: var(--estado); transition: width 1s linear; }
 #m-ayuda { color: var(--tenue); font-size: 18px; line-height: 1.5; }
+#m-mandos { display: none; gap: 12px; align-items: center; }
+body.spotify-api #m-mandos { display: flex; }
+.mando { width: 64px; height: 56px; border-radius: 16px; background: var(--panel); color: var(--tinta);
+  border: 1px solid var(--linea); font: 24px var(--letra); display: grid; place-items: center; }
+.mando.grande { width: 84px; background: var(--escucha); color: var(--fondo); border: 0; }
+.mando:active { transform: scale(.95); }
+#m-vol { color: var(--tenue); font-size: 16px; min-width: 48px; text-align: center; font-variant-numeric: tabular-nums; }
+#m-dispositivo { color: var(--tenue); font-size: 15px; margin-left: auto; }
 #panel-casa { inset: 0; flex-direction: column; }
 #panel-casa header { height: 46px; display: flex; align-items: center; gap: 14px; padding: 0 14px; border-bottom: 1px solid var(--linea); }
 #panel-casa header span { color: var(--tenue); font-size: 15px; }
@@ -205,6 +213,15 @@ body.dormido #reposo { display: grid; }
   <div class="tema"><div id="portada">♪</div>
     <div><div id="m-nombre"></div><div id="m-artistas"></div><div id="m-album"></div><div id="m-estado"></div></div></div>
   <div id="m-barra"><i></i></div>
+  <div id="m-mandos">
+    <button class="mando" data-accion="prev" aria-label="Anterior">⏮</button>
+    <button class="mando grande" id="m-play" data-accion="play" aria-label="Reproducir o pausar">▶</button>
+    <button class="mando" data-accion="next" aria-label="Siguiente">⏭</button>
+    <button class="mando" data-accion="vol" data-valor="-10" aria-label="Bajar volumen">−</button>
+    <span id="m-vol"></span>
+    <button class="mando" data-accion="vol" data-valor="10" aria-label="Subir volumen">+</button>
+    <span id="m-dispositivo"></span>
+  </div>
   <div id="m-ayuda"></div>
 </section>
 
@@ -312,6 +329,8 @@ async function pregunta(texto) {
           if ($("#respuesta").textContent === "Lo busco…") $("#respuesta").textContent = "";
           escribe(ev.texto);
         } else if (ev.tipo === "fin" && ev.texto) { pon("error"); escribe(ev.texto); }
+        else if (ev.tipo === "fin" && ev.accion === "musica" && !document.body.dataset.panel)
+          setTimeout(() => { if (!ocupado) panel("musica"); }, 2200);     // tras «Pongo…», enseña lo que suena
       }
     }
   } catch (e) {
@@ -378,6 +397,17 @@ async function casa() {
     : `<b>No encuentro Home Assistant</b><span>Probé <code>${(c.url || "sin dirección").replace(/[<>&]/g, "")}</code>. Pon la dirección correcta en <code>~/.config/prisma/nucleo.json</code>:</span><code>"home_assistant": "http://192.168.1.X:8123"</code>`;
 }
 
+let ultimaMusica = {};
+document.querySelectorAll(".mando").forEach(b => b.addEventListener("click", async () => {
+  let accion = b.dataset.accion;
+  if (accion === "play" && ultimaMusica.estado === "sonando") accion = "pause";
+  try {
+    await fetch("/api/musica/accion", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ accion, valor: b.dataset.valor ? Number(b.dataset.valor) : null }) });
+  } catch (e) { /* sin servidor */ }
+  setTimeout(musica, 350);
+}));
+
 const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
 async function musica() {
   let m = {};
@@ -394,7 +424,14 @@ async function musica() {
       (m.duracion_ms ? ` · ${mmss(m.posicion_ms)} / ${mmss(m.duracion_ms)}` : "");
     $("#m-barra i").style.width = m.duracion_ms ? Math.min(100, 100 * m.posicion_ms / m.duracion_ms) + "%" : "0";
   }
-  $("#m-ayuda").textContent = hay ? "Controla la música desde Spotify en el móvil o el ordenador."
+  document.body.classList.toggle("spotify-api", !!m.api);
+  ultimaMusica = m;
+  $("#m-play").textContent = m.estado === "sonando" ? "⏸" : "▶";
+  $("#m-vol").textContent = m.volumen != null ? m.volumen + " %" : "";
+  $("#m-dispositivo").textContent = m.dispositivo ? "en " + m.dispositivo : "";
+  $("#m-ayuda").textContent = m.api ? (hay ? "Di o escribe «pon …» con un artista, una canción, un disco o una lista."
+      : "No suena nada. Di o escribe «pon …» con un artista, una canción, un disco o una lista.")
+    : hay ? "Controla la música desde Spotify en el móvil o el ordenador."
     : m.estado === "conectado" ? "Conectado a Spotify. Elige una canción en la app y sonará aquí."
     : "Para escuchar música: abre Spotify en el móvil, pulsa el icono del altavoz y elige «Prisma».";
 }
