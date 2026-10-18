@@ -139,6 +139,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("carpeta")
     ap.add_argument("--salida", default=os.path.expanduser("~/.config/prisma/retrato"))
+    ap.add_argument("--boca", metavar="X,Y,AN,AL", help="zona de la boca en la imagen base (si no hay ojos_cerrados para situarla)")
     a = ap.parse_args()
 
     base = abre(a.carpeta, "base")
@@ -183,7 +184,10 @@ def main():
         if abs(dy) > H * 0.1 or abs(dx) > W * 0.1:
             dy = dx = 0
         nv = mueve(nv, dy, dx)
-        if n.startswith("boca_") and conocidas:
+        if n.startswith("boca_") and a.boca:
+            bx, by_, bw, bh = (int(v) for v in a.boca.split(","))
+            r = (by_, bx, by_ + bh, bx + bw)
+        elif n.startswith("boca_") and conocidas:
             # La boca: siempre la misma ventana bajo los ojos (nariz → barbilla). Al abrirla, el generador
             # suele retocar también la barbilla y el cuello, y eso no debe convertirla en otra postura
             oy0, ox0, oy1, ox1 = conocidas[0]
