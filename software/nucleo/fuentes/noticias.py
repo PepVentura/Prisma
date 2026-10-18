@@ -1,6 +1,7 @@
 """Titulares de los periódicos elegidos, leídos tal cual desde su RSS.
 Los RSS se descubren solos desde la portada y se guardan en ~/.config/prisma/noticias.json."""
 import html, json, os, re, time
+from email.utils import parsedate_to_datetime
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from urllib.parse import urljoin
@@ -45,14 +46,24 @@ def descubre(periodico):
     return None
 
 
-def _titulares_de(url, n):
+def _fecha(it):
+    try:
+        return parsedate_to_datetime(it.findtext("pubDate") or "").timestamp()
+    except (TypeError, ValueError):
+        return 0
+
+
+def _titulares_de(url, n, nombre=None):
     raiz = ET.fromstring(pide(url, espera=6))
     items = raiz.findall(".//item") or raiz.findall(".//{http://www.w3.org/2005/Atom}entry")
+    if "news.google." in url:                     # Google Noticias no ordena por fecha
+        items = sorted(items, key=_fecha, reverse=True)
     titulos = []
     for it in items:
         t = it.findtext("title") or it.findtext("{http://www.w3.org/2005/Atom}title") or ""
         t = html.unescape(re.sub(r"<[^>]+>", "", t)).strip()
-        if t:
+        t = re.sub(r"\s+[-–|]\s+[^-–|]{2,40}$", "", t) if "news.google." in url else t   # quita « - El Periódico»
+        if t and t not in titulos:
             titulos.append(t)
         if len(titulos) >= n:
             break
@@ -102,7 +113,7 @@ def responde(nombre, n=3):
         return (f"No tengo configuradas las noticias de {nombre}. Ejecuta: "
                 "python3 ~/prisma/software/prisma_texto.py --configurar-noticias")
     if url not in _cache or time.time() - _cache[url][0] > 600:
-        _cache[url] = (time.time(), _titulares_de(url, n))
+        _cache[url] = (time.time(), _titulares_de(url, n, nombre))
     titulos = _cache[url][1][:n]
     if not titulos:
         return f"No he podido leer los titulares de {nombre}."

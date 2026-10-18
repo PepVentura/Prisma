@@ -19,12 +19,13 @@ CONFIG = {
     # Periódicos para «noticias»: el primero es el de por defecto. El RSS se descubre solo
     # (--configurar-noticias); si no lo encuentra, se puede poner a mano con "rss".
     "periodicos": [
+        # El Periódico y Deia bloquean los programas (406 WAF): sus titulares se leen de Google Noticias
         {"nombre": "El Periódico", "alias": ["el periodico", "periodico de catalunya"],
-         "web": "https://www.elperiodico.com/es/", "paginas_rss": ["https://www.elperiodico.com/es/rss/"]},
+         "rss": "https://news.google.com/rss/search?q=site:elperiodico.com+when:1d&hl=es&gl=ES&ceid=ES:es"},
         {"nombre": "La Vanguardia", "alias": ["vanguardia"],
          "web": "https://www.lavanguardia.com/", "paginas_rss": ["https://www.lavanguardia.com/rss"]},
         {"nombre": "Deia", "alias": [],
-         "web": "https://www.deia.eus/", "paginas_rss": ["https://www.deia.eus/rss.html"]},
+         "rss": "https://news.google.com/rss/search?q=site:deia.eus+when:1d&hl=es&gl=ES&ceid=ES:es"},
         {"nombre": "EITB", "alias": ["eitb", "teleberri"],
          "web": "https://www.eitb.eus/es/", "paginas_rss": ["https://www.eitb.eus/es/rss/"]},
         {"nombre": "TV3", "alias": ["tv3", "tvs", "3cat", "3catinfo", "tres cat"],
