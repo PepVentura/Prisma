@@ -84,6 +84,7 @@ def configura():
     for p in CONFIG["periodicos"]:
         if p.get("rss"):
             feeds[p["nombre"]] = p["rss"]
+            print(f"  {p['nombre']}: {p['rss']}")
             continue
         url = descubre(p)
         if url:
@@ -95,15 +96,20 @@ def configura():
     return feeds
 
 
+def periodico_en(n):
+    """Nombre del periódico mencionado en un texto normalizado, o None."""
+    for p in CONFIG["periodicos"]:
+        for alias in [p["nombre"]] + p.get("alias", []):
+            if re.search(rf"\b{re.escape(normaliza(alias))}\b", n):
+                return p["nombre"]
+    return None
+
+
 def entiende(texto):
     n = normaliza(texto)
     if not _PIDE.search(n):
         return None
-    for p in CONFIG["periodicos"]:
-        for alias in [p["nombre"]] + p.get("alias", []):
-            if normaliza(alias) in n:
-                return p["nombre"]
-    return CONFIG["periodicos"][0]["nombre"]
+    return periodico_en(n) or CONFIG["periodicos"][0]["nombre"]
 
 
 def responde(nombre, n=3):

@@ -18,29 +18,38 @@ _CIELO = {0: "despejado", 1: "casi despejado", 2: "nubes y claros", 3: "cubierto
 _cache_geo = {}
 
 
+def dia_de(n):
+    """Día pedido (0 = hoy) en un texto normalizado, o None si no nombra ninguno."""
+    if "pasado manana" in n:
+        return 2
+    if re.search(r"\bmanana\b", n):
+        return 1
+    if re.search(r"\bhoy\b|\bahora\b", n):
+        return 0
+    if "fin de semana" in n:
+        return (5 - datetime.date.today().weekday()) % 7
+    for i, d in enumerate(DIAS):
+        if re.search(rf"\b{normaliza(d)}\b", n):
+            return (i - datetime.date.today().weekday()) % 7 or 7
+    return None
+
+
+def ciudad_de(texto):
+    """Ciudad pedida («… en Bilbao»), o None."""
+    limpio = texto.strip(" ?¿!¡.«»\"")
+    for palabra in ("pasado mañana", "mañana", "hoy", "este fin de semana", "el fin de semana") + tuple(DIAS):
+        limpio = re.sub(rf"\s+(?:el\s+|este\s+)?{palabra}$", "", limpio, flags=re.I)
+    m = _CIUDAD.search(limpio)
+    return m.group(1).strip() if m else None
+
+
 def entiende(texto):
     """Devuelve (dias_desde_hoy, ciudad) si es una pregunta del tiempo; si no, None."""
     n = normaliza(texto).strip(" ?¿!¡.")
     if not _PIDE.search(n):
         return None
-    dia = 0
-    if "pasado manana" in n:
-        dia = 2
-    elif re.search(r"\bmanana\b", n):
-        dia = 1
-    else:
-        for i, d in enumerate(DIAS):
-            if re.search(rf"\b{normaliza(d)}\b", n):
-                dia = (i - datetime.date.today().weekday()) % 7 or 7
-                break
-        if "fin de semana" in n:
-            dia = (5 - datetime.date.today().weekday()) % 7
-    limpio = texto.strip(" ?¿!¡.")
-    for palabra in ("pasado mañana", "mañana", "hoy", "este fin de semana", "el fin de semana") + tuple(DIAS):
-        limpio = re.sub(rf"\s+(?:el\s+|este\s+)?{palabra}$", "", limpio, flags=re.I)
-    m = _CIUDAD.search(limpio)
-    ciudad = m.group(1).strip() if m else CONFIG["ciudad"]
-    return dia, ciudad
+    d = dia_de(n)
+    return (0 if d is None else d), (ciudad_de(texto) or CONFIG["ciudad"])
 
 
 def _geo(ciudad):
@@ -82,5 +91,9 @@ def redacta(d, dia, nombre):
         ahora = ""
     texto = f"{cuando} en {nombre}: {cielo}, entre {tmin} y {tmax} grados"
     if lluvia is not None:
-        texto += f", con un {lluvia} % de probabilidad de lluvia" if lluvia >= 20 else ", sin lluvia prevista"
+        llueve = dd["weather_code"][dia] >= 51                  # el código ya anuncia lluvia o llovizna
+        if lluvia >= 10 or llueve:
+            texto += f", con un {lluvia} % de probabilidad de lluvia"
+        else:
+            texto += ", sin lluvia prevista"
     return texto + "." + ahora

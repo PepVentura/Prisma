@@ -137,3 +137,10 @@ La IA de 1,7B se inventaba datos al resumir búsquedas (un 2-1 de la Real que no
    Para crearlo: `nano ~/.config/prisma/nucleo.json`, pega, cambia la clave, `Ctrl+O`, Intro, `Ctrl+X`.
 
 Ejemplos: «¿qué tiempo hará mañana?», «¿va a llover el sábado en Bilbao?», «¿cómo quedó la Real?», «¿cuándo juega el Athletic?», «¿cómo va la clasificación?», «dame las noticias», «titulares de EITB», «busca recetas de marmitako».
+
+### Prueba de las fuentes (18/10/2026)
+Noticias, tiempo, hora y búsqueda responden en 0,0–0,8 s. Ajustes tras la prueba:
+- **Erratas:** «los titukares de deia» iba a la charla. Ahora se corrigen las palabras clave con erratas («titukares» → «titulares»).
+- **Preguntas de seguimiento:** «¿y mañana?», «¿y en Bilbao?», «¿y el domingo?», «¿y de TV3?», «¿y el Athletic?» repiten la consulta anterior cambiando solo ese dato.
+- **Tiempo:** ya no dice «llovizna… sin lluvia prevista». Si el cielo anuncia lluvia o la probabilidad pasa del 10 %, da el porcentaje.
+- **Hora:** de 12 a 15 h dice «del mediodía» (antes «12:30 de la mañana»).
