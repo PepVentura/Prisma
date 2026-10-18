@@ -1,12 +1,14 @@
 """Conversación con el modelo local (Ollama) en streaming, troceada para la voz."""
 import json, re, time, urllib.request
+import datetime
 from .config import CONFIG, SISTEMA
+from . import memoria
 
 _FIN = re.compile(r"[.!?…]$")
 _PAUSA = re.compile(r"[,;:]$")
 
 
-def trozos_para_voz(fragmentos, min_palabras_coma=6, max_palabras=18):
+def trozos_para_voz(fragmentos, min_palabras_coma=4, max_palabras=12):
     """Agrupa el texto que va llegando en trozos que Piper puede empezar a leer ya:
     al final de cada frase, en una coma si ya hay unas cuantas palabras, o si se alarga mucho."""
     buf = ""
@@ -31,32 +33,57 @@ def trozos_para_voz(fragmentos, min_palabras_coma=6, max_palabras=18):
         yield buf.strip()
 
 
+_MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre",
+          "octubre", "noviembre", "diciembre"]
+_DIAS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+
+
+def hoy():
+    d = datetime.date.today()
+    return f"{_DIAS[d.weekday()]} {d.day} de {_MESES[d.month - 1]} de {d.year}"
+
+
 class Cerebro:
     def __init__(self):
         self.historial = []
         self.ultimo = {}
+        self.actualiza_sistema()
+
+    def actualiza_sistema(self):
+        """Instrucciones + fecha + memoria. Solo cambian al empezar el día o al recordar algo nuevo."""
+        extra = memoria.resumen(memoria.carga())
+        self.sistema = f"{SISTEMA} Hoy es {hoy()}." + (f" {extra}" if extra else "")
 
     def calienta(self):
         """Carga el modelo y lee las instrucciones fijas, para que la primera pregunta vaya rápida."""
         t0 = time.perf_counter()
-        for _ in self._stream([{"role": "system", "content": SISTEMA}, {"role": "user", "content": "Hola"}], 1):
+        for _ in self._stream([{"role": "system", "content": self.sistema}, {"role": "user", "content": "Hola"}], 1):
             pass
         return time.perf_counter() - t0
 
     def responde(self, texto, contexto=None):
         """Generador de trozos de respuesta listos para la voz. Las métricas quedan en self.ultimo."""
-        usuario = texto if not contexto else f"Resultados de búsqueda:\n{contexto}\n\nPregunta: {texto}"
-        mensajes = [{"role": "system", "content": SISTEMA}] + self.historial[-CONFIG["historial"]:] + \
-                   [{"role": "user", "content": usuario}]
+        if contexto:   # búsqueda: sin historial, para que el modelo lea lo mínimo y no se distraiga
+            usuario = f"Resultados de búsqueda:\n{contexto}\n\nPregunta: {texto}"
+            previos = []
+        else:
+            usuario, previos = texto, self.historial[-CONFIG["historial"]:]
+        mensajes = [{"role": "system", "content": self.sistema}] + previos + [{"role": "user", "content": usuario}]
         t0 = time.perf_counter()
-        completo = []
+        crudo = []
         primera = None
-        for trozo in trozos_para_voz(self._stream(mensajes, CONFIG["max_tokens"])):
+
+        def fragmentos():
+            for f in self._stream(mensajes, CONFIG["max_tokens"]):
+                crudo.append(f)
+                yield f
+
+        for trozo in trozos_para_voz(fragmentos(), CONFIG["voz_coma_palabras"], CONFIG["voz_max_palabras"]):
             if primera is None:
                 primera = time.perf_counter() - t0
-            completo.append(trozo)
             yield trozo
-        respuesta = " ".join(completo)
+        # el texto exacto que generó el modelo: así Ollama reconoce la conversación y no la relee
+        respuesta = "".join(crudo)
         # en el historial se guarda la pregunta sin los resultados, para no alargar las siguientes
         self.historial += [{"role": "user", "content": texto}, {"role": "assistant", "content": respuesta}]
         self.ultimo.update(primera_voz=primera, total=time.perf_counter() - t0)

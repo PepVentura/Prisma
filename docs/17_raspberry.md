@@ -89,3 +89,14 @@ Es el núcleo del asistente sin voz: escribes y responde como lo hará hablando.
 - **Charla.** Recuerda los últimos mensajes y contesta en 1–3 frases. Las instrucciones son fijas para que Ollama no tenga que releerlas.
 - **Voz.** La respuesta aparece por trozos: al final de cada frase, o en una coma si ya lleva unas cuantas palabras. Cada trozo es el momento en que Piper podría empezar a leer.
 - Con `--tiempos` muestra el desglose: búsqueda, lectura, cuándo empezaría a hablar y el total.
+
+### Mejoras tras la primera prueba (18/10/2026)
+| Lo que pasó | Arreglo |
+|---|---|
+| Prometía memorizar tu nombre, pero no podía | Memoria real: «me llamo…», «recuerda que…» y «olvida…» se guardan en `~/.config/prisma/memoria.json` y se añaden a sus instrucciones. Responde al instante, sin pasar por el modelo |
+| Preguntaba «¿quieres que te cuente un chiste?» en vez de contarlo | Instrucciones más claras: hacer directamente lo que se pide, sin chistes de política y sin prometer lo que no puede hacer |
+| El Tour: «Gino Bartali» (falso) y 356 tokens leídos | Las búsquedas ya no arrastran la conversación anterior (≈150 tokens), el modelo sabe la fecha de hoy y se le pide que diga que no lo encuentra en vez de inventar. Con `--resultados` se ve lo que ha leído |
+| La primera frase larga retrasaba la voz (5,4 s) | Empieza a hablar en una coma a partir de 4 palabras, o a las 12 palabras |
+| La charla se iba alargando | Recuerda los 4 últimos mensajes, con el texto exacto, para que Ollama no tenga que releerlos |
+
+Límite conocido: un modelo de 1,7B se equivoca en conocimientos técnicos poco comunes (explicó el radiador pasivo como el de un coche). Para datos concretos es mejor que busque.
