@@ -107,7 +107,7 @@ export async function inicia(raiz = "/retrato/") {
 
   let estado = "reposo", nivelVoz = 0, simulado = false;
   let proxParpadeo = 2, parpadeo = 0, apertura = 0, visema = bocas[0], proxVisema = 0;
-  let ang = 0, mx = 0, my = 0, acumulado = 0, ultimo = performance.now();
+  let frase = 1, ang = 0, mx = 0, my = 0, acumulado = 0, ultimo = performance.now();
   const t0 = performance.now();
 
   function dibuja(c) {
@@ -129,8 +129,8 @@ export async function inicia(raiz = "/retrato/") {
     const piensa = estado === "pensando" || estado === "buscando";
 
     // Cabeza: balanceo lento; al escuchar se inclina; al pensar se ladea hacia arriba
-    const angObj = Math.sin(t * 0.45) * 0.018 + Math.sin(t * 1.1) * 0.006 + (estado === "escucha" ? 0.05 : 0) + (piensa ? -0.025 : 0);
-    const habla = estado === "hablando" ? Math.sin(t * 5.3) * 0.004 : 0;
+    const angObj = Math.sin(t * 0.45) * 0.012 + Math.sin(t * 1.1) * 0.004 + (estado === "escucha" ? 0.035 : 0) + (piensa ? -0.025 : 0);
+    const habla = estado === "hablando" ? Math.sin(t * 2.1) * 0.006 : 0;   // acompaña la frase
     ang += (angObj + habla - ang) * Math.min(1, paso * 3);
     mx += ((Math.sin(t * 0.3) * 0.006) * cab.r - mx) * Math.min(1, paso * 3);
     my += (((piensa ? -0.02 : 0) + Math.sin(t * 0.7) * 0.003) * cab.r - my) * Math.min(1, paso * 3);
@@ -145,17 +145,34 @@ export async function inicia(raiz = "/retrato/") {
     // Expresión del estado, con fundido
     for (const n of ["sonrisa", "triste", "piensa"]) if (capas[n]) {
       const meta = EXPRESION[estado] === n ? 1 : 0;
-      capas[n].alfa += (meta - capas[n].alfa) * Math.min(1, paso * 6);
+      // Las que cambian la postura se funden rápido (≈0,25 s): un fundido lento deja ver dos manos a la vez
+      const vel = datos.capas[n].sustituye ? 9 : 3.5;
+      capas[n].alfa += (meta - capas[n].alfa) * Math.min(1, paso * vel);
     }
 
-    // Labios: volumen de la voz (o ritmo simulado) → qué boca y cuánto se ve
-    let v = estado === "hablando" ? (simulado ? Math.max(0, Math.sin(t * 15) * 0.5 + Math.sin(t * 9.3) * 0.35 + 0.25) : nivelVoz) : 0;
-    apertura += (v - apertura) * Math.min(1, paso * 18);
-    proxVisema -= paso;
-    if (proxVisema <= 0 && bocas.length) { visema = bocas[Math.floor(Math.random() * bocas.length)]; proxVisema = 0.1 + Math.random() * 0.08; }
-    for (const b of bocas) {                         // fundido corto entre bocas: sin saltos bruscos
-      const meta = b === visema && apertura > 0.18 ? Math.min(1, (apertura - 0.18) * 2.5) : 0;
-      capas[b].alfa += (meta - capas[b].alfa) * Math.min(1, paso * 22);
+    // Labios. Para que parezca habla y no gesticulación:
+    // - ritmo de sílabas (≈4 por segundo) con pausas entre palabras, no un temblor rápido;
+    // - la boca solo cambia de forma cuando está casi cerrada (abierta → cerrada → otra forma),
+    //   así nunca se funden dos bocas abiertas distintas;
+    // - las bocas abiertas del todo («a») salen menos que las medias («e», «o»).
+    let v = 0;
+    if (estado === "hablando") {
+      if (simulado) {
+        const silaba = Math.pow(Math.max(0, Math.sin(t * 2 * Math.PI * 4.1)), 0.8);
+        const palabra = Math.sin(t * 1.9) + Math.sin(t * 0.83 + 1) > -0.7 ? 1 : 0;
+        frase += (palabra - frase) * Math.min(1, paso * 8);
+        v = silaba * frase * (0.55 + 0.45 * Math.sin(t * 0.9 + 2) ** 2);
+      } else v = nivelVoz;
+    }
+    apertura += (v - apertura) * Math.min(1, paso * 14);
+    if (apertura < 0.12 && bocas.length) {
+      const r = Math.random();
+      visema = r < 0.45 && capas.boca_e ? "boca_e" : r < 0.75 && capas.boca_o ? "boca_o" : bocas[Math.floor(Math.random() * bocas.length)];
+    }
+    for (const b of bocas) {
+      const otraPostura = sustituyen.reduce((m, n) => Math.max(m, capas[n].alfa), 0);
+      const meta = b === visema ? Math.min(1, Math.max(0, (apertura - 0.12) * 1.6)) * (1 - otraPostura) : 0;
+      capas[b].alfa += (meta - capas[b].alfa) * Math.min(1, paso * 12);
     }
 
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
