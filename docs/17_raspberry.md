@@ -100,3 +100,9 @@ Es el núcleo del asistente sin voz: escribes y responde como lo hará hablando.
 | La charla se iba alargando | Recuerda los 4 últimos mensajes, con el texto exacto, para que Ollama no tenga que releerlos |
 
 Límite conocido: un modelo de 1,7B se equivoca en conocimientos técnicos poco comunes (explicó el radiador pasivo como el de un coche). Para datos concretos es mejor que busque.
+
+### Segunda prueba (18/10/2026)
+| Lo que pasó | Arreglo |
+|---|---|
+| Guardaba el nombre, pero a «¿cómo me llamo?» respondía mal: repetía su respuesta anterior y no hacía caso a sus instrucciones | «¿Cómo me llamo?», «¿quién soy?» y «¿qué sabes de mí?» se contestan directamente desde la memoria, sin el modelo. Al cambiar la memoria se borra la conversación, para que no repita respuestas superadas |
+| «Gino Bartali» salía del buscador: un resultado de Wikipedia sobre el Tour de 1938 | Las consultas que dependen de la fecha llevan el año o el día: «el último Tour» → «… 2026», «noticias de hoy» → «… 18 octubre 2026». Lee 3 resultados de 200 caracteres en vez de 2 de 280 |

@@ -19,9 +19,12 @@ GRIS, AZUL, FIN = "\033[90m", "\033[96m", "\033[0m"
 
 def turno(cerebro, texto, tiempos, resultados=False):
     t0 = time.perf_counter()
-    respuesta = memoria.intenta(texto)          # «me llamo…», «recuerda que…», «olvida…»: sin modelo
-    if respuesta:
-        cerebro.actualiza_sistema()
+    r = memoria.intenta(texto)                  # «me llamo…», «¿cómo me llamo?», «recuerda que…»: sin modelo
+    if r:
+        respuesta, cambio = r
+        if cambio:
+            cerebro.actualiza_sistema()
+            cerebro.historial.clear()            # que no repita respuestas anteriores ya superadas
         print(f"{AZUL}Prisma:{FIN} {respuesta}")
         if tiempos:
             print(f"{GRIS}[memoria · {time.perf_counter() - t0:.2f} s]{FIN}")

@@ -8,8 +8,8 @@ CONFIG = {
     # Buscadores que consulta SearXNG: pocos y rápidos. Vacío = los que tenga activados.
     "buscadores": "duckduckgo,wikipedia,brave,startpage",
     "busqueda_espera": 1.5,                  # s que SearXNG espera a cada buscador
-    "busqueda_resultados": 2,                # resultados que lee el modelo
-    "busqueda_caracteres": 280,              # caracteres por resultado (≈70 tokens)
+    "busqueda_resultados": 3,                # resultados que lee el modelo
+    "busqueda_caracteres": 200,              # caracteres por resultado (≈50 tokens)
     "max_tokens": 140,                       # longitud máxima de una respuesta hablada
     "temperatura": 0.6,
     "historial": 4,                          # mensajes previos de la charla que se le vuelven a pasar
