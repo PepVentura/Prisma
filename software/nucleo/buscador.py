@@ -1,10 +1,28 @@
 """Búsqueda en Internet con SearXNG, recortada para que el modelo lea poco."""
-import json, time, urllib.parse, urllib.request
+import datetime, json, re, time, urllib.parse, urllib.request
 from .config import CONFIG
+
+
+_MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre",
+          "octubre", "noviembre", "diciembre"]
+_RECIENTE = re.compile(r"\b(ultim[oa]s?|último|última|últimos|últimas|actual(?:es)?|actualmente|este año|esta temporada|vigente)\b", re.I)
+_HOY = re.compile(r"\b(hoy|ayer|esta semana|este fin de semana|mañana)\b", re.I)
+
+
+def afina(consulta, hoy=None):
+    """Añade la fecha a las consultas que dependen de ella, para que el buscador traiga lo reciente:
+    «quién ganó el último Tour» → «… 2026»; «noticias de hoy» → «… 18 octubre 2026»."""
+    hoy = hoy or datetime.date.today()
+    if _HOY.search(consulta):
+        return f"{consulta} {hoy.day} {_MESES[hoy.month - 1]} {hoy.year}"
+    if _RECIENTE.search(consulta) and not re.search(r"\b(19|20)\d\d\b", consulta):
+        return f"{consulta} {hoy.year}"
+    return consulta
 
 
 def buscar(consulta):
     """Devuelve (respuesta_directa, contexto, segundos)."""
+    consulta = afina(consulta)
     params = {"q": consulta, "format": "json", "language": "es-ES",
               "timeout_limit": CONFIG["busqueda_espera"]}
     if CONFIG["buscadores"]:
