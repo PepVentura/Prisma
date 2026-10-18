@@ -12,7 +12,9 @@ from ..texto import normaliza
 FICHERO = os.path.expanduser("~/.config/prisma/spotify.json")
 API = "https://api.spotify.com/v1"
 CUENTAS = "https://accounts.spotify.com"
-REDIRECCION = "http://127.0.0.1:8080/spotify"
+# Página de vuelta en GitHub Pages (HTTPS): solo enseña el código para copiarlo. Antes se usaba
+# http://127.0.0.1:8080/spotify, pero algunos navegadores se quedan colgados al volver a una dirección local.
+REDIRECCION = CONFIG.get("spotify_vuelta", "https://pepventura.github.io/Prisma/spotify/")
 PERMISOS = "user-read-playback-state user-modify-playback-state user-read-currently-playing"
 NO_CONECTADO = ("Spotify todavía no está conectado. Ejecuta en la Pi "
                 "python3 ~/prisma/software/herramientas/spotify_conecta.py y sigue los pasos.")

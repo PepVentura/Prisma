@@ -197,14 +197,16 @@ Instala raspotify: Prisma aparece como altavoz **«Prisma»** en la app de Spoti
 ![Música](img/interfaz_musica.png)
 
 ### Conectar la API de Spotify (controles y órdenes)
-1. En https://developer.spotify.com/dashboard, con tu cuenta Premium: **Create app** → nombre «Prisma», descripción cualquiera, **Redirect URI** `http://127.0.0.1:8080/spotify` (exactamente así), marca **Web API** → **Save**. Copia el **Client ID**.
-2. En la Pi:
+1. En https://developer.spotify.com/dashboard, con tu cuenta Premium: **Create app** → nombre «Prisma», descripción cualquiera, **Redirect URI** `https://pepventura.github.io/Prisma/spotify/` (exactamente así, con la barra final), marca **Web API** → **Save**. Copia el **Client ID**.
+2. En la Pi (por PuTTY):
    ```bash
    git -C ~/prisma pull
    python3 ~/prisma/software/herramientas/spotify_conecta.py
    ```
-   Pega el Client ID, abre el enlace en el navegador del portátil y acepta. Te llevará a una página que no carga: copia su dirección completa (empieza por `http://127.0.0.1:8080/spotify?code=`) y pégala en la terminal.
-3. `systemctl --user restart prisma`. Si el programa dice que el altavoz «Prisma» no aparece, elígelo una vez en la app de Spotify: desde entonces Prisma recuerda la sesión y puede ponerse música sola.
+   Pega el Client ID (en PuTTY se pega con el botón derecho), abre el enlace que te da en el navegador del portátil y pulsa «Aceptar». Te llevará a una página de Prisma con un código: cópialo y pégalo en PuTTY.
+3. Si el programa dice que el altavoz «Prisma» no aparece, elígelo una vez en la app de Spotify: desde entonces Prisma recuerda la sesión y puede ponerse música sola.
+
+(La página de vuelta está en GitHub Pages, `docs/spotify/index.html`: solo enseña el código, no lo envía a ningún sitio. Antes la vuelta iba a `http://127.0.0.1:8080/spotify` y algunos navegadores se quedaban colgados al pulsar «Aceptar».)
 
 Qué se puede hacer después:
 - **Panel «Música»:** anterior, reproducir/pausa, siguiente y volumen. Enseña lo que suena en tu cuenta aunque sea en otro dispositivo.
