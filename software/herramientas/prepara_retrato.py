@@ -140,6 +140,7 @@ def main():
     ap.add_argument("carpeta")
     ap.add_argument("--salida", default=os.path.expanduser("~/.config/prisma/retrato"))
     ap.add_argument("--boca", metavar="X,Y,AN,AL", help="zona de la boca en la imagen base (si no hay ojos_cerrados para situarla)")
+    ap.add_argument("--ojos", metavar="X,Y,AN,AL", help="zona de los ojos (si el generador cambió también la sonrisa al cerrarlos)")
     a = ap.parse_args()
 
     base = abre(a.carpeta, "base")
@@ -184,7 +185,10 @@ def main():
         if abs(dy) > H * 0.1 or abs(dx) > W * 0.1:
             dy = dx = 0
         nv = mueve(nv, dy, dx)
-        if n.startswith("boca_") and a.boca:
+        if n == "ojos_cerrados" and a.ojos:
+            ex, ey, ew, eh = (int(v) for v in a.ojos.split(","))
+            r = (ey, ex, ey + eh, ex + ew)
+        elif n.startswith("boca_") and a.boca:
             bx, by_, bw, bh = (int(v) for v in a.boca.split(","))
             r = (by_, bx, by_ + bh, bx + bw)
         elif n.startswith("boca_") and conocidas:
@@ -200,7 +204,7 @@ def main():
             print(f"  {n}: no se aprecia ningún cambio respecto a la base; se omite")
             continue
         y0, x0, y1, x1 = r
-        if (y1 - y0) * (x1 - x0) > 0.1 * W * H and not n.startswith("boca_"):
+        if (y1 - y0) * (x1 - x0) > 0.1 * W * H and not n.startswith("boca_") and not (n == "ojos_cerrados" and a.ojos):
             # Cambia la postura: la variante entera (recortada si hay fondo) sustituye a la base con un fundido
             img = Image.fromarray(np.clip(nv, 0, 255).astype(np.uint8))
             al = mascara(img) if mascara else np.ones((H, W), np.float32)
