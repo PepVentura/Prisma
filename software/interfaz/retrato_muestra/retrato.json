@@ -1,0 +1,53 @@
+{
+ "ancho": 800,
+ "alto": 1000,
+ "base": "base.jpg",
+ "cabeza": {
+  "x": 404,
+  "y": 474,
+  "r": 312
+ },
+ "cuello_y": 696,
+ "centro": {
+  "x": 404,
+  "y": 646
+ },
+ "zoom": 1.0,
+ "capas": {
+  "ojos_cerrados": {
+   "archivo": "ojos_cerrados.png",
+   "x": 278,
+   "y": 398,
+   "w": 252,
+   "h": 116
+  },
+  "boca_a": {
+   "archivo": "boca_a.png",
+   "x": 337,
+   "y": 529,
+   "w": 126,
+   "h": 94
+  },
+  "boca_e": {
+   "archivo": "boca_e.png",
+   "x": 325,
+   "y": 533,
+   "w": 150,
+   "h": 86
+  },
+  "boca_o": {
+   "archivo": "boca_o.png",
+   "x": 339,
+   "y": 531,
+   "w": 114,
+   "h": 90
+  },
+  "piensa": {
+   "archivo": "piensa.png",
+   "x": 268,
+   "y": 348,
+   "w": 264,
+   "h": 168
+  }
+ }
+}
