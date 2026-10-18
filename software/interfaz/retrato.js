@@ -9,6 +9,7 @@ const FPS = 30;
 const MALLA = 28;                       // subdivisiones de la imagen base (las capas, menos)
 const BOCAS = ["boca_a", "boca_e", "boca_o", "boca_i", "boca_u"];
 const EXPRESION = { escucha: "sonrisa", pensando: "piensa", buscando: "piensa", error: "triste" };
+const MINIMO = 2.0;                     // segundos que dura como poco una expresión (pensar suele ser muy breve)
 
 const VS = `
 attribute vec2 aPos; attribute vec2 aUv;
@@ -107,6 +108,7 @@ export async function inicia(raiz = "/retrato/") {
 
   let estado = "reposo", nivelVoz = 0, simulado = false;
   let proxParpadeo = 2, parpadeo = 0, apertura = 0, visema = bocas[0], proxVisema = 0;
+  const desde = {};
   let frase = 1, ang = 0, mx = 0, my = 0, acumulado = 0, ultimo = performance.now();
   const t0 = performance.now();
 
@@ -144,7 +146,10 @@ export async function inicia(raiz = "/retrato/") {
 
     // Expresión del estado, con fundido
     for (const n of ["sonrisa", "triste", "piensa"]) if (capas[n]) {
-      const meta = EXPRESION[estado] === n ? 1 : 0;
+      if (EXPRESION[estado] === n && !(n in desde)) desde[n] = t;      // empieza la expresión
+      const sigue = n in desde && t - desde[n] < MINIMO;                // aunque el estado ya haya cambiado
+      if (EXPRESION[estado] !== n && !sigue) delete desde[n];
+      const meta = EXPRESION[estado] === n || sigue ? 1 : 0;
       // Las que cambian la postura se funden rápido (≈0,25 s): un fundido lento deja ver dos manos a la vez
       const vel = datos.capas[n].sustituye ? 9 : 3.5;
       capas[n].alfa += (meta - capas[n].alfa) * Math.min(1, paso * vel);
