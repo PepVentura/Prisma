@@ -11,6 +11,7 @@
   - `enrutador.py`: decide entre buscar y charlar; aquí irán las órdenes directas.
   - `buscador.py`: SearXNG recortado a 2 resultados cortos.
   - `cerebro.py`: Ollama en streaming, troceado para la voz.
+  - `fuentes/`: respuestas sin modelo (reloj, tiempo, fútbol, noticias, web).
   - `config.py`: modelo, límites e instrucciones. Se puede cambiar sin tocar el código con `~/.config/prisma/nucleo.json`.
 
 Guía paso a paso: `docs/17_raspberry.md`.

@@ -20,8 +20,27 @@ def afina(consulta, hoy=None):
     return consulta
 
 
+def consulta_cruda(consulta):
+    """Devuelve (respuesta_directa, resultados_json, segundos)."""
+    consulta = afina(consulta)
+    params = {"q": consulta, "format": "json", "language": "es-ES",
+              "timeout_limit": CONFIG["busqueda_espera"]}
+    if CONFIG["buscadores"]:
+        params["engines"] = CONFIG["buscadores"]
+    t0 = time.perf_counter()
+    res = _pide(params)
+    if not res.get("results") and CONFIG["buscadores"]:
+        params.pop("engines")
+        res = _pide(params)
+    directa = None
+    for a in res.get("answers") or []:
+        directa = a.get("answer") if isinstance(a, dict) else a
+        if directa: break
+    return directa, res, time.perf_counter() - t0
+
+
 def buscar(consulta):
-    """Devuelve (respuesta_directa, contexto, segundos)."""
+    """(Para el modelo) Devuelve (respuesta_directa, contexto, segundos)."""
     consulta = afina(consulta)
     params = {"q": consulta, "format": "json", "language": "es-ES",
               "timeout_limit": CONFIG["busqueda_espera"]}

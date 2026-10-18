@@ -3,21 +3,25 @@
 
   python3 ~/prisma/software/prisma_texto.py            charla (escribe 'salir' para terminar)
   python3 ~/prisma/software/prisma_texto.py --tiempos  muestra el desglose de tiempos en cada respuesta
-  python3 ~/prisma/software/prisma_texto.py --tiempos --resultados   y además lo que lee de cada búsqueda
+  python3 ~/prisma/software/prisma_texto.py --configurar-noticias   busca los RSS de los periódicos (una vez)
 
 Memoria: «me llamo…», «recuerda que…», «olvida…» (se guarda en ~/.config/prisma/memoria.json).
+Sin modelo (no inventan): hora y fecha, el tiempo (Open-Meteo), fútbol (football-data.org),
+noticias (RSS) y búsquedas (lee el fragmento más relevante citando la fuente).
+El modelo solo se usa para charlar.
 
 Cada trozo de la respuesta aparece cuando Piper ya podría empezar a leerlo.
 """
 import argparse, sys, time, urllib.error
 from nucleo.config import CONFIG
-from nucleo import enrutador, buscador, memoria
+from nucleo import enrutador, memoria
+from nucleo.fuentes import web, noticias
 from nucleo.cerebro import Cerebro
 
 GRIS, AZUL, FIN = "\033[90m", "\033[96m", "\033[0m"
 
 
-def turno(cerebro, texto, tiempos, resultados=False):
+def turno(cerebro, texto, tiempos):
     t0 = time.perf_counter()
     r = memoria.intenta(texto)                  # «me llamo…», «¿cómo me llamo?», «recuerda que…»: sin modelo
     if r:
@@ -29,23 +33,28 @@ def turno(cerebro, texto, tiempos, resultados=False):
         if tiempos:
             print(f"{GRIS}[memoria · {time.perf_counter() - t0:.2f} s]{FIN}")
         return
-    accion, consulta = enrutador.decide(texto)
+    accion, datos = enrutador.decide(texto)
+    if accion != "charla":
+        if accion == "web":
+            print(f"{AZUL}Prisma:{FIN} Lo busco…", flush=True)
+        detalle = ""
+        try:
+            if accion == "reloj":
+                respuesta = datos
+            elif accion == "web":
+                respuesta, tb, detalle = web.responde(datos)
+                detalle = f" · búsqueda {tb:.1f} s · {detalle}"
+            else:
+                respuesta = enrutador.responde_fuente(accion, datos)
+        except Exception as e:                    # sin red, clave errónea, servicio caído…
+            respuesta = "No he podido consultarlo ahora mismo."
+            detalle = f" · error: {e}"
+        print(f"{AZUL}Prisma:{FIN} {respuesta}")
+        if tiempos:
+            print(f"{GRIS}[{accion}{detalle} · {time.perf_counter() - t0:.1f} s]{FIN}")
+        return
     contexto = None
     detalle = []
-    if accion == "buscar":
-        print(f"{AZUL}Prisma:{FIN} Lo busco…", flush=True)
-        try:
-            directa, contexto, tb = buscador.buscar(consulta)
-            detalle.append(f"búsqueda {tb:.1f} s")
-            if directa:
-                contexto = f"- Respuesta directa: {directa}\n{contexto}"
-            if not contexto:
-                contexto = "- (la búsqueda no ha devuelto resultados)"
-            if resultados:
-                print(f"{GRIS}{contexto}{FIN}")
-        except (urllib.error.URLError, TimeoutError) as e:
-            detalle.append(f"búsqueda fallida: {e}")
-            contexto = "- (no se ha podido buscar en Internet)"
     print(f"{AZUL}Prisma:{FIN} ", end="", flush=True)
     primera = None
     for trozo in cerebro.responde(texto, contexto):
@@ -65,8 +74,12 @@ def turno(cerebro, texto, tiempos, resultados=False):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--tiempos", action="store_true")
-    ap.add_argument("--resultados", action="store_true", help="muestra lo que lee el modelo de cada búsqueda")
+    ap.add_argument("--configurar-noticias", action="store_true", help="busca los RSS de los periódicos y sale")
     a = ap.parse_args()
+    if a.configurar_noticias:
+        print("Buscando los RSS de los periódicos…")
+        noticias.configura()
+        return
     cerebro = Cerebro()
     try:
         print(f"{GRIS}Cargando {CONFIG['modelo']}…{FIN}", end="", flush=True)
@@ -83,7 +96,7 @@ def main():
             continue
         if texto.lower() in ("salir", "adiós", "adios", "exit"):
             break
-        turno(cerebro, texto, a.tiempos, a.resultados)
+        turno(cerebro, texto, a.tiempos)
 
 
 if __name__ == "__main__":

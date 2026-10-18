@@ -106,3 +106,34 @@ Límite conocido: un modelo de 1,7B se equivoca en conocimientos técnicos poco 
 |---|---|
 | Guardaba el nombre, pero a «¿cómo me llamo?» respondía mal: repetía su respuesta anterior y no hacía caso a sus instrucciones | «¿Cómo me llamo?», «¿quién soy?» y «¿qué sabes de mí?» se contestan directamente desde la memoria, sin el modelo. Al cambiar la memoria se borra la conversación, para que no repita respuestas superadas |
 | «Gino Bartali» salía del buscador: un resultado de Wikipedia sobre el Tour de 1938 | Las consultas que dependen de la fecha llevan el año o el día: «el último Tour» → «… 2026», «noticias de hoy» → «… 18 octubre 2026». Lee 3 resultados de 200 caracteres en vez de 2 de 280 |
+
+## 8. Paso 4: fuentes fiables (D039)
+La IA de 1,7B se inventaba datos al resumir búsquedas (un 2-1 de la Real que no existía). Ahora el modelo **solo charla**, y todo lo que son datos sale de fuentes que no pueden inventar:
+
+| Pregunta | Fuente | Ejemplo de respuesta |
+|---|---|---|
+| Hora y fecha | Reloj de la Pi | «Son las 11:38 de la mañana.» |
+| El tiempo | Open-Meteo (gratis, sin clave) | «Mañana en Donostia: lluvia débil, entre 12 y 18 grados, con un 80 % de probabilidad de lluvia.» |
+| Fútbol | football-data.org (gratis, con clave) | «El sábado 17 de octubre, Athletic 0, Real Sociedad 2. Real Sociedad ganó.» |
+| Noticias | RSS de El Periódico, La Vanguardia, Deia y EITB | «Titulares de Deia. …» |
+| Otras búsquedas | SearXNG: el fragmento más relevante, tal cual | «Según marca.com: Tadej Pogačar ganó el Tour de Francia 2026…» |
+| Charla | qwen3:1.7b | — |
+
+**Configuración (una vez):**
+1. **Noticias.** Busca y guarda los RSS de los periódicos:
+   ```bash
+   python3 ~/prisma/software/prisma_texto.py --configurar-noticias
+   ```
+   Si alguno sale «NO ENCONTRADO», se puede poner su RSS a mano (ver punto 3).
+2. **Fútbol.** Regístrate gratis en football-data.org (plan *Free*). Te mandan la clave por correo.
+3. **Ajustes personales** en `~/.config/prisma/nucleo.json` (ninguno es obligatorio salvo la clave del fútbol):
+   ```json
+   {
+     "futbol_clave": "LA_CLAVE_QUE_TE_MANDEN",
+     "ciudad": "Donostia",
+     "equipo": "Real Sociedad"
+   }
+   ```
+   Para crearlo: `nano ~/.config/prisma/nucleo.json`, pega, cambia la clave, `Ctrl+O`, Intro, `Ctrl+X`.
+
+Ejemplos: «¿qué tiempo hará mañana?», «¿va a llover el sábado en Bilbao?», «¿cómo quedó la Real?», «¿cuándo juega el Athletic?», «¿cómo va la clasificación?», «dame las noticias», «titulares de EITB», «busca recetas de marmitako».
