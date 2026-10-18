@@ -131,29 +131,33 @@ class Manejador(BaseHTTPRequestHandler):
         q = urllib.parse.parse_qs(u.query)
         if u.path == "/spotify/conectar":
             cid = (q.get("client_id") or [""])[0].strip()
-            if not cid:
+            codigo = (q.get("codigo") or [""])[0].strip()
+            if codigo:                                   # paso 3: el código copiado de la página de vuelta
+                if not _pendiente_spotify:
+                    return self._html('<h2>Empieza de nuevo</h2><p><a style="color:#22d3ee" href="/spotify/conectar">Conectar Spotify</a></p>')
+                codigo = urllib.parse.parse_qs(urllib.parse.urlparse(codigo).query).get("code", [codigo])[0]
+                try:
+                    spotify.termina_conexion(_pendiente_spotify["client_id"], codigo, _pendiente_spotify["verificador"])
+                    _pendiente_spotify.clear()
+                    _cache_musica["t"] = 0
+                    return self._html("<h2>✓ Spotify conectado</h2><p>Ya puedes cerrar esta página. En Prisma, pulsa "
+                                      "«Música» o escribe «pon …». Si dice que no encuentra el altavoz, elige «Prisma» "
+                                      "una vez en la app de Spotify.</p>")
+                except Exception as e:
+                    return self._html(f"<h2>No se pudo conectar</h2><p>{html.escape(str(e))}</p>"
+                                      '<p><a style="color:#22d3ee" href="/spotify/conectar">Volver a intentarlo</a></p>')
+            if not cid:                                  # paso 1: Client ID
                 return self._html('<h2>Conectar Spotify</h2><form><p>Client ID de tu app de Spotify:</p>'
                                   '<input name="client_id" size="36" autofocus style="font:18px monospace;padding:8px">'
-                                  ' <button style="font:18px system-ui;padding:8px 16px">Conectar</button></form>')
-            url, verificador = spotify.empieza_conexion(cid)
+                                  ' <button style="font:18px system-ui;padding:8px 16px">Siguiente</button></form>')
+            url, verificador = spotify.empieza_conexion(cid)     # paso 2: permiso en Spotify (otra pestaña)
             _pendiente_spotify.update(client_id=cid, verificador=verificador)
-            self.send_response(302)
-            self.send_header("Location", url)
-            self.end_headers()
-            return
-        if "error" in q:
-            return self._html(f"<h2>Spotify no ha dado permiso</h2><p>{html.escape(q['error'][0])}</p>")
-        if "code" in q and _pendiente_spotify:
-            try:
-                spotify.termina_conexion(_pendiente_spotify["client_id"], q["code"][0], _pendiente_spotify["verificador"])
-                _pendiente_spotify.clear()
-                _cache_musica["t"] = 0
-                return self._html("<h2>✓ Spotify conectado</h2><p>Ya puedes cerrar esta página. En Prisma, pulsa "
-                                  "«Música» o escribe «pon …». Si dice que no encuentra el altavoz, elige «Prisma» "
-                                  "una vez en la app de Spotify.</p>")
-            except Exception as e:
-                return self._html(f"<h2>No se pudo conectar</h2><p>{html.escape(str(e))}</p>"
-                                  '<p><a style="color:#22d3ee" href="/spotify/conectar">Volver a intentarlo</a></p>')
+            return self._html('<h2>Conectar Spotify</h2>'
+                              f'<p>1. <a style="color:#22d3ee" target="_blank" href="{html.escape(url)}">Abre Spotify y pulsa «Aceptar»</a> '
+                              '(se abre en otra pestaña).</p><p>2. Te llevará a una página de Prisma con un código. '
+                              'Cópialo y pégalo aquí:</p><form><input name="codigo" size="40" autofocus '
+                              'style="font:18px monospace;padding:8px"> <button style="font:18px system-ui;padding:8px 16px">'
+                              'Conectar</button></form>')
         return self._html('<h2>Conectar Spotify</h2><p><a style="color:#22d3ee" href="/spotify/conectar">Empezar</a></p>')
 
     def do_GET(self):
