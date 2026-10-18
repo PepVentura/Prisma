@@ -17,6 +17,17 @@ from nucleo.fuentes import tiempo
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "interfaz")
 asistente = Asistente()
+RETRATO_PROPIO = os.path.expanduser("~/.config/prisma/retrato")
+RETRATO_MUESTRA = os.path.join(RAIZ, "retrato_muestra")
+
+
+def tipo_avatar():
+    """Retrato animado propio > personaje 3D propio > retrato de muestra."""
+    if os.path.isfile(os.path.join(RETRATO_PROPIO, "retrato.json")):
+        return "retrato"
+    if os.path.isfile(os.path.expanduser("~/.config/prisma/avatar.vrm")):
+        return "vrm"
+    return "retrato"
 estado = {"listo": False, "error": None}
 
 
@@ -54,6 +65,10 @@ class Manejador(BaseHTTPRequestHandler):
                 return self._json({"texto": None, "error": str(e)})
         if self.path == "/avatar.vrm":
             return self._avatar()
+        if self.path == "/api/avatar":
+            return self._json({"tipo": tipo_avatar()})
+        if self.path.startswith("/retrato/"):
+            return self._retrato(self.path[len("/retrato/"):].split("?")[0])
         ruta = "index.html" if self.path in ("/", "") else self.path.lstrip("/").split("?")[0]
         fichero = os.path.realpath(os.path.join(RAIZ, ruta))
         if not fichero.startswith(os.path.realpath(RAIZ)) or not os.path.isfile(fichero):
@@ -63,6 +78,20 @@ class Manejador(BaseHTTPRequestHandler):
             cuerpo = f.read()
         self.send_response(200)
         self.send_header("Content-Type", (mimetypes.guess_type(fichero)[0] or "text/plain") + "; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
+    def _retrato(self, nombre):
+        carpeta = RETRATO_PROPIO if os.path.isfile(os.path.join(RETRATO_PROPIO, "retrato.json")) else RETRATO_MUESTRA
+        f = os.path.realpath(os.path.join(carpeta, nombre))
+        if not f.startswith(os.path.realpath(carpeta) + os.sep) or not os.path.isfile(f):
+            return self.send_error(404)
+        with open(f, "rb") as fh:
+            cuerpo = fh.read()
+        self.send_response(200)
+        self.send_header("Content-Type", mimetypes.guess_type(f)[0] or "application/octet-stream")
+        self.send_header("Content-Length", str(len(cuerpo)))
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(cuerpo)

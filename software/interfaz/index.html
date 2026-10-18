@@ -55,6 +55,10 @@ main { position: absolute; inset: 0; display: grid; grid-template-columns: 400px
 #lienzo3d { position: absolute; inset: -6px -4px; border-radius: 22px; overflow: hidden; }
 #lienzo3d canvas { display: block; width: 100%; height: 100%; }
 body.con-avatar #escenario { opacity: 1; }
+body.con-retrato #escenario { opacity: 0; }   /* el retrato trae su propio fondo */
+body.con-retrato #lienzo3d::after { content: ""; position: absolute; inset: 0; border-radius: 22px; pointer-events: none;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--estado) 55%, transparent),
+              inset 0 -46px 50px -34px color-mix(in srgb, var(--estado) 70%, transparent); transition: box-shadow .5s; }
 body.con-avatar #cara svg { display: none; }
 .ojo { fill: var(--estado); transition: fill .5s; transform-box: fill-box; transform-origin: center;
        animation: parpadeo 5.5s infinite; }
@@ -164,8 +168,11 @@ body.dormido #reposo { display: grid; }
 </script>
 <script type="module">
 // Avatar 3D. Si no hay WebGL o el modelo no carga, se queda la cara simple.
-import("./avatar.js").then(m => m.inicia()).then(() => {
-  document.body.classList.add("con-avatar");
+// Retrato ilustrado animado (2,5D) o personaje 3D (VRM), según lo que haya en ~/.config/prisma
+fetch("/api/avatar").then(r => r.json()).catch(() => ({ tipo: "retrato" })).then(({ tipo }) =>
+  import(tipo === "vrm" ? "./avatar.js" : "./retrato.js").then(m => m.inicia()).then(() => tipo)
+).then(tipo => {
+  document.body.classList.add("con-avatar", "con-" + tipo);
   window.avatar.estado(document.body.dataset.estado);
 }).catch(e => console.warn("Avatar no disponible:", e));
 </script>
