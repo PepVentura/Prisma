@@ -155,12 +155,14 @@ Al encender, la Pi arranca directamente en Prisma a pantalla completa:
 - **Avatar** a la izquierda: retrato ilustrado animado (ver [12_avatar.md](12_avatar.md)). Respira, parpadea, balancea la cabeza, cambia de expresión con el estado y mueve los labios al hablar. Mientras no tengas tu personaje se ve un retrato provisional.
 - **Marco de luz** del color del estado, el mismo que llevarán las franjas LED (D033).
 - **Conversación** a la derecha: tu pregunta en gris y la respuesta grande. Las fuentes de las búsquedas, en gris.
-- **Accesos rápidos** (Tiempo, Noticias, Fútbol, Un chiste) y un cuadro para escribir con el teclado. Con la voz desaparecerá la necesidad de teclear.
+- **Accesos rápidos:** Tiempo, Noticias, **Música** (lo que suena en Spotify, ver §10) y **Casa** (Home Assistant a pantalla completa, con «← Prisma» para volver).
+- **Teclado en pantalla** al tocar «Escribe aquí…»: español con ñ, tilde (´ y luego la vocal), ¿?, números y signos (123). «⌄» o tocar fuera lo esconde; ⌫ mantenido borra seguido. Sigue funcionando un teclado físico.
 - **Reposo:** tras 90 s sin uso, reloj grande con la fecha y el tiempo de hoy. Se despierta al tocar la pantalla o pulsar una tecla.
 
 ![Inicio](img/interfaz_inicio.png)
 ![Hablando](img/interfaz_hablando.png)
 ![Reposo](img/interfaz_reposo.png)
+![Teclado](img/interfaz_teclado.png)
 
 **Útil:**
 - Salir del modo quiosco: `Alt+F4` con un teclado, o por SSH `pkill chromium`.
@@ -169,3 +171,27 @@ Al encender, la Pi arranca directamente en Prisma a pantalla completa:
 - Tras un `git pull` con cambios: `systemctl --user restart prisma` y recargar la página (`F5`) o reiniciar.
 - Poner tu personaje: [12_avatar.md](12_avatar.md) § Crear el personaje definitivo.
 - La terminal sigue funcionando para pruebas: `python3 ~/prisma/software/prisma_texto.py --tiempos`.
+
+### Home Assistant en el botón «Casa»
+Por defecto busca `http://homeassistant.local:8123`. Si tu Home Assistant está en otra dirección, ponla en `~/.config/prisma/nucleo.json`:
+```json
+{ "home_assistant": "http://192.168.1.X:8123" }
+```
+Home Assistant no deja mostrarse dentro de otras páginas salvo que se lo permitas. En su `configuration.yaml`:
+```yaml
+http:
+  use_x_frame_options: false
+```
+Reinícialo, pulsa «Casa» e inicia sesión una vez (se recuerda). Si algo falla, la pantalla te dice qué.
+
+## 10. Paso 6: música con Spotify Connect
+```bash
+git -C ~/prisma pull
+bash ~/prisma/software/instalacion/05_musica.sh
+systemctl --user restart prisma
+```
+Instala raspotify: Prisma aparece como altavoz **«Prisma»** en la app de Spotify (Premium). En el móvil: Spotify → icono del altavoz → Prisma. El botón «Música» enseña la canción, el artista, la portada y el avance.
+- Se controla desde la app (pausa, siguiente, volumen). Los controles en la propia pantalla y por voz llegarán con la API de Spotify.
+- El sonido sale por la salida predeterminada de la Pi; cuando esté montado el DAC (D011) se cambia `LIBRESPOT_DEVICE` en `/etc/raspotify/conf`.
+
+![Música](img/interfaz_musica.png)
