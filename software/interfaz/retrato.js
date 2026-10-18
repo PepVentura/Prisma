@@ -14,7 +14,7 @@ const VS = `
 attribute vec2 aPos; attribute vec2 aUv;
 uniform vec2 uCentro, uEscala, uCaja;           // encuadre: imagen → píxeles de la caja
 uniform vec3 uCabeza; uniform float uCuello, uAng, uRespira;
-uniform vec2 uMueve;
+uniform vec2 uMueve; uniform float uFijo;            // uFijo = 1: el decorado no se deforma
 varying vec2 vUv;
 void main() {
   vec2 p = aPos;
@@ -28,6 +28,7 @@ void main() {
   float cuerpo = clamp(1.0 - abs(p.x - uCabeza.x) / (uCabeza.z * 1.6), 0.0, 1.0);
   float sube = max(w, cuerpo * smoothstep(uCuello + uCabeza.z * 1.6, uCuello, p.y));
   q.y -= uRespira * sube;
+  if (uFijo > 0.5) q = p;
   vec2 s = (q - uCentro) * uEscala + uCaja * 0.5;
   gl_Position = vec4(s.x / uCaja.x * 2.0 - 1.0, 1.0 - s.y / uCaja.y * 2.0, 0.0, 1.0);
   vUv = aUv;
@@ -78,6 +79,11 @@ export async function inicia(raiz = "/retrato/") {
 
   const base = capa(await carga(raiz + datos.base), 0, 0, datos.ancho, datos.alto, MALLA);
   base.alfa = 1;
+  // Decorado aparte (la persona va recortada delante): no se deforma y tiene su propio encuadre
+  const df = datos.fondo;
+  const fondo = df ? capa(await carga(raiz + df.archivo), 0, 0, df.ancho, df.alto, 1) : null;
+  if (fondo) fondo.alfa = 1;
+  const centroF = df ? { ...(df.centro || { x: df.ancho / 2, y: df.alto / 2 }) } : null;
   const capas = {};
   await Promise.all(Object.entries(datos.capas || {}).map(async ([nombre, c]) => {
     try { capas[nombre] = capa(await carga(raiz + c.archivo), c.x, c.y, c.w, c.h, 6); }
@@ -88,12 +94,14 @@ export async function inicia(raiz = "/retrato/") {
 
   const cab = datos.cabeza, cuello = datos.cuello_y;
   const centro = datos.centro || { x: cab.x, y: cab.y + cab.r * 0.55 };
-  let W = 1, H = 1, esc = 1;
+  const sustituyen = Object.keys(datos.capas || {}).filter(n => datos.capas[n].sustituye && capas[n]);
+  let W = 1, H = 1, esc = 1, escF = 1;
   function ajusta() {
     W = caja.clientWidth; H = caja.clientHeight;
     lienzo.width = W; lienzo.height = H; gl.viewport(0, 0, W, H);
     // Cubre la caja, con la cara un poco por encima del centro, sin dejar huecos
     esc = Math.max(W / datos.ancho, H / datos.alto) * (datos.zoom || 1);
+    if (df) escF = Math.max(W / df.ancho, H / df.alto) * (df.zoom || 1);
   }
   addEventListener("resize", ajusta); ajusta();
 
@@ -159,6 +167,13 @@ export async function inicia(raiz = "/retrato/") {
     gl.uniform1f(U("uAng"), ang);
     gl.uniform2f(U("uMueve"), mx, my);
     gl.uniform1f(U("uRespira"), respira);
+    if (fondo) {
+      gl.uniform1f(U("uFijo"), 1); gl.uniform2f(U("uCentro"), centroF.x, centroF.y); gl.uniform2f(U("uEscala"), escF, escF);
+      dibuja(fondo);
+      gl.uniform1f(U("uFijo"), 0); gl.uniform2f(U("uCentro"), centro.x, centro.y); gl.uniform2f(U("uEscala"), esc, esc);
+    }
+    // Una variante con otra postura (p. ej. «piensa» con la mano) tapa a la base solo cuando ya es opaca
+    base.alfa = sustituyen.some(n => capas[n].alfa > 0.99) ? 0 : 1;
     dibuja(base);
     for (const n of orden) dibuja(capas[n]);
   }
@@ -168,6 +183,11 @@ export async function inicia(raiz = "/retrato/") {
     const mw = W / esc / 2, mh = H / esc / 2;
     centro.x = Math.min(Math.max(centro.x, mw), datos.ancho - mw);
     centro.y = Math.min(Math.max(centro.y, mh), datos.alto - mh);
+    if (df) {
+      const fw = W / escF / 2, fh = H / escF / 2;
+      centroF.x = Math.min(Math.max(centroF.x, fw), df.ancho - fw);
+      centroF.y = Math.min(Math.max(centroF.y, fh), df.alto - fh);
+    }
   };
   lim(); addEventListener("resize", lim);
   requestAnimationFrame(bucle);
