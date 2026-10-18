@@ -152,7 +152,7 @@ bash ~/prisma/software/instalacion/04_interfaz.sh
 sudo reboot
 ```
 Al encender, la Pi arranca directamente en Prisma a pantalla completa:
-- **Cara** a la izquierda, que cambia con el estado: reposo, escucha, pensando o buscando (ojos arriba y puntos), hablando (boca en movimiento).
+- **Avatar 3D** a la izquierda (ver [12_avatar.md](12_avatar.md)): respira, parpadea, mira y cambia de expresión con el estado; mueve los labios al hablar. Mientras no tengas tu personaje se usa un modelo de muestra; si la Pi no pudiera con el 3D, aparece la cara simple.
 - **Marco de luz** del color del estado, el mismo que llevarán las franjas LED (D033).
 - **Conversación** a la derecha: tu pregunta en gris y la respuesta grande. Las fuentes de las búsquedas, en gris.
 - **Accesos rápidos** (Tiempo, Noticias, Fútbol, Un chiste) y un cuadro para escribir con el teclado. Con la voz desaparecerá la necesidad de teclear.
@@ -167,4 +167,5 @@ Al encender, la Pi arranca directamente en Prisma a pantalla completa:
 - Volver al escritorio normal: `bash ~/prisma/software/instalacion/04_interfaz.sh --quitar`.
 - Ver qué hace el servidor: `journalctl --user -u prisma -f`.
 - Tras un `git pull` con cambios: `systemctl --user restart prisma` y recargar la página (`F5`) o reiniciar.
+- Poner tu personaje: copia el `.vrm` a `~/.config/prisma/avatar.vrm` y recarga (`F5`).
 - La terminal sigue funcionando para pruebas: `python3 ~/prisma/software/prisma_texto.py --tiempos`.

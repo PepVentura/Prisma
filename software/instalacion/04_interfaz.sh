@@ -15,6 +15,19 @@ if [[ "${1:-}" == "--quitar" ]]; then
     exit 0
 fi
 
+echo "== 0/3 Avatar 3D =="
+# Si aún no tienes tu personaje (~/.config/prisma/avatar.vrm), se usa un modelo de muestra de pixiv
+# (licencia VRM Public License 1.0: se puede usar y redistribuir). Solo para probar el motor.
+MUESTRA="$HOME/prisma/software/interfaz/modelos/muestra.vrm"
+if [ ! -f "$HOME/.config/prisma/avatar.vrm" ] && [ ! -f "$MUESTRA" ]; then
+    mkdir -p "$(dirname "$MUESTRA")"
+    curl -fL --retry 3 -o "$MUESTRA" \
+      https://raw.githubusercontent.com/pixiv/three-vrm/dev/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm \
+      && echo "   Modelo de muestra descargado" || echo "   No se pudo descargar: se verá la cara simple"
+else
+    echo "   Ya hay avatar"
+fi
+
 echo "== 1/3 Servicio de Prisma =="
 mkdir -p "$(dirname "$SERV")"
 cat > "$SERV" <<CFG

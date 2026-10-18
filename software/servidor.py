@@ -52,6 +52,8 @@ class Manejador(BaseHTTPRequestHandler):
                 return self._json({"texto": tiempo.responde(0, CONFIG["ciudad"])})
             except Exception as e:
                 return self._json({"texto": None, "error": str(e)})
+        if self.path == "/avatar.vrm":
+            return self._avatar()
         ruta = "index.html" if self.path in ("/", "") else self.path.lstrip("/").split("?")[0]
         fichero = os.path.realpath(os.path.join(RAIZ, ruta))
         if not fichero.startswith(os.path.realpath(RAIZ)) or not os.path.isfile(fichero):
@@ -64,6 +66,20 @@ class Manejador(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(cuerpo)
+
+    def _avatar(self):
+        """Tu personaje en ~/.config/prisma/avatar.vrm; si no, el de muestra que descarga 04_interfaz.sh."""
+        for f in (os.path.expanduser("~/.config/prisma/avatar.vrm"), os.path.join(RAIZ, "modelos", "muestra.vrm")):
+            if os.path.isfile(f):
+                self.send_response(200)
+                self.send_header("Content-Type", "model/gltf-binary")
+                self.send_header("Content-Length", str(os.path.getsize(f)))
+                self.send_header("Cache-Control", "max-age=3600")
+                self.end_headers()
+                with open(f, "rb") as fh:
+                    self.wfile.write(fh.read())
+                return
+        self.send_error(404)
 
     def do_POST(self):
         if self.path != "/api/preguntar":
