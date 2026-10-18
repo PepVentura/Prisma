@@ -9,7 +9,7 @@ const FPS = 30;
 const MALLA = 28;                       // subdivisiones de la imagen base (las capas, menos)
 const BOCAS = ["boca_a", "boca_e", "boca_o", "boca_i", "boca_u"];
 const EXPRESION = { escucha: "sonrisa", pensando: "piensa", buscando: "piensa", error: "triste" };
-const MINIMO = 2.0;                     // segundos que dura como poco una expresión (pensar suele ser muy breve)
+const MINIMO = 1.0;                     // segundos que dura como poco una expresión (pensar suele ser muy breve)
 
 const VS = `
 attribute vec2 aPos; attribute vec2 aUv;
