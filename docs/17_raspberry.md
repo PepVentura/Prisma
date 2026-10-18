@@ -115,7 +115,7 @@ La IA de 1,7B se inventaba datos al resumir búsquedas (un 2-1 de la Real que no
 | Hora y fecha | Reloj de la Pi | «Son las 11:38 de la mañana.» |
 | El tiempo | Open-Meteo (gratis, sin clave) | «Mañana en Donostia: lluvia débil, entre 12 y 18 grados, con un 80 % de probabilidad de lluvia.» |
 | Fútbol | football-data.org (gratis, con clave) | «El sábado 17 de octubre, Athletic 0, Real Sociedad 2. Real Sociedad ganó.» |
-| Noticias | RSS de El Periódico, La Vanguardia, Deia y EITB | «Titulares de Deia. …» |
+| Noticias | RSS de El Periódico, La Vanguardia, Deia, EITB y TV3 (3CatInfo, en catalán) | «Titulares de Deia. …» |
 | Otras búsquedas | SearXNG: el fragmento más relevante, tal cual | «Según marca.com: Tadej Pogačar ganó el Tour de Francia 2026…» |
 | Charla | qwen3:1.7b | — |
 
