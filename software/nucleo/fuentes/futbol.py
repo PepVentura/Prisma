@@ -77,6 +77,12 @@ def responde(tipo, texto):
     return redacta_partido(d.get("matches", []), e, tipo)
 
 
+def _cuando(d):
+    """«hoy», «mañana», «ayer» o «el domingo 18 de octubre»."""
+    dif = (d - datetime.date.today()).days
+    return {0: "hoy", 1: "mañana", -1: "ayer"}.get(dif, f"el {fecha_hablada(d)}")
+
+
 def _corto(equipo):
     return equipo.get("shortName") or equipo.get("name")
 
@@ -88,12 +94,13 @@ def redacta_partido(partidos, e, tipo):
     cuando = datetime.datetime.fromisoformat(p["utcDate"].replace("Z", "+00:00")).astimezone()
     local, visit = _corto(p["homeTeam"]), _corto(p["awayTeam"])
     if tipo == "proximo":
-        return f"{_corto(e)} juega el {fecha_hablada(cuando.date())} a las {cuando:%H:%M}: {local} contra {visit}."
+        return f"{_corto(e)} juega {_cuando(cuando.date())} a las {cuando:%H:%M}: {local} contra {visit}."
     gl, gv = p["score"]["fullTime"]["home"], p["score"]["fullTime"]["away"]
     propio = gl if p["homeTeam"]["id"] == e["id"] else gv
     ajeno = gv if p["homeTeam"]["id"] == e["id"] else gl
     veredicto = "ganó" if propio > ajeno else "perdió" if propio < ajeno else "empató"
-    return f"El {fecha_hablada(cuando.date())}, {local} {gl}, {visit} {gv}. {_corto(e)} {veredicto}."
+    cuando_txt = _cuando(cuando.date())
+    return f"{cuando_txt[0].upper() + cuando_txt[1:]}, {local} {gl}, {visit} {gv}. {_corto(e)} {veredicto}."
 
 
 def redacta_tabla(d, e):
