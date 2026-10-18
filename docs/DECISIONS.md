@@ -32,6 +32,7 @@
 | D029 | Uniones de la capucha: 2 pasadores delanteros en la bandeja y 2 tornillos M3 avellanados traseros a insertos de la caja superior | Propuesta |
 | D030 | Rejillas integradas en la cubeta (banda de lamas delante, circular detrás); altavoz y radiador montados por dentro sobre anillos de 7 y 14 mm con insertos M3 | Cerrada |
 | D031 | Vuelta al boceto original: frontal inclinado 11° continuo de arriba abajo, aristas redondeadas, banda de lamas a todo lo ancho bajo la pantalla, laterales lisos, negro mate. 205 × 262 × 150 mm. La parte alta de la cámara acústica queda tras un tabique paralelo al frontal | Cerrada |
+| D038 | Modelo de lenguaje: qwen3:1.7b con Ollama. En la Pi 5: primera frase en ≈3,0 s, 9,8 tok/s de generación y 155 tok/s de lectura; qwen2.5:3b (4,8 s) y qwen3.5:2b (6,6 s) descartados | Cerrada |
 | D037 | Sistema: Raspberry Pi OS (64-bit) con escritorio (Debian 13 Trixie) en microSD de 64 GB A2 | Cerrada |
 | D036 | Cerebro 100 % local en la Pi 5: enrutador de órdenes sin IA para lo habitual (respuesta en ≈1 s), modelo pequeño con Ollama solo para la charla libre, SearXNG para Internet, faster-whisper y Piper para la voz. Multimedia en la propia Pi: mpv + yt-dlp (vídeo local y YouTube), Spotify Connect (Premium), AirPlay y Bluetooth; sin Amazon Music | Cerrada |
 | D035 | Pantalla, tras el marco de prueba v0.1: el PCB está 2,5 mm más arriba (lado contrario al flex) respecto al cristal; la ventana de la capucha ya era correcta (el marco de prueba v0.1 estaba en espejo) | Cerrada |

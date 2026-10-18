@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 # Prisma — paso 2: IA local (Ollama + modelos candidatos) y buscador SearXNG.
-# Uso (en la Pi):  bash ~/prisma/software/instalacion/02_ia.sh [--gemma]
-#   --gemma  descarga también gemma4:e2b (≈5 GB más; necesita tarjeta de 64 GB)
+# Uso (en la Pi):  bash ~/prisma/software/instalacion/02_ia.sh [--comparar]
+#   Por defecto descarga solo el modelo de Prisma, qwen3:1.7b (D038).
+#   --comparar  descarga también los candidatos para volver a compararlos
 set -euo pipefail
 
-MODELOS=(qwen3.5:2b qwen3:1.7b qwen2.5:3b)
-[[ "${1:-}" == "--gemma" ]] && MODELOS+=(gemma4:e2b)
+MODELOS=(qwen3:1.7b)
+[[ "${1:-}" == "--comparar" ]] && MODELOS+=(qwen2.5:3b qwen3.5:2b)
 CONF="$HOME/.config/prisma"
 mkdir -p "$CONF/searxng"
 
 echo "== 1/4 Ollama =="
-if ! command -v ollama > /dev/null; then
+# Se reinstala si falta el programa o el servicio (p. ej. si se cortó la conexión a mitad)
+if ! command -v ollama > /dev/null || ! systemctl cat ollama.service > /dev/null 2>&1; then
     curl -fsSL https://ollama.com/install.sh | sh
 fi
 # Modelo siempre cargado en memoria y solo accesible desde la propia Pi
@@ -29,7 +31,7 @@ echo "== 2/4 Modelos candidatos: ${MODELOS[*]} =="
 for m in "${MODELOS[@]}"; do ollama pull "$m"; done
 
 echo "== 3/4 Docker =="
-if ! command -v docker > /dev/null; then
+if ! command -v docker > /dev/null || ! systemctl cat docker.service > /dev/null 2>&1; then
     curl -fsSL https://get.docker.com | sh
     sudo usermod -aG docker "$USER"
 fi
@@ -52,5 +54,5 @@ else
 fi
 
 echo
-echo "Hecho. Prueba los modelos con:"
-echo "   python3 ~/prisma/software/herramientas/prueba_ia.py --comparar"
+echo "Hecho. Prueba el modelo con:"
+echo "   python3 ~/prisma/software/herramientas/prueba_ia.py --modelo qwen3:1.7b"
