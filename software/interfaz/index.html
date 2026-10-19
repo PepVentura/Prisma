@@ -150,9 +150,17 @@ body.spotify-api #m-mandos { display: flex; }
 body[data-panel="video"] #panel-video { display: flex; }
 #panel-video header { height: 46px; display: flex; align-items: center; gap: 12px; padding: 0 14px; border-bottom: 1px solid var(--linea); }
 #v-titulo { color: var(--tenue); font-size: 15px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#v-marco { flex: 1; background: #000; position: relative; }
-#v-marco iframe, #v-marco > div { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-#v-aviso { position: absolute; inset: 0; display: grid; place-content: center; color: var(--tenue); font-size: 18px; pointer-events: none; }
+#v-marco { flex: 1; background: #000; position: relative; min-height: 0; }
+#v-video { position: absolute; inset: 0; width: 100%; height: 100%; background: #000; }
+#v-aviso { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; color: var(--tenue);
+  font-size: 18px; pointer-events: none; padding: 30px; }
+#v-mandos { height: 62px; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-top: 1px solid var(--linea); }
+#v-mandos .mando { width: 58px; height: 46px; font-size: 20px; }
+#v-mandos .mando.grande { width: 74px; }
+#v-barra { flex: 1; height: 30px; display: flex; align-items: center; touch-action: none; }
+#v-barra div { width: 100%; height: 6px; border-radius: 3px; background: var(--linea); overflow: hidden; }
+#v-barra i { display: block; height: 100%; width: 0; background: var(--escucha); }
+#v-tiempo { color: var(--tenue); font-size: 15px; font-variant-numeric: tabular-nums; min-width: 96px; text-align: right; }
 #panel-casa header { height: 46px; display: flex; align-items: center; gap: 14px; padding: 0 14px; border-bottom: 1px solid var(--linea); }
 #panel-casa header span { color: var(--tenue); font-size: 15px; }
 #panel-casa iframe { flex: 1; border: 0; width: 100%; background: var(--panel); }
@@ -240,7 +248,13 @@ body.dormido #reposo { display: grid; }
 <section id="panel-video" class="panel" aria-label="YouTube">
   <header><button class="cerrar" data-cierra>← Prisma</button><span id="v-titulo"></span>
     <button class="cerrar" id="v-otro">Otro vídeo</button></header>
-  <div id="v-marco"><div id="v-aviso">Cargando…</div><div id="v-reproductor"></div></div>
+  <div id="v-marco"><video id="v-video" playsinline preload="auto"></video><div id="v-aviso">Cargando…</div></div>
+  <div id="v-mandos">
+    <button class="mando" data-v="-10" aria-label="Atrás 10 s">−10</button>
+    <button class="mando grande" id="v-play" aria-label="Reproducir o pausar">⏸</button>
+    <button class="mando" data-v="10" aria-label="Adelante 10 s">+10</button>
+    <div id="v-barra"><div><i></i></div></div><span id="v-tiempo"></span>
+  </div>
 </section>
 
 <div id="teclado" aria-hidden="true"></div>
@@ -396,7 +410,7 @@ function panel(nombre) {
   clearInterval(sondeoMusica);
   if (nombre === "musica") { musica(); sondeoMusica = setInterval(musica, 2000); }
   if (nombre === "casa") casa();
-  if (nombre !== "video" && reproductor && reproductor.stopVideo) { try { reproductor.stopVideo(); } catch (e) {} }
+  if (nombre !== "video") { const v = $("#v-video"); v.pause(); v.removeAttribute("src"); v.load(); }
   if (nombre) teclado(false);
 }
 
@@ -423,45 +437,46 @@ document.querySelectorAll(".mando").forEach(b => b.addEventListener("click", asy
   setTimeout(musica, 350);
 }));
 
-// ---------- YouTube: reproductor incrustado (se pausa, adelanta y cierra con el dedo) ----------
-let reproductor = null, listaVideos = [], videoActual = 0, apiYT = null;
-function cargaApiYT() {
-  if (!apiYT) apiYT = new Promise(ok => {
-    window.onYouTubeIframeAPIReady = ok;
-    const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; document.head.append(s);
-  });
-  return apiYT;
-}
+// ---------- YouTube: el vídeo llega directo (yt-dlp en la Pi) a un reproductor propio ----------
+// Sin el reproductor de YouTube: no hay «Vídeo no disponible», ni enlaces que saquen de Prisma.
+let listaVideos = [], videoActual = 0, pidiendo = 0;
+const vid = $("#v-video");
 async function videos(lista) {
   listaVideos = lista || []; videoActual = 0;
-  if (!listaVideos.length) return;
-  panel("video");
-  const v = listaVideos[0];
-  $("#v-titulo").textContent = v.titulo + (v.canal ? " · " + v.canal : "");
-  $("#v-aviso").textContent = "Cargando…";
-  const tarde = setTimeout(() => { $("#v-aviso").textContent = "YouTube no responde. ¿Hay conexión a Internet?"; }, 10000);
-  await cargaApiYT();
-  clearTimeout(tarde);
-  ponVideo();
+  if (listaVideos.length) { panel("video"); ponVideo(); }
 }
-function ponVideo() {
-  const v = listaVideos[videoActual];
-  if (!v) { $("#v-aviso").textContent = "Ninguno de estos vídeos deja verse fuera de YouTube."; return; }
+async function ponVideo() {
+  const v = listaVideos[videoActual], yo = ++pidiendo;
+  vid.pause(); vid.removeAttribute("src"); vid.load();
+  if (!v) { $("#v-aviso").textContent = "No he podido abrir ninguno de estos vídeos."; return; }
   $("#v-titulo").textContent = v.titulo + (v.canal ? " · " + v.canal : "");
-  $("#v-aviso").textContent = "Cargando…";
+  $("#v-aviso").textContent = "Preparando el vídeo…";
   $("#v-otro").style.visibility = videoActual < listaVideos.length - 1 ? "" : "hidden";
-  if (reproductor && reproductor.loadVideoById) { reproductor.loadVideoById(v.id); return; }
-  reproductor = new YT.Player("v-reproductor", {
-    host: "https://www.youtube-nocookie.com", videoId: v.id,
-    playerVars: { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1, hl: "es" },
-    events: {
-      onReady: e => { $("#v-aviso").textContent = ""; e.target.playVideo(); },
-      onStateChange: e => { if (e.data === 1) $("#v-aviso").textContent = ""; },
-      // 101 / 150: el autor no deja verlo incrustado → siguiente resultado
-      onError: () => { videoActual++; ponVideo(); },
-    },
-  });
+  let r = {};
+  try { r = await (await fetch("/api/video?id=" + encodeURIComponent(v.id))).json(); } catch (e) { r = {}; }
+  if (yo !== pidiendo) return;                       // mientras tanto se pidió otro
+  if (!r.url) { videoActual++; return ponVideo(); }  // este no se puede: el siguiente
+  vid.src = r.url;
+  vid.play().catch(() => {});
 }
+vid.addEventListener("playing", () => { $("#v-aviso").textContent = ""; $("#v-play").textContent = "⏸"; });
+vid.addEventListener("pause", () => { $("#v-play").textContent = "▶"; });
+vid.addEventListener("error", () => { if (vid.getAttribute("src")) { videoActual++; ponVideo(); } });
+vid.addEventListener("ended", () => setTimeout(() => { if (document.body.dataset.panel === "video") panel(null); }, 1500));
+vid.addEventListener("timeupdate", () => {
+  const d = vid.duration || 0, t = vid.currentTime || 0;
+  $("#v-barra i").style.width = d ? (100 * t / d) + "%" : "0";
+  $("#v-tiempo").textContent = d ? `${mmss(t * 1000)} / ${mmss(d * 1000)}` : "";
+});
+$("#v-play").addEventListener("click", () => vid.paused ? vid.play() : vid.pause());
+vid.addEventListener("click", () => vid.paused ? vid.play() : vid.pause());
+document.querySelectorAll("[data-v]").forEach(b => b.addEventListener("click", () => {
+  vid.currentTime = Math.max(0, Math.min((vid.duration || 0) - 1, vid.currentTime + Number(b.dataset.v)));
+}));
+$("#v-barra").addEventListener("pointerdown", e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  if (vid.duration) vid.currentTime = vid.duration * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+});
 $("#v-otro").addEventListener("click", () => { videoActual++; ponVideo(); });
 
 const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };

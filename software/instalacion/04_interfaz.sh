@@ -18,7 +18,7 @@ fi
 echo "== 0/3 Avatar =="
 # El retrato animado de muestra va en el repositorio. Para preparar el tuyo hacen falta numpy y Pillow
 # (herramientas/prepara_retrato.py). Un personaje 3D propio (VRM) se usa si está en ~/.config/prisma/avatar.vrm
-sudo apt-get -y install python3-numpy python3-pil yt-dlp >/dev/null && echo "   Listo"
+sudo apt-get -y install python3-numpy python3-pil >/dev/null && echo "   Listo"
 
 echo "== 1/3 Servicio de Prisma =="
 mkdir -p "$(dirname "$SERV")"

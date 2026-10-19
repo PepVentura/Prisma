@@ -15,6 +15,7 @@ from nucleo.asistente import Asistente
 from nucleo import memoria
 from nucleo.fuentes import tiempo
 from nucleo.fuentes import musica as spotify
+from nucleo.fuentes import video
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "interfaz")
 asistente = Asistente()
@@ -170,6 +171,9 @@ class Manejador(BaseHTTPRequestHandler):
                                "home_assistant": CONFIG.get("home_assistant")})
         if self.path == "/api/musica":
             return self._json(musica_pantalla())
+        if self.path.startswith("/api/video?"):
+            vid = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).get("id", [""])[0]
+            return self._json({"url": video.flujo(vid)})
         if self.path == "/api/casa":
             return self._json(comprueba_casa())
         if self.path == "/api/tiempo":
