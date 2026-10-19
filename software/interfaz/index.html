@@ -439,7 +439,7 @@ document.querySelectorAll(".mando").forEach(b => b.addEventListener("click", asy
 
 // ---------- YouTube: el vídeo llega directo (yt-dlp en la Pi) a un reproductor propio ----------
 // Sin el reproductor de YouTube: no hay «Vídeo no disponible», ni enlaces que saquen de Prisma.
-let listaVideos = [], videoActual = 0, pidiendo = 0;
+let listaVideos = [], videoActual = 0, pidiendo = 0, errorVideo = "";
 const vid = $("#v-video");
 async function videos(lista) {
   listaVideos = lista || []; videoActual = 0;
@@ -448,20 +448,22 @@ async function videos(lista) {
 async function ponVideo() {
   const v = listaVideos[videoActual], yo = ++pidiendo;
   vid.pause(); vid.removeAttribute("src"); vid.load();
-  if (!v) { $("#v-aviso").textContent = "No he podido abrir ninguno de estos vídeos."; return; }
+  if (!v) { $("#v-aviso").textContent = "No he podido abrir ninguno de estos vídeos." + (errorVideo ? " (" + errorVideo + ")" : ""); return; }
   $("#v-titulo").textContent = v.titulo + (v.canal ? " · " + v.canal : "");
   $("#v-aviso").textContent = "Preparando el vídeo…";
   $("#v-otro").style.visibility = videoActual < listaVideos.length - 1 ? "" : "hidden";
   let r = {};
   try { r = await (await fetch("/api/video?id=" + encodeURIComponent(v.id))).json(); } catch (e) { r = {}; }
   if (yo !== pidiendo) return;                       // mientras tanto se pidió otro
-  if (!r.url) { videoActual++; return ponVideo(); }  // este no se puede: el siguiente
+  if (!r.url) { errorVideo = r.error || ""; videoActual++; return ponVideo(); }  // este no se puede: el siguiente
   vid.src = r.url;
   vid.play().catch(() => {});
 }
 vid.addEventListener("playing", () => { $("#v-aviso").textContent = ""; $("#v-play").textContent = "⏸"; });
 vid.addEventListener("pause", () => { $("#v-play").textContent = "▶"; });
-vid.addEventListener("error", () => { if (vid.getAttribute("src")) { videoActual++; ponVideo(); } });
+vid.addEventListener("error", () => {
+  if (vid.getAttribute("src")) { errorVideo = "el navegador no pudo reproducirlo"; videoActual++; ponVideo(); }
+});
 vid.addEventListener("ended", () => setTimeout(() => { if (document.body.dataset.panel === "video") panel(null); }, 1500));
 vid.addEventListener("timeupdate", () => {
   const d = vid.duration || 0, t = vid.currentTime || 0;

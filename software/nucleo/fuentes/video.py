@@ -77,53 +77,72 @@ def _ytdlp_cmd():
 
 # Calidad: vídeo con sonido en un solo fichero (lo que reproduce el navegador sin más), hasta 720p
 _FORMATO = "best[ext=mp4][vcodec!=none][acodec!=none][height<=720]/18/best[vcodec!=none][acodec!=none][height<=720]"
-_flujos = {}                 # id → (url, cuándo); las direcciones de YouTube duran unas horas
+_info = {}                   # id → (datos, cuándo); las direcciones de YouTube duran unas horas
 _buscando = {}               # id → Event mientras yt-dlp trabaja
 _cerrojo = threading.Lock()
+ultimo_error = ""
 
 
-def flujo(id_):
-    """Dirección directa del vídeo para la pantalla, o None si no se puede."""
+def info(id_):
+    """{'url', 'cabeceras', 'tipo'} del vídeo, o None. El navegador no lo pide directo a YouTube
+    (sus direcciones van atadas a las cabeceras de yt-dlp): lo sirve el servidor (flujo())."""
     if not re.fullmatch(r"[A-Za-z0-9_-]{11}", id_ or ""):
         return None
     with _cerrojo:
-        hecho = _flujos.get(id_)
+        hecho = _info.get(id_)
         en_marcha = _buscando.get(id_)
-        if not en_marcha and not (hecho and time.time() - hecho[1] < 3 * 3600):
+        vale = hecho and time.time() - hecho[1] < 3 * 3600
+        if not en_marcha and not vale:
             _buscando[id_] = threading.Event()
-    if hecho and time.time() - hecho[1] < 3 * 3600:
+    if vale:
         return hecho[0]
     if en_marcha:                          # ya lo está obteniendo prepara(): esperar a ese
-        en_marcha.wait(45)
-        return (_flujos.get(id_) or (None,))[0]
+        en_marcha.wait(60)
+        return (_info.get(id_) or (None,))[0]
     try:
-        url = _obtiene(id_)
+        d = _obtiene(id_)
     finally:
         with _cerrojo:
             _buscando.pop(id_).set()
-    return url
+    return d
 
 
 def _obtiene(id_):
+    global ultimo_error
     cmd = _ytdlp_cmd()
     if not cmd:
+        ultimo_error = "yt-dlp no está instalado (instalacion/06_video.sh)"
         return None
     try:
-        p = subprocess.run(cmd + ["-g", "-f", _FORMATO, "--no-playlist", "--no-warnings",
+        p = subprocess.run(cmd + ["-j", "-f", _FORMATO, "--no-playlist", "--no-warnings",
                                   "https://www.youtube.com/watch?v=" + id_],
-                           capture_output=True, text=True, timeout=40)
-        url = next((l for l in p.stdout.splitlines() if l.startswith("http")), None)
-    except Exception:
-        url = None
-    if url:
-        with _cerrojo:
-            _flujos[id_] = (url, time.time())
-    return url
+                           capture_output=True, text=True, timeout=60)
+        j = json.loads(p.stdout) if p.stdout.strip() else {}
+    except Exception as e:
+        j, p = {}, None
+        ultimo_error = str(e)[:200]
+    if not j.get("url"):
+        if p is not None:
+            ultimo_error = (p.stderr.strip().splitlines() or ["sin respuesta de yt-dlp"])[-1][:200]
+        return None
+    d = {"url": j["url"], "cabeceras": j.get("http_headers") or {},
+         "tipo": "video/webm" if j.get("ext") == "webm" else "video/mp4"}
+    with _cerrojo:
+        _info[id_] = (d, time.time())
+    return d
+
+
+def tuberia(id_):
+    """Último recurso: yt-dlp descarga y entrega el vídeo por su salida (sin poder adelantar)."""
+    cmd = _ytdlp_cmd()
+    return subprocess.Popen(cmd + ["-f", _FORMATO, "--no-playlist", "-q", "-o", "-",
+                                   "https://www.youtube.com/watch?v=" + id_],
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
 
 def prepara(id_):
     """Empieza a obtener el vídeo en segundo plano (mientras Prisma contesta)."""
-    threading.Thread(target=flujo, args=(id_,), daemon=True).start()
+    threading.Thread(target=info, args=(id_,), daemon=True).start()
 
 
 def _ytdlp(consulta, n):
