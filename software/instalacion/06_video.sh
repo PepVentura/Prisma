@@ -6,6 +6,9 @@
 set -euo pipefail
 mkdir -p "$HOME/.local/bin"
 
+echo "== 0/3 ffmpeg (une vídeo y sonido) =="
+command -v ffmpeg >/dev/null || sudo apt-get -y install ffmpeg
+
 echo "== 1/3 yt-dlp =="
 curl -fL --retry 3 -o "$HOME/.local/bin/yt-dlp" \
   https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux_aarch64
@@ -18,11 +21,6 @@ else curl -fsSL https://deno.land/install.sh | sh -s -- -y --no-modify-path; fi
 "$HOME/.deno/bin/deno" --version | head -1
 
 echo "== 3/3 Prueba =="
-if "$HOME/.local/bin/yt-dlp" --js-runtimes "deno:$HOME/.deno/bin/deno" -g -f "18/best" --no-warnings \
-     "https://www.youtube.com/watch?v=aqz-KE-bpKQ" >/dev/null; then
-    echo "   YouTube responde"
-else
-    echo "   No consigo un vídeo de prueba: mira el mensaje de arriba"
-fi
+python3 "$HOME/prisma/software/herramientas/prueba_video.py" || echo "   Algo falla: mira el mensaje de arriba"
 systemctl --user restart prisma 2>/dev/null || true
 echo "Hecho. Prueba: «pon un vídeo de recetas de bacalao»."

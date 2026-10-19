@@ -173,11 +173,16 @@ class Manejador(BaseHTTPRequestHandler):
             return self._json(musica_pantalla())
         if self.path.startswith("/api/video?"):
             vid = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).get("id", [""])[0]
-            ok = bool(video.info(vid))
-            return self._json({"ok": ok, "url": "/api/video/flujo?id=" + vid if ok else None,
-                               "error": None if ok else video.ultimo_error})
+            d = video.info(vid)
+            return self._json({"ok": bool(d), "url": "/api/video/flujo?id=" + vid if d else None,
+                               "duracion": d["duracion"] if d else 0, "error": None if d else video.ultimo_error})
         if self.path.startswith("/api/video/flujo?"):
-            return self._flujo_video(urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).get("id", [""])[0])
+            q = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
+            try:
+                desde = max(0.0, float(q.get("t", ["0"])[0]))
+            except ValueError:
+                desde = 0.0
+            return self._flujo_video(q.get("id", [""])[0], desde)
         if self.path == "/api/casa":
             return self._json(comprueba_casa())
         if self.path == "/api/tiempo":
@@ -218,50 +223,28 @@ class Manejador(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
-    def _flujo_video(self, vid):
-        """Sirve el vídeo de YouTube a la pantalla pidiéndolo con las cabeceras de yt-dlp y pasando
-        los rangos (para poder adelantar). Si YouTube no lo da así, lo saca yt-dlp por tubería."""
+    def _flujo_video(self, vid, desde=0.0):
+        """Vídeo de YouTube para la pantalla: ffmpeg une vídeo y sonido (con las cabeceras de yt-dlp)
+        en un MP4 fragmentado que se envía según llega. Para adelantar, la pantalla lo pide desde otro segundo."""
         d = video.info(vid)
         if not d:
             return self.send_error(404)
-        cab = dict(d["cabeceras"])
-        if self.headers.get("Range"):
-            cab["Range"] = self.headers["Range"]
+        proc = video.junta(d, desde)
+        self.send_response(200)
+        self.send_header("Content-Type", "video/mp4")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
         try:
-            r = urllib.request.urlopen(urllib.request.Request(d["url"], headers=cab), timeout=15)
-        except urllib.error.HTTPError as e:
-            r = None
-            if e.code == 416:
-                return self.send_error(416)
-        except Exception:
-            r = None
-        try:
-            if r is not None:
-                self.send_response(r.status)
-                for k in ("Content-Type", "Content-Length", "Content-Range", "Accept-Ranges"):
-                    if r.headers.get(k):
-                        self.send_header(k, r.headers[k])
-                self.end_headers()
-                while True:
-                    trozo = r.read(64 * 1024)
-                    if not trozo:
-                        break
-                    self.wfile.write(trozo)
-                return
-            proc = video.tuberia(vid)
-            self.send_response(200)
-            self.send_header("Content-Type", d["tipo"])
-            self.end_headers()
-            try:
-                while True:
-                    trozo = proc.stdout.read(64 * 1024)
-                    if not trozo:
-                        break
-                    self.wfile.write(trozo)
-            finally:
-                proc.kill()
+            while True:
+                trozo = proc.stdout.read(64 * 1024)
+                if not trozo:
+                    break
+                self.wfile.write(trozo)
         except (BrokenPipeError, ConnectionResetError):
             pass                                  # la pantalla cerró el vídeo o saltó a otro punto
+        finally:
+            proc.kill()
+            proc.wait()
 
     def _avatar(self):
         """Tu personaje en ~/.config/prisma/avatar.vrm; si no, el de muestra que descarga 04_interfaz.sh."""

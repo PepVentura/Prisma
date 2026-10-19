@@ -439,7 +439,7 @@ document.querySelectorAll(".mando").forEach(b => b.addEventListener("click", asy
 
 // ---------- YouTube: el vídeo llega directo (yt-dlp en la Pi) a un reproductor propio ----------
 // Sin el reproductor de YouTube: no hay «Vídeo no disponible», ni enlaces que saquen de Prisma.
-let listaVideos = [], videoActual = 0, pidiendo = 0, errorVideo = "";
+let listaVideos = [], videoActual = 0, pidiendo = 0, errorVideo = "", vInicio = 0, vDuracion = 0, vUrl = "";
 const vid = $("#v-video");
 async function videos(lista) {
   listaVideos = lista || []; videoActual = 0;
@@ -456,28 +456,41 @@ async function ponVideo() {
   try { r = await (await fetch("/api/video?id=" + encodeURIComponent(v.id))).json(); } catch (e) { r = {}; }
   if (yo !== pidiendo) return;                       // mientras tanto se pidió otro
   if (!r.url) { errorVideo = r.error || ""; videoActual++; return ponVideo(); }  // este no se puede: el siguiente
-  vid.src = r.url;
-  vid.play().catch(() => {});
+  vUrl = r.url; vDuracion = r.duracion || 0;
+  desdeSegundo(0);
 }
 vid.addEventListener("playing", () => { $("#v-aviso").textContent = ""; $("#v-play").textContent = "⏸"; });
 vid.addEventListener("pause", () => { $("#v-play").textContent = "▶"; });
 vid.addEventListener("error", () => {
   if (vid.getAttribute("src")) { errorVideo = "el navegador no pudo reproducirlo"; videoActual++; ponVideo(); }
 });
-vid.addEventListener("ended", () => setTimeout(() => { if (document.body.dataset.panel === "video") panel(null); }, 1500));
+// Fin del vídeo: el evento «ended» no siempre llega con una emisión; también al alcanzar la duración
+let vFin = 0;
+function terminado() {
+  clearTimeout(vFin);
+  vFin = setTimeout(() => { if (document.body.dataset.panel === "video") panel(null); }, 1500);
+}
+vid.addEventListener("ended", terminado);
+// El vídeo llega como emisión: para adelantar se vuelve a pedir desde otro segundo
+function desdeSegundo(t) {
+  vInicio = Math.max(0, Math.min(t, vDuracion ? vDuracion - 2 : t));
+  $("#v-aviso").textContent = vInicio ? "" : $("#v-aviso").textContent;
+  vid.src = vUrl + "&t=" + vInicio.toFixed(1);
+  vid.play().catch(() => {});
+}
+const vAhora = () => vInicio + (vid.currentTime || 0);
 vid.addEventListener("timeupdate", () => {
-  const d = vid.duration || 0, t = vid.currentTime || 0;
+  const d = vDuracion, t = vAhora();
+  if (d && t >= d - 0.6 && !vid.paused) terminado();
   $("#v-barra i").style.width = d ? (100 * t / d) + "%" : "0";
   $("#v-tiempo").textContent = d ? `${mmss(t * 1000)} / ${mmss(d * 1000)}` : "";
 });
 $("#v-play").addEventListener("click", () => vid.paused ? vid.play() : vid.pause());
 vid.addEventListener("click", () => vid.paused ? vid.play() : vid.pause());
-document.querySelectorAll("[data-v]").forEach(b => b.addEventListener("click", () => {
-  vid.currentTime = Math.max(0, Math.min((vid.duration || 0) - 1, vid.currentTime + Number(b.dataset.v)));
-}));
+document.querySelectorAll("[data-v]").forEach(b => b.addEventListener("click", () => desdeSegundo(vAhora() + Number(b.dataset.v))));
 $("#v-barra").addEventListener("pointerdown", e => {
   const r = e.currentTarget.getBoundingClientRect();
-  if (vid.duration) vid.currentTime = vid.duration * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+  if (vDuracion) desdeSegundo(vDuracion * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)));
 });
 $("#v-otro").addEventListener("click", () => { videoActual++; ponVideo(); });
 
