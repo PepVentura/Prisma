@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Prisma — diagnóstico de los vídeos de YouTube. Uso:  python3 ~/prisma/software/herramientas/prueba_video.py [ID]"""
-import os, subprocess, sys, time, urllib.request
+import os, shutil, subprocess, sys, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nucleo.fuentes import video
 
@@ -10,6 +10,7 @@ print("yt-dlp:", cmd)
 if cmd:
     print("versión:", subprocess.run([cmd[0], "--version"], capture_output=True, text=True).stdout.strip())
 deno = os.path.expanduser("~/.deno/bin/deno")
+print("ffmpeg:", shutil.which("ffmpeg") or "NO (sudo apt install ffmpeg)")
 print("deno:", subprocess.run([deno, "--version"], capture_output=True, text=True).stdout.split("\n")[0] if os.path.isfile(deno) else "NO")
 print("\nBúsqueda «gatos»:", [v["titulo"][:40] for v in video.busca("gatos", 3)] or "nada")
 t = time.time()
@@ -18,9 +19,11 @@ print(f"\nyt-dlp con el vídeo {vid}: {'bien' if d else 'FALLA'} ({time.time() -
 if not d:
     print("   error:", video.ultimo_error)
     sys.exit(1)
-try:
-    r = urllib.request.urlopen(urllib.request.Request(d["url"], headers={**d["cabeceras"], "Range": "bytes=0-1023"}), timeout=15)
-    print("Descarga del vídeo desde la Pi:", r.status, r.headers.get("Content-Type"), r.headers.get("Content-Range"))
-except Exception as e:
-    print("Descarga del vídeo desde la Pi: FALLA ->", e, "(se usará la tubería de yt-dlp)")
+print("   partes:", len(d["entradas"]), "· duración:", d["duracion"], "s")
+t = time.time()
+proc = video.junta(d)
+datos = proc.stdout.read(512 * 1024)
+proc.kill()
+print(f"ffmpeg uniendo vídeo y sonido: {'bien' if len(datos) > 100_000 else 'FALLA'} "
+      f"({len(datos) // 1024} KB en {time.time() - t:.1f} s)")
 print("\nSi todo pone «bien», el vídeo debería verse en la pantalla.")

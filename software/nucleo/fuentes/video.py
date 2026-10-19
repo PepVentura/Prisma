@@ -75,8 +75,10 @@ def _ytdlp_cmd():
     return [exe] + (["--js-runtimes", "deno:" + deno] if os.path.isfile(deno) else [])
 
 
-# Calidad: vídeo con sonido en un solo fichero (lo que reproduce el navegador sin más), hasta 720p
-_FORMATO = "best[ext=mp4][vcodec!=none][acodec!=none][height<=720]/18/best[vcodec!=none][acodec!=none][height<=720]"
+# YouTube ya casi no da vídeo y sonido juntos: se piden por separado (H.264 + AAC, hasta 720p, lo que la
+# Pi decodifica con soltura) y ffmpeg los une al vuelo para la pantalla (ver junta()).
+_FORMATO = ("bv*[height<=720][vcodec^=avc1]+ba[acodec^=mp4a]/bv*[height<=720][vcodec^=avc1]+ba/"
+            "bv*[height<=720]+ba/b[height<=720]/bv*+ba/b")
 _info = {}                   # id → (datos, cuándo); las direcciones de YouTube duran unas horas
 _buscando = {}               # id → Event mientras yt-dlp trabaja
 _cerrojo = threading.Lock()
@@ -84,8 +86,8 @@ ultimo_error = ""
 
 
 def info(id_):
-    """{'url', 'cabeceras', 'tipo'} del vídeo, o None. El navegador no lo pide directo a YouTube
-    (sus direcciones van atadas a las cabeceras de yt-dlp): lo sirve el servidor (flujo())."""
+    """{'entradas': [(url, cabeceras)…], 'duracion'} del vídeo, o None. El navegador no lo pide a
+    YouTube: el servidor de la Pi lo une con ffmpeg y se lo sirve (junta())."""
     if not re.fullmatch(r"[A-Za-z0-9_-]{11}", id_ or ""):
         return None
     with _cerrojo:
@@ -121,23 +123,37 @@ def _obtiene(id_):
     except Exception as e:
         j, p = {}, None
         ultimo_error = str(e)[:200]
-    if not j.get("url"):
+    partes = j.get("requested_formats") or ([j] if j.get("url") else [])
+    if not partes:
         if p is not None:
             ultimo_error = (p.stderr.strip().splitlines() or ["sin respuesta de yt-dlp"])[-1][:200]
         return None
-    d = {"url": j["url"], "cabeceras": j.get("http_headers") or {},
-         "tipo": "video/webm" if j.get("ext") == "webm" else "video/mp4"}
+    d = {"entradas": [(f["url"], f.get("http_headers") or j.get("http_headers") or {}) for f in partes],
+         "duracion": j.get("duration") or 0}
     with _cerrojo:
         _info[id_] = (d, time.time())
     return d
 
 
-def tuberia(id_):
-    """Último recurso: yt-dlp descarga y entrega el vídeo por su salida (sin poder adelantar)."""
-    cmd = _ytdlp_cmd()
-    return subprocess.Popen(cmd + ["-f", _FORMATO, "--no-playlist", "-q", "-o", "-",
-                                   "https://www.youtube.com/watch?v=" + id_],
-                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+def junta(d, desde=0):
+    """ffmpeg une vídeo y sonido en un MP4 fragmentado que el navegador reproduce mientras llega.
+    desde: segundo por el que empezar (para adelantar se vuelve a pedir desde otro punto)."""
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin"]
+    for url, cab in d["entradas"]:
+        texto = "".join(f"{k}: {v}\r\n" for k, v in cab.items() if k.lower() != "user-agent")
+        cmd += ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "4"]
+        if cab.get("User-Agent"):
+            cmd += ["-user_agent", cab["User-Agent"]]
+        if texto:
+            cmd += ["-headers", texto]
+        if desde > 0:
+            cmd += ["-ss", f"{desde:.1f}"]
+        cmd += ["-i", url]
+    if len(d["entradas"]) > 1:
+        cmd += ["-map", "0:v:0", "-map", "1:a:0"]
+    cmd += ["-c", "copy", "-avoid_negative_ts", "make_zero", "-f", "mp4",
+            "-movflags", "frag_keyframe+empty_moov+default_base_moof", "pipe:1"]
+    return subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
 
 def prepara(id_):
