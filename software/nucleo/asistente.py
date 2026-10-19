@@ -3,7 +3,7 @@ Lo usan tanto prisma_texto.py (terminal) como servidor.py (pantalla)."""
 import threading, time
 from . import enrutador, memoria
 from .cerebro import Cerebro
-from .fuentes import web
+from .fuentes import web, video, musica
 
 
 class Asistente:
@@ -36,6 +36,9 @@ class Asistente:
             return
 
         accion, datos = enrutador.decide(texto)
+        if accion == "video":
+            yield from self._video(*datos, t0=t0)
+            return
         if accion != "charla":
             detalle = ""
             if accion == "web":
@@ -71,6 +74,32 @@ class Asistente:
         detalle = (f"lectura {u.get('tokens_leidos', 0)} tokens en {u.get('lectura_s', 0):.1f} s · "
                    f"generación {u.get('tok_s', 0):.1f} tok/s")
         yield self._fin("charla", detalle, t0, primera or time.perf_counter())
+
+    def _video(self, orden, consulta, t0):
+        """YouTube: la pantalla recibe la lista de resultados y los reproduce (evento «video»)."""
+        if orden == "cerrar":
+            yield {"tipo": "video", "cerrar": True}
+            yield {"tipo": "estado", "estado": "hablando"}
+            yield {"tipo": "trozo", "texto": "Cerrado."}
+            yield self._fin("video", "cerrar", t0, time.perf_counter())
+            return
+        yield {"tipo": "estado", "estado": "buscando"}
+        lista = video.busca(consulta)
+        primera = time.perf_counter()
+        yield {"tipo": "estado", "estado": "hablando"}
+        if not lista:
+            yield {"tipo": "trozo", "texto": f"No encuentro vídeos de «{consulta}»."}
+            yield self._fin("video", "sin resultados", t0, primera)
+            return
+        try:                                       # que la música no tape el vídeo
+            if musica.configurado() and musica.estado().get("estado") == "sonando":
+                musica.accion("pause")
+        except Exception:
+            pass
+        yield {"tipo": "video", "lista": lista}
+        canal = f", de {lista[0]['canal']}" if lista[0].get("canal") else ""
+        yield {"tipo": "trozo", "texto": f"Pongo «{lista[0]['titulo']}»{canal}."}
+        yield self._fin("video", f"{len(lista)} resultados", t0, primera)
 
     @staticmethod
     def _fin(accion, detalle, t0, primera):
