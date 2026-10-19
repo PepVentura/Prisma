@@ -212,3 +212,14 @@ Qué se puede hacer después:
 - **Panel «Música»:** anterior, reproducir/pausa, siguiente y volumen. Enseña lo que suena en tu cuenta aunque sea en otro dispositivo.
 - **Órdenes** (escritas o, con los micrófonos, habladas): «pon Rosalía», «pon música de Queen», «pon la canción Bohemian Rhapsody», «pon el disco Abbey Road», «pon la lista Jazz clásico», «pausa», «sigue», «siguiente», «la anterior», «sube/baja el volumen», «volumen al 40», «¿qué canción es esta?».
 - Los permisos se guardan en `~/.config/prisma/spotify.json` (solo lectura para tu usuario).
+
+## 11. Vídeos de YouTube
+```bash
+git -C ~/prisma pull
+bash ~/prisma/software/instalacion/04_interfaz.sh     # instala yt-dlp y deja que los vídeos arranquen solos
+sudo reboot
+```
+Escribe (o, con micrófonos, di) «pon un vídeo de recetas de bacalao», «pon Bohemian Rhapsody en YouTube», «busca en YouTube cómo cambiar una rueda» o «youtube lofi». Se abre a pantalla completa con el reproductor de YouTube: con el dedo se pausa y se adelanta; «Otro vídeo» pasa al siguiente resultado y «← Prisma» (o «cierra el vídeo») vuelve.
+- Busca con SearXNG (buscador de YouTube) y, si no encuentra, con yt-dlp.
+- Si un vídeo no deja verse fuera de YouTube (pasa con algunos videoclips), salta solo al siguiente.
+- Si sonaba Spotify, se pausa. Con un vídeo puesto, la pantalla no se duerme.

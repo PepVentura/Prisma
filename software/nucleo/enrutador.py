@@ -4,6 +4,7 @@
   2. tiempo    Open-Meteo                                   (≈0,5 s, datos reales)
   3. fútbol    football-data.org                            (≈1 s, datos reales)
   4. noticias  titulares RSS de los periódicos elegidos     (≈0,5 s, tal cual)
+     vídeo     YouTube en la pantalla: «pon un vídeo de…»   (≈1 s)
      música    órdenes a Spotify: pon…, pausa, siguiente…   (≈0,5 s)
   5. web       SearXNG: lee el fragmento más relevante      (≈1 s, tal cual, citando la fuente)
   6. charla    qwen3:1.7b                                   (≈1–3 s hasta la primera frase)
@@ -17,7 +18,7 @@ Además:
 import difflib, re
 from .config import CONFIG
 from .texto import normaliza
-from .fuentes import reloj, tiempo, futbol, noticias, musica
+from .fuentes import reloj, tiempo, futbol, noticias, musica, video
 
 # Pide buscar explícitamente
 _PIDE_BUSCAR = re.compile(r"^(?:oye[, ]+)?(?:prisma[, ]+)?(?:busca(?:me)?|buscar|mira|consulta|averigua)\b"
@@ -92,6 +93,9 @@ def _decide(texto):
     s = _seguimiento(texto)
     if s:
         return s
+    v = video.entiende(texto)
+    if v:
+        return "video", v
     mu = musica.entiende(texto)
     if mu:
         return "musica", mu
