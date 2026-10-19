@@ -3,7 +3,7 @@ Lo usan tanto prisma_texto.py (terminal) como servidor.py (pantalla)."""
 import threading, time
 from . import enrutador, memoria
 from .cerebro import Cerebro
-from .fuentes import web, video, musica
+from .fuentes import web, video, musica, local
 
 
 class Asistente:
@@ -38,6 +38,9 @@ class Asistente:
         accion, datos = enrutador.decide(texto)
         if accion == "video":
             yield from self._video(*datos, t0=t0)
+            return
+        if accion == "local":
+            yield from self._local(*datos, t0=t0)
             return
         if accion != "charla":
             detalle = ""
@@ -74,6 +77,51 @@ class Asistente:
         detalle = (f"lectura {u.get('tokens_leidos', 0)} tokens en {u.get('lectura_s', 0):.1f} s · "
                    f"generación {u.get('tok_s', 0):.1f} tok/s")
         yield self._fin("charla", detalle, t0, primera or time.perf_counter())
+
+    @staticmethod
+    def _calla_spotify():
+        try:                                       # que Spotify no suene a la vez
+            if musica.configurado() and musica.estado().get("estado") == "sonando":
+                musica.accion("pause")
+        except Exception:
+            pass
+
+    def _local(self, orden, dato, t0):
+        """Música y vídeos de la Pi: la pantalla recibe qué reproducir (evento «local»)."""
+        yield {"tipo": "estado", "estado": "pensando"}
+        ev, texto = None, ""
+        if orden == "control":
+            o, valor = dato
+            ev = {"tipo": "local", "orden": o, "valor": valor}
+            texto = {"pause": "Pausado.", "play": "Sigo.", "next": "Siguiente.", "prev": "Anterior."}.get(o, "Hecho.")
+        elif orden == "actualiza":
+            b = local.indexa(forzar=True)
+            texto = f"Biblioteca actualizada: {len(b['canciones'])} canciones y {len(b['videos'])} vídeos."
+        elif orden == "pon_video":
+            v = local.busca_video(dato)
+            if v:
+                self._calla_spotify()
+                ev, texto = {"tipo": "local", "medio": "video", "item": local.publico(v)}, f"Pongo {v['titulo']}."
+            else:
+                texto = f"No encuentro «{dato}» entre tus vídeos."
+        else:
+            if orden == "pon_todo":
+                cola, nombre = local.todo_mezclado(), "tu música, mezclada"
+            else:
+                cola, nombre = local.busca_musica(dato)
+            if cola:
+                self._calla_spotify()
+                ev = {"tipo": "local", "medio": "audio", "cola": [local.publico(c) for c in cola[:500]]}
+                texto = f"Pongo {nombre}."
+            elif orden == "pon_todo":
+                texto = "No encuentro música en la Pi. Copia canciones a la carpeta Música o conecta un USB."
+            else:
+                texto = f"No encuentro «{dato}» en tu música."
+        if ev:
+            yield ev
+        yield {"tipo": "estado", "estado": "hablando"}
+        yield {"tipo": "trozo", "texto": texto}
+        yield self._fin("local", orden, t0, time.perf_counter())
 
     def _video(self, orden, consulta, t0):
         """YouTube: la pantalla recibe la lista de resultados y los reproduce (evento «video»)."""

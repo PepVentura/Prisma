@@ -222,3 +222,18 @@ Escribe (o, con micrófonos, di) «pon un vídeo de recetas de bacalao», «pon 
 - No usa el reproductor de YouTube (daba «Vídeo no disponible» y su enlace «Ver en YouTube» abría una ventana sin salida). YouTube ya casi no da vídeo y sonido juntos: yt-dlp localiza las dos partes (H.264 + AAC, hasta 720p) y ffmpeg las une al vuelo en la Pi para la pantalla. Tarda unos segundos en empezar; al adelantar se vuelve a pedir desde ese punto.
 - Si no se ve nada: `python3 ~/prisma/software/herramientas/prueba_video.py` dice en qué paso falla.
 - Si un vídeo no se puede abrir, salta solo al siguiente. Si sonaba Spotify, se pausa. Con un vídeo puesto, la pantalla no se duerme.
+
+## 12. Música y vídeos de la Pi o de un USB
+```bash
+git -C ~/prisma pull
+bash ~/prisma/software/instalacion/07_multimedia.sh
+```
+Prepara las carpetas **Música** y **Vídeos**, monta solos los USB al enchufarlos y las comparte en la red: desde Windows, Explorador → `\\prisma\Música` (usuario `pi` y la contraseña que pongas). Mejor en carpetas `Artista/Álbum/01 - Canción.mp3`; si las canciones tienen etiquetas, se usan esas.
+
+- **Botón «Música» → «En la Pi»:** lo que suena (portada, título, artista), ⏮ ⏯ ⏭, barra para moverse, 🔀 toda la música mezclada y los álbumes para tocarlos con el dedo. «Spotify» sigue en la otra pestaña.
+- **Botón «Vídeos»:** tus vídeos con miniatura; al tocar uno se abre en el mismo reproductor que YouTube. Los que el navegador no abre tal cual (AVI, MKV con sonido AC3/DTS) se adaptan al vuelo con ffmpeg.
+- **Órdenes:** «pon mi música», «pon Kortatu de mi música», «pon el disco … de mi biblioteca», «pon la película La vida de Brian», «pon … de mis vídeos», «actualiza la biblioteca». Sin Spotify conectado, «pon Queen» también busca en la Pi.
+- Mientras suena algo de la Pi, «pausa», «sigue», «siguiente», «anterior» y el volumen van a ese reproductor (y no a Spotify). En un vídeo, «siguiente/anterior» salta 30 s.
+- Formatos: MP3, FLAC, OGG, Opus, M4A, WAV; MP4, MKV, WebM, MOV, AVI.
+
+![Música de la Pi](img/interfaz_musica_pi.png)

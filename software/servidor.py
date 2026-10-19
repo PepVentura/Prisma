@@ -7,7 +7,7 @@ La interfaz (interfaz/index.html) se abre en Chromium a pantalla completa al arr
 (ver instalacion/04_interfaz.sh). Las preguntas llegan por POST /api/preguntar y la respuesta
 vuelve en streaming (Server-Sent Events): estado, trozos de texto y fin.
 """
-import argparse, html, json, mimetypes, os, sys, threading, time, urllib.error, urllib.parse, urllib.request
+import argparse, html, json, mimetypes, os, re, sys, threading, time, urllib.error, urllib.parse, urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from nucleo.config import CONFIG
@@ -16,6 +16,7 @@ from nucleo import memoria
 from nucleo.fuentes import tiempo
 from nucleo.fuentes import musica as spotify
 from nucleo.fuentes import video
+from nucleo.fuentes import local
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "interfaz")
 asistente = Asistente()
@@ -183,6 +184,8 @@ class Manejador(BaseHTTPRequestHandler):
             except ValueError:
                 desde = 0.0
             return self._flujo_video(q.get("id", [""])[0], desde)
+        if self.path.startswith("/api/local/"):
+            return self._local()
         if self.path == "/api/casa":
             return self._json(comprueba_casa())
         if self.path == "/api/tiempo":
@@ -246,6 +249,100 @@ class Manejador(BaseHTTPRequestHandler):
             proc.kill()
             proc.wait()
 
+    def _local(self):
+        """Música y vídeos de la Pi: biblioteca, ficheros (con rangos, para adelantar), portadas y miniaturas."""
+        u = urllib.parse.urlparse(self.path)
+        q = urllib.parse.parse_qs(u.query)
+        id_ = (q.get("id") or [""])[0]
+        if u.path == "/api/local/biblioteca":
+            b = local.indexa()
+            return self._json({"albumes": local.albumes(), "canciones": {c["id"]: local.publico(c) for c in b["canciones"]},
+                               "videos": [local.publico(v) for v in b["videos"]]})
+        if u.path == "/api/local/portada":
+            img = local.portada(id_)
+            return self._binario(*img) if img else self.send_error(404)
+        if u.path == "/api/local/miniatura":
+            img = local.miniatura(id_)
+            return self._binario(img, "image/jpeg") if img else self.send_error(404)
+        if u.path == "/api/local/info":
+            return self._json({"duracion": local.duracion(id_)})
+        x = local.elemento(id_)
+        if not x:
+            return self.send_error(404)
+        if u.path == "/api/local/archivo":
+            return self._fichero_rangos(x["ruta"])
+        if u.path == "/api/local/remux":
+            try:
+                desde = max(0.0, float((q.get("t") or ["0"])[0]))
+            except ValueError:
+                desde = 0.0
+            proc = local.remux(id_, desde)
+            self.send_response(200)
+            self.send_header("Content-Type", "video/mp4")
+            self.end_headers()
+            try:
+                while True:
+                    trozo = proc.stdout.read(64 * 1024)
+                    if not trozo:
+                        break
+                    self.wfile.write(trozo)
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            finally:
+                proc.kill()
+                proc.wait()
+            return
+        self.send_error(404)
+
+    def _binario(self, datos, tipo):
+        self.send_response(200)
+        self.send_header("Content-Type", tipo)
+        self.send_header("Content-Length", str(len(datos)))
+        self.send_header("Cache-Control", "max-age=86400")
+        self.end_headers()
+        self.wfile.write(datos)
+
+    def _fichero_rangos(self, ruta):
+        """Sirve un fichero respetando «Range» (el navegador lo usa para adelantar y para empezar rápido)."""
+        total = os.path.getsize(ruta)
+        tipo = mimetypes.guess_type(ruta)[0] or "application/octet-stream"
+        if ruta.lower().endswith((".mkv", ".webm")):
+            tipo = "video/webm"
+        ini, fin = 0, total - 1
+        m = re.match(r"bytes=(\d*)-(\d*)", self.headers.get("Range") or "")
+        if m and (m.group(1) or m.group(2)):
+            if m.group(1):
+                ini = int(m.group(1))
+                fin = int(m.group(2)) if m.group(2) else total - 1
+            else:
+                ini = max(0, total - int(m.group(2)))
+            fin = min(fin, total - 1)
+            if ini > fin:
+                self.send_response(416)
+                self.send_header("Content-Range", f"bytes */{total}")
+                self.end_headers()
+                return
+            self.send_response(206)
+            self.send_header("Content-Range", f"bytes {ini}-{fin}/{total}")
+        else:
+            self.send_response(200)
+        self.send_header("Content-Type", tipo)
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(fin - ini + 1))
+        self.end_headers()
+        try:
+            with open(ruta, "rb") as f:
+                f.seek(ini)
+                quedan = fin - ini + 1
+                while quedan > 0:
+                    trozo = f.read(min(256 * 1024, quedan))
+                    if not trozo:
+                        break
+                    self.wfile.write(trozo)
+                    quedan -= len(trozo)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
+
     def _avatar(self):
         """Tu personaje en ~/.config/prisma/avatar.vrm; si no, el de muestra que descarga 04_interfaz.sh."""
         for f in (os.path.expanduser("~/.config/prisma/avatar.vrm"), os.path.join(RAIZ, "modelos", "muestra.vrm")):
@@ -261,6 +358,10 @@ class Manejador(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
+        if self.path == "/api/local/estado":
+            d = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
+            local.informa(d.get("medio"), d.get("sonando"))
+            return self._json({"ok": True})
         if self.path == "/api/musica/accion":
             # Botones del panel de música (API de Spotify)
             d = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
@@ -303,6 +404,7 @@ def main():
     ap.add_argument("--puerto", type=int, default=8080)
     a = ap.parse_args()
     threading.Thread(target=calienta, daemon=True).start()
+    threading.Thread(target=local.indexa, daemon=True).start()     # la biblioteca, lista antes de pedirla
     print(f"Prisma en http://127.0.0.1:{a.puerto}")
     ThreadingHTTPServer(("127.0.0.1", a.puerto), Manejador).serve_forever()
 
