@@ -219,6 +219,7 @@ git -C ~/prisma pull
 bash ~/prisma/software/instalacion/06_video.sh       # yt-dlp oficial + Deno (vuelve a ejecutarlo si YouTube deja de ir)
 ```
 Escribe (o, con micrófonos, di) «pon un vídeo de recetas de bacalao», «pon Bohemian Rhapsody en YouTube», «busca en YouTube cómo cambiar una rueda» o «youtube lofi». Se abre a pantalla completa con un reproductor propio: tocar el vídeo o ⏸ pausa, −10/+10 y la barra para moverse, «Otro vídeo» pasa al siguiente resultado y «← Prisma» (o «cierra el vídeo») vuelve. Al terminar, vuelve solo a Prisma.
-- No usa el reproductor de YouTube (daba «Vídeo no disponible» y su enlace «Ver en YouTube» abría una ventana sin salida): yt-dlp saca la dirección directa del vídeo en la Pi. Tarda unos segundos en empezar.
+- No usa el reproductor de YouTube (daba «Vídeo no disponible» y su enlace «Ver en YouTube» abría una ventana sin salida): yt-dlp localiza el vídeo y el servidor de la Pi se lo pasa a la pantalla con las cabeceras que YouTube exige (si aun así no, lo descarga yt-dlp al vuelo). Tarda unos segundos en empezar.
+- Si no se ve nada: `python3 ~/prisma/software/herramientas/prueba_video.py` dice en qué paso falla.
 - Calidad: hasta 720p cuando YouTube la da en un solo fichero; si no, 360p.
 - Si un vídeo no se puede abrir, salta solo al siguiente. Si sonaba Spotify, se pausa. Con un vídeo puesto, la pantalla no se duerme.

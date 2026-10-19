@@ -173,7 +173,11 @@ class Manejador(BaseHTTPRequestHandler):
             return self._json(musica_pantalla())
         if self.path.startswith("/api/video?"):
             vid = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).get("id", [""])[0]
-            return self._json({"url": video.flujo(vid)})
+            ok = bool(video.info(vid))
+            return self._json({"ok": ok, "url": "/api/video/flujo?id=" + vid if ok else None,
+                               "error": None if ok else video.ultimo_error})
+        if self.path.startswith("/api/video/flujo?"):
+            return self._flujo_video(urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).get("id", [""])[0])
         if self.path == "/api/casa":
             return self._json(comprueba_casa())
         if self.path == "/api/tiempo":
@@ -213,6 +217,51 @@ class Manejador(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(cuerpo)
+
+    def _flujo_video(self, vid):
+        """Sirve el vídeo de YouTube a la pantalla pidiéndolo con las cabeceras de yt-dlp y pasando
+        los rangos (para poder adelantar). Si YouTube no lo da así, lo saca yt-dlp por tubería."""
+        d = video.info(vid)
+        if not d:
+            return self.send_error(404)
+        cab = dict(d["cabeceras"])
+        if self.headers.get("Range"):
+            cab["Range"] = self.headers["Range"]
+        try:
+            r = urllib.request.urlopen(urllib.request.Request(d["url"], headers=cab), timeout=15)
+        except urllib.error.HTTPError as e:
+            r = None
+            if e.code == 416:
+                return self.send_error(416)
+        except Exception:
+            r = None
+        try:
+            if r is not None:
+                self.send_response(r.status)
+                for k in ("Content-Type", "Content-Length", "Content-Range", "Accept-Ranges"):
+                    if r.headers.get(k):
+                        self.send_header(k, r.headers[k])
+                self.end_headers()
+                while True:
+                    trozo = r.read(64 * 1024)
+                    if not trozo:
+                        break
+                    self.wfile.write(trozo)
+                return
+            proc = video.tuberia(vid)
+            self.send_response(200)
+            self.send_header("Content-Type", d["tipo"])
+            self.end_headers()
+            try:
+                while True:
+                    trozo = proc.stdout.read(64 * 1024)
+                    if not trozo:
+                        break
+                    self.wfile.write(trozo)
+            finally:
+                proc.kill()
+        except (BrokenPipeError, ConnectionResetError):
+            pass                                  # la pantalla cerró el vídeo o saltó a otro punto
 
     def _avatar(self):
         """Tu personaje en ~/.config/prisma/avatar.vrm; si no, el de muestra que descarga 04_interfaz.sh."""
