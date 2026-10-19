@@ -216,10 +216,9 @@ Qué se puede hacer después:
 ## 11. Vídeos de YouTube
 ```bash
 git -C ~/prisma pull
-bash ~/prisma/software/instalacion/04_interfaz.sh     # instala yt-dlp y deja que los vídeos arranquen solos
-sudo reboot
+bash ~/prisma/software/instalacion/06_video.sh       # yt-dlp oficial + Deno (vuelve a ejecutarlo si YouTube deja de ir)
 ```
-Escribe (o, con micrófonos, di) «pon un vídeo de recetas de bacalao», «pon Bohemian Rhapsody en YouTube», «busca en YouTube cómo cambiar una rueda» o «youtube lofi». Se abre a pantalla completa con el reproductor de YouTube: con el dedo se pausa y se adelanta; «Otro vídeo» pasa al siguiente resultado y «← Prisma» (o «cierra el vídeo») vuelve.
-- Busca con SearXNG (buscador de YouTube) y, si no encuentra, con yt-dlp.
-- Si un vídeo no deja verse fuera de YouTube (pasa con algunos videoclips), salta solo al siguiente.
-- Si sonaba Spotify, se pausa. Con un vídeo puesto, la pantalla no se duerme.
+Escribe (o, con micrófonos, di) «pon un vídeo de recetas de bacalao», «pon Bohemian Rhapsody en YouTube», «busca en YouTube cómo cambiar una rueda» o «youtube lofi». Se abre a pantalla completa con un reproductor propio: tocar el vídeo o ⏸ pausa, −10/+10 y la barra para moverse, «Otro vídeo» pasa al siguiente resultado y «← Prisma» (o «cierra el vídeo») vuelve. Al terminar, vuelve solo a Prisma.
+- No usa el reproductor de YouTube (daba «Vídeo no disponible» y su enlace «Ver en YouTube» abría una ventana sin salida): yt-dlp saca la dirección directa del vídeo en la Pi. Tarda unos segundos en empezar.
+- Calidad: hasta 720p cuando YouTube la da en un solo fichero; si no, 360p.
+- Si un vídeo no se puede abrir, salta solo al siguiente. Si sonaba Spotify, se pausa. Con un vídeo puesto, la pantalla no se duerme.

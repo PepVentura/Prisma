@@ -96,6 +96,7 @@ class Asistente:
                 musica.accion("pause")
         except Exception:
             pass
+        video.prepara(lista[0]["id"])            # yt-dlp tarda unos segundos: que empiece ya
         yield {"tipo": "video", "lista": lista}
         canal = f", de {lista[0]['canal']}" if lista[0].get("canal") else ""
         yield {"tipo": "trozo", "texto": f"Pongo «{lista[0]['titulo']}»{canal}."}
