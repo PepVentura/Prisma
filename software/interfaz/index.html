@@ -128,7 +128,41 @@ body.teclado #teclado { transform: none; }
 /* Paneles: música y casa */
 .panel { position: fixed; z-index: 6; background: var(--fondo); display: none; }
 body[data-panel="musica"] #panel-musica, body[data-panel="casa"] #panel-casa { display: flex; }
-#panel-musica { left: 448px; right: 26px; top: 84px; bottom: 82px; flex-direction: column; justify-content: center; gap: 18px; }
+#panel-musica { left: 448px; right: 26px; top: 76px; bottom: 82px; flex-direction: column; gap: 14px; }
+#m-pestanas { display: flex; gap: 8px; }
+#m-pestanas button { background: var(--panel); color: var(--tenue); border: 1px solid var(--linea); border-radius: 18px;
+  padding: 7px 16px; font: 15px var(--letra); }
+#m-pestanas button.activa { color: var(--escucha); border-color: var(--escucha); }
+#m-spotify, #m-pi { display: none; flex-direction: column; justify-content: center; gap: 18px; flex: 1; min-height: 0; }
+body[data-pestana="spotify"] #m-spotify, body[data-pestana="pi"] #m-pi { display: flex; }
+#m-pi { justify-content: flex-start; gap: 12px; }
+#p-tema { display: flex; gap: 16px; align-items: center; }
+#p-portada { width: 112px; height: 112px; border-radius: 12px; background: var(--panel) center / cover; flex: none;
+  border: 1px solid var(--linea); display: grid; place-items: center; color: var(--apagado); font-size: 44px; }
+#p-titulo { font-size: 22px; font-weight: 600; line-height: 1.2; }
+#p-artista { font-size: 17px; margin-top: 4px; } #p-album { font-size: 15px; color: var(--tenue); margin-top: 4px; }
+#p-mandos { display: flex; gap: 10px; align-items: center; }
+#p-barra { flex: 1; height: 28px; display: flex; align-items: center; } #p-barra div { width: 100%; height: 5px; border-radius: 3px; background: var(--linea); overflow: hidden; }
+#p-barra i { display: block; height: 100%; width: 0; background: var(--escucha); }
+#p-tiempo { color: var(--tenue); font-size: 14px; font-variant-numeric: tabular-nums; min-width: 84px; text-align: right; }
+#p-albumes { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; flex: none; }
+#p-albumes::-webkit-scrollbar { display: none; }
+.album { flex: 0 0 112px; text-align: left; background: none; border: 0; color: var(--tinta); padding: 0; font: 13px var(--letra); }
+.album .tapa { width: 112px; height: 112px; border-radius: 10px; background: var(--panel) center / cover; border: 1px solid var(--linea);
+  display: grid; place-items: center; color: var(--apagado); font-size: 34px; margin-bottom: 6px; }
+.album span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.album small { color: var(--tenue); }
+#p-vacio { color: var(--tenue); font-size: 17px; line-height: 1.5; }
+/* Vídeos de la Pi */
+body[data-panel="videos"] #panel-videos { display: flex; }
+#panel-videos { inset: 0; flex-direction: column; }
+#panel-videos header { height: 46px; display: flex; align-items: center; gap: 14px; padding: 0 14px; border-bottom: 1px solid var(--linea); }
+#panel-videos header span { color: var(--tenue); font-size: 15px; }
+#lista-videos { flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 16px; align-content: start; }
+.mini { background: none; border: 0; color: var(--tinta); text-align: left; padding: 0; font: 14px var(--letra); }
+.mini .img { aspect-ratio: 16 / 9; border-radius: 10px; background: var(--panel) center / cover; border: 1px solid var(--linea); margin-bottom: 6px;
+  display: grid; place-items: center; color: var(--apagado); font-size: 30px; }
+.mini span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 #panel-musica .tema { display: flex; gap: 22px; align-items: center; }
 #portada { width: 190px; height: 190px; border-radius: 14px; background: var(--panel) center / cover; flex: none;
   border: 1px solid var(--linea); display: grid; place-items: center; color: var(--apagado); font-size: 64px; }
@@ -215,6 +249,7 @@ body.dormido #reposo { display: grid; }
     <button class="chip" data-pide="¿Qué tiempo hará hoy?">Tiempo</button>
     <button class="chip" data-pide="Dame las noticias">Noticias</button>
     <button class="chip" data-panel="musica">Música</button>
+    <button class="chip" data-panel="videos">Vídeos</button>
     <button class="chip" data-panel="casa">Casa</button>
     <form id="formulario" autocomplete="off">
       <input id="entrada" placeholder="Escribe aquí…" aria-label="Pregunta para Prisma" inputmode="none" enterkeyhint="send">
@@ -224,6 +259,21 @@ body.dormido #reposo { display: grid; }
 </main>
 
 <section id="panel-musica" class="panel" aria-label="Música">
+  <div id="m-pestanas"><button data-pestana="pi">En la Pi</button><button data-pestana="spotify">Spotify</button></div>
+  <div id="m-pi">
+    <div id="p-tema"><div id="p-portada">♪</div>
+      <div><div id="p-titulo"></div><div id="p-artista"></div><div id="p-album"></div></div></div>
+    <div id="p-mandos">
+      <button class="mando" id="p-ant" aria-label="Anterior">⏮</button>
+      <button class="mando grande" id="p-play" aria-label="Reproducir o pausar">▶</button>
+      <button class="mando" id="p-sig" aria-label="Siguiente">⏭</button>
+      <div id="p-barra"><div><i></i></div></div><span id="p-tiempo"></span>
+      <button class="mando" id="p-mezcla" aria-label="Toda mi música mezclada">🔀</button>
+    </div>
+    <div id="p-albumes"></div>
+    <div id="p-vacio"></div>
+  </div>
+  <div id="m-spotify">
   <div class="tema"><div id="portada">♪</div>
     <div><div id="m-nombre"></div><div id="m-artistas"></div><div id="m-album"></div><div id="m-estado"></div></div></div>
   <div id="m-barra"><i></i></div>
@@ -237,7 +287,15 @@ body.dormido #reposo { display: grid; }
     <span id="m-dispositivo"></span>
   </div>
   <div id="m-ayuda"></div>
+  </div>
 </section>
+
+<section id="panel-videos" class="panel" aria-label="Mis vídeos">
+  <header><button class="cerrar" data-cierra>← Prisma</button><span>Vídeos de la Pi y del USB</span></header>
+  <div id="lista-videos"></div>
+</section>
+
+<audio id="p-audio" preload="auto"></audio>
 
 <section id="panel-casa" class="panel" aria-label="Home Assistant">
   <header><button class="cerrar" data-cierra>← Prisma</button><span>Home Assistant</span></header>
@@ -352,6 +410,7 @@ async function pregunta(texto) {
         const ev = JSON.parse(linea.slice(6));
         if (ev.tipo === "estado") { pon(ev.estado); buscando = ev.estado === "buscando"; }
         else if (ev.tipo === "video") { if (ev.cerrar) panel(null); else videos(ev.lista); }
+        else if (ev.tipo === "local") localEvento(ev);
         else if (ev.tipo === "trozo") {
           if (buscando && ev.texto === "Lo busco…") { $("#respuesta").textContent = "Lo busco…"; continue; }
           if ($("#respuesta").textContent === "Lo busco…") $("#respuesta").textContent = "";
@@ -410,7 +469,11 @@ function panel(nombre) {
   clearInterval(sondeoMusica);
   if (nombre === "musica") { musica(); sondeoMusica = setInterval(musica, 2000); }
   if (nombre === "casa") casa();
-  if (nombre !== "video") { const v = $("#v-video"); v.pause(); v.removeAttribute("src"); v.load(); }
+  if (nombre === "musica") biblioteca();
+  if (nombre === "videos") misVideos();
+  if (nombre !== "video" && $("#v-video").getAttribute("src")) {
+    const v = $("#v-video"); v.pause(); v.removeAttribute("src"); v.load(); informa(null, false);
+  }
   if (nombre) teclado(false);
 }
 
@@ -427,7 +490,7 @@ async function casa() {
 }
 
 let ultimaMusica = {};
-document.querySelectorAll(".mando").forEach(b => b.addEventListener("click", async () => {
+document.querySelectorAll("#m-spotify .mando").forEach(b => b.addEventListener("click", async () => {
   let accion = b.dataset.accion;
   if (accion === "play" && ultimaMusica.estado === "sonando") accion = "pause";
   try {
@@ -440,6 +503,9 @@ document.querySelectorAll(".mando").forEach(b => b.addEventListener("click", asy
 // ---------- YouTube: el vídeo llega directo (yt-dlp en la Pi) a un reproductor propio ----------
 // Sin el reproductor de YouTube: no hay «Vídeo no disponible», ni enlaces que saquen de Prisma.
 let listaVideos = [], videoActual = 0, pidiendo = 0, errorVideo = "", vInicio = 0, vDuracion = 0, vUrl = "";
+// vModo: «emision» (YouTube o un vídeo de la Pi convertido al vuelo: para adelantar se vuelve a pedir)
+//        «directo» (fichero de la Pi que el navegador abre tal cual: se adelanta con normalidad)
+let vModo = "emision";
 const vid = $("#v-video");
 async function videos(lista) {
   listaVideos = lista || []; videoActual = 0;
@@ -452,6 +518,8 @@ async function ponVideo() {
   $("#v-titulo").textContent = v.titulo + (v.canal ? " · " + v.canal : "");
   $("#v-aviso").textContent = "Preparando el vídeo…";
   $("#v-otro").style.visibility = videoActual < listaVideos.length - 1 ? "" : "hidden";
+  if (v.local) { vModo = "directo"; vid.src = "/api/local/archivo?id=" + v.id; vid.play().catch(() => {}); return; }
+  vModo = "emision";
   let r = {};
   try { r = await (await fetch("/api/video?id=" + encodeURIComponent(v.id))).json(); } catch (e) { r = {}; }
   if (yo !== pidiendo) return;                       // mientras tanto se pidió otro
@@ -459,10 +527,18 @@ async function ponVideo() {
   vUrl = r.url; vDuracion = r.duracion || 0;
   desdeSegundo(0);
 }
-vid.addEventListener("playing", () => { $("#v-aviso").textContent = ""; $("#v-play").textContent = "⏸"; });
-vid.addEventListener("pause", () => { $("#v-play").textContent = "▶"; });
-vid.addEventListener("error", () => {
-  if (vid.getAttribute("src")) { errorVideo = "el navegador no pudo reproducirlo"; videoActual++; ponVideo(); }
+vid.addEventListener("playing", () => { $("#v-aviso").textContent = ""; $("#v-play").textContent = "⏸"; informa("video", true); });
+vid.addEventListener("pause", () => { $("#v-play").textContent = "▶"; informa("video", false); });
+vid.addEventListener("error", async () => {
+  if (!vid.getAttribute("src")) return;
+  const v = listaVideos[videoActual];
+  if (v && v.local && vModo === "directo") {        // formato que el navegador no abre: ffmpeg lo adapta
+    $("#v-aviso").textContent = "Adaptando el vídeo…";
+    let r = {}; try { r = await (await fetch("/api/local/info?id=" + v.id)).json(); } catch (e) {}
+    vModo = "emision"; vUrl = "/api/local/remux?id=" + v.id; vDuracion = r.duracion || 0;
+    return desdeSegundo(0);
+  }
+  errorVideo = "el navegador no pudo reproducirlo"; videoActual++; ponVideo();
 });
 // Fin del vídeo: el evento «ended» no siempre llega con una emisión; también al alcanzar la duración
 let vFin = 0;
@@ -473,14 +549,16 @@ function terminado() {
 vid.addEventListener("ended", terminado);
 // El vídeo llega como emisión: para adelantar se vuelve a pedir desde otro segundo
 function desdeSegundo(t) {
+  if (vModo === "directo") { vid.currentTime = Math.max(0, Math.min(t, (vid.duration || t + 1) - 1)); return; }
   vInicio = Math.max(0, Math.min(t, vDuracion ? vDuracion - 2 : t));
   $("#v-aviso").textContent = vInicio ? "" : $("#v-aviso").textContent;
   vid.src = vUrl + "&t=" + vInicio.toFixed(1);
   vid.play().catch(() => {});
 }
-const vAhora = () => vInicio + (vid.currentTime || 0);
+const vAhora = () => (vModo === "directo" ? 0 : vInicio) + (vid.currentTime || 0);
+const vTotal = () => vModo === "directo" ? (isFinite(vid.duration) ? vid.duration : 0) : vDuracion;
 vid.addEventListener("timeupdate", () => {
-  const d = vDuracion, t = vAhora();
+  const d = vTotal(), t = vAhora();
   if (d && t >= d - 0.6 && !vid.paused) terminado();
   $("#v-barra i").style.width = d ? (100 * t / d) + "%" : "0";
   $("#v-tiempo").textContent = d ? `${mmss(t * 1000)} / ${mmss(d * 1000)}` : "";
@@ -490,9 +568,137 @@ vid.addEventListener("click", () => vid.paused ? vid.play() : vid.pause());
 document.querySelectorAll("[data-v]").forEach(b => b.addEventListener("click", () => desdeSegundo(vAhora() + Number(b.dataset.v))));
 $("#v-barra").addEventListener("pointerdown", e => {
   const r = e.currentTarget.getBoundingClientRect();
-  if (vDuracion) desdeSegundo(vDuracion * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)));
+  if (vTotal()) desdeSegundo(vTotal() * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)));
 });
 $("#v-otro").addEventListener("click", () => { videoActual++; ponVideo(); });
+
+// ---------- Música y vídeos de la Pi (o de un USB) ----------
+// El servidor sabe qué suena aquí: así «pausa» o «siguiente» van a este reproductor y no a Spotify.
+function informa(medio, sonando) {
+  fetch("/api/local/estado", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ medio, sonando }) }).catch(() => {});
+}
+const aud = $("#p-audio");
+let bib = { albumes: [], canciones: {}, videos: [] }, cola = [], enCola = -1;
+async function biblioteca() {
+  if (!document.body.dataset.pestana) document.body.dataset.pestana = "pi";
+  marcaPestana();
+  try { bib = await (await fetch("/api/local/biblioteca")).json(); } catch (e) { return; }
+  const caja = $("#p-albumes"); caja.textContent = "";
+  for (const a of bib.albumes) {
+    const b = document.createElement("button"); b.className = "album";
+    const tapa = document.createElement("div"); tapa.className = "tapa"; tapa.textContent = "♪";
+    const img = new Image();
+    img.onload = () => { tapa.style.backgroundImage = `url("${img.src}")`; tapa.textContent = ""; };
+    img.src = "/api/local/portada?id=" + a.portada;
+    const n = document.createElement("span"); n.textContent = a.album;
+    const ar = document.createElement("small"); ar.textContent = a.artista; ar.style.display = "block";
+    b.append(tapa, n, ar);
+    b.addEventListener("click", () => tocaCola(a.canciones.map(id => bib.canciones[id]).filter(Boolean)));
+    caja.append(b);
+  }
+  $("#p-vacio").textContent = bib.albumes.length ? "" :
+    "No hay música en la Pi. Copia canciones a la carpeta Música (por la red: \\\\prisma\\Música) o conecta un USB.";
+  $("#p-mezcla").style.visibility = bib.albumes.length ? "" : "hidden";
+  pintaCancion();
+}
+function marcaPestana() {
+  document.querySelectorAll("#m-pestanas button").forEach(b => b.classList.toggle("activa", b.dataset.pestana === document.body.dataset.pestana));
+}
+document.querySelectorAll("#m-pestanas button").forEach(b => b.addEventListener("click", () => {
+  document.body.dataset.pestana = b.dataset.pestana; marcaPestana();
+}));
+function tocaCola(lista, desde = 0) {
+  cola = lista || []; enCola = desde - 1;
+  if (!cola.length) return;
+  siguienteCancion(1);
+}
+function siguienteCancion(paso) {
+  if (!cola.length) return;
+  enCola += paso;
+  if (enCola < 0) enCola = 0;
+  if (enCola >= cola.length) { enCola = cola.length - 1; aud.pause(); return; }
+  aud.src = "/api/local/archivo?id=" + cola[enCola].id;
+  aud.play().catch(() => {});
+  pintaCancion();
+}
+function pintaCancion() {
+  const c = cola[enCola];
+  $("#p-tema").style.display = c ? "" : "none";
+  $("#p-mandos").style.opacity = c ? 1 : .5;
+  if (!c) return;
+  $("#p-titulo").textContent = c.titulo; $("#p-artista").textContent = c.artista || "";
+  $("#p-album").textContent = (c.album || "") + (cola.length > 1 ? ` · ${enCola + 1} de ${cola.length}` : "");
+  const pt = $("#p-portada"); pt.style.backgroundImage = ""; pt.textContent = "♪";
+  const img = new Image();
+  img.onload = () => { pt.style.backgroundImage = `url("${img.src}")`; pt.textContent = ""; };
+  img.src = "/api/local/portada?id=" + c.id;
+}
+aud.addEventListener("ended", () => siguienteCancion(1));
+aud.addEventListener("error", () => { if (aud.getAttribute("src")) siguienteCancion(1); });
+aud.addEventListener("playing", () => { $("#p-play").textContent = "⏸"; informa("audio", true); });
+aud.addEventListener("pause", () => { $("#p-play").textContent = "▶"; informa("audio", false); });
+aud.addEventListener("timeupdate", () => {
+  const d = aud.duration || 0, t = aud.currentTime || 0;
+  $("#p-barra i").style.width = d ? (100 * t / d) + "%" : "0";
+  $("#p-tiempo").textContent = d ? `${mmss(t * 1000)} / ${mmss(d * 1000)}` : "";
+});
+$("#p-play").addEventListener("click", () => { if (!cola.length) return; aud.paused ? aud.play() : aud.pause(); });
+$("#p-sig").addEventListener("click", () => siguienteCancion(1));
+$("#p-ant").addEventListener("click", () => aud.currentTime > 4 ? (aud.currentTime = 0) : siguienteCancion(-1));
+$("#p-barra").addEventListener("pointerdown", e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  if (aud.duration) aud.currentTime = aud.duration * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+});
+$("#p-mezcla").addEventListener("click", () => {
+  const todas = Object.values(bib.canciones).sort(() => Math.random() - .5);
+  tocaCola(todas);
+});
+
+async function misVideos() {
+  try { bib = await (await fetch("/api/local/biblioteca")).json(); } catch (e) { return; }
+  const caja = $("#lista-videos"); caja.textContent = "";
+  if (!bib.videos.length) {
+    caja.innerHTML = '<p style="grid-column:1/-1;color:var(--tenue);font-size:18px">No hay vídeos. Cópialos a la carpeta Vídeos de la Pi o conecta un USB.</p>';
+    return;
+  }
+  for (const v of bib.videos) {
+    const b = document.createElement("button"); b.className = "mini";
+    const im = document.createElement("div"); im.className = "img"; im.textContent = "▶";
+    const img = new Image();
+    img.onload = () => { im.style.backgroundImage = `url("${img.src}")`; im.textContent = ""; };
+    img.src = "/api/local/miniatura?id=" + v.id;
+    const n = document.createElement("span"); n.textContent = v.titulo;
+    b.append(im, n);
+    b.addEventListener("click", () => ponLocalVideo(v));
+    caja.append(b);
+  }
+}
+function ponLocalVideo(v) {
+  aud.pause();
+  listaVideos = [{ ...v, local: true, canal: v.carpeta }]; videoActual = 0;
+  panel("video"); ponVideo();
+}
+
+// Órdenes que llegan del asistente («pon mi música», «pon la película…», «pausa»…)
+function localEvento(ev) {
+  if (ev.medio === "audio") {
+    vid.pause(); tocaCola(ev.cola);
+    document.body.dataset.pestana = "pi";
+    setTimeout(() => { if (!ocupado) panel("musica"); }, 1800);
+  } else if (ev.medio === "video") {
+    setTimeout(() => ponLocalVideo(ev.item), 1200);
+  } else if (ev.orden) {
+    const enVideo = document.body.dataset.panel === "video" && vid.getAttribute("src");
+    const m = enVideo ? vid : aud;
+    if (ev.orden === "pause") m.pause();
+    else if (ev.orden === "play") m.play().catch(() => {});
+    else if (ev.orden === "next") enVideo ? desdeSegundo(vAhora() + 30) : siguienteCancion(1);
+    else if (ev.orden === "prev") enVideo ? desdeSegundo(vAhora() - 30) : siguienteCancion(-1);
+    else if (ev.orden === "vol") m.volume = Math.min(1, Math.max(0, m.volume + ev.valor / 100));
+    else if (ev.orden === "vol_abs") m.volume = Math.min(1, Math.max(0, ev.valor / 100));
+  }
+}
 
 const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
 async function musica() {
