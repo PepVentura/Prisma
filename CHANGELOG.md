@@ -1,4 +1,7 @@
 # Changelog
+## v0.6.3
+- Pantalla (D043): taladros colocados con la medida tomada en la pantalla (izquierdo a 8 mm del borde del cristal, inferior a 10 mm por debajo). El PCB va 4 mm a la derecha del cristal: marco de prueba **v0.4** (175,5 × 130,9 mm), capucha **v0.5**, pantalla 2 mm a la izquierda del centro y hueco de clavijas de 13 mm. Capucha y volumétrico sin interferencias.
+
 ## v0.6.2
 - Marco de prueba **v0.3** (`marco_pantalla_prueba_v0_3.stl`, 171,5 × 133,4 mm): mismo contenido que la última v0.2 corregida, con nombre nuevo para no confundirla con la v0.2 errónea de 174 × 130,9 mm. Docs con la tabla para distinguirlas.
 

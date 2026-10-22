@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** `stl/capucha_v0_4.stl` y sus piezas sueltas.
+- **STL:** `stl/capucha_v0_5.stl` y sus piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -54,3 +54,5 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 - Posición de los micrófonos del ReSpeaker Lite (los grupos de agujeros toleran ±3 mm).
 - Alto del objetivo de la cámara (`cam_standoff`).
 - Ajuste del deslizador sobre la palanca del SS12D00 y del capuchón sobre el pulsador.
+
+**v0.5 (D043):** resaltes de la pantalla en su posición medida respecto al cristal (izquierdo a 8 mm del borde del cristal, inferior a 10 mm por debajo). El PCB va 4 mm a la derecha del cristal, así que la pantalla se desplaza 2 mm a la izquierda del centro y el hueco para las clavijas acodadas queda en 13 mm (antes 15).
