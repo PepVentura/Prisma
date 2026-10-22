@@ -1,4 +1,7 @@
 # Changelog
+## v0.6.2
+- Marco de prueba **v0.3** (`marco_pantalla_prueba_v0_3.stl`, 171,5 × 133,4 mm): mismo contenido que la última v0.2 corregida, con nombre nuevo para no confundirla con la v0.2 errónea de 174 × 130,9 mm. Docs con la tabla para distinguirlas.
+
 ## v0.6.1
 - Pantalla (D035): taladros y PCB 2,5 mm más arriba respecto al cristal, medido con el marco de prueba. Capucha v0.4.
 - Marco de prueba v0.2: la v0.1 salía en espejo (ventana desplazada).

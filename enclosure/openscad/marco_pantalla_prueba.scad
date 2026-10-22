@@ -1,4 +1,7 @@
-// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.2 (D035)
+// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.3 (D035) → stl/marco_pantalla_prueba_v0_3.stl
+// Exterior 171,5 × 133,4 × 9,9 mm. Taladros centrados a lo ancho (7,3 mm de cada lateral) y a
+// 10,5 mm del borde inferior / 8,0 mm del superior (flex abajo).
+// v0.3: la v0.2 tenía el desplazamiento de 2,5 mm en horizontal (174 × 130,9 mm); es vertical.
 // v0.2: la v0.1 salía en espejo (la ventana quedaba desplazada: 4 mm de borde negro a la
 // derecha y 3 mm de imagen tapados a la izquierda). Ahora X va de izquierda a derecha
 // mirando la cara vista, como en la capucha. Taladros (y PCB) 2,5 mm más arriba.
