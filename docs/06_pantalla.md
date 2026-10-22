@@ -39,11 +39,19 @@ El modelo reserva 15 mm libres a la derecha del conector. Con la pantalla centra
 El interruptor de retroiluminación queda accesible solo con la carcasa abierta. Déjalo en ON.
 
 ## Marco de prueba
-`enclosure/openscad/marco_pantalla_prueba.scad` → `stl/marco_pantalla_prueba_v0_2.stl` (174 × 130,9 × 9,9 mm, ≈58 cm³).
+`enclosure/openscad/marco_pantalla_prueba.scad` → **`stl/marco_pantalla_prueba_v0_3.stl`** (171,5 × 133,4 × 9,9 mm, ≈58 cm³).
+
+Cómo distinguir las versiones con el calibre (mirando la cara vista, flex abajo):
+| Versión | Exterior | Taladros |
+|---|---|---|
+| v0.1 | 171,5 × 130,9 | en espejo, 2,5 mm demasiado abajo |
+| v0.2 (errónea) | **174** × 130,9 | desplazados 2,5 mm en horizontal |
+| **v0.3 (buena)** | 171,5 × **133,4** | 7,3 mm de cada lateral; 10,5 mm del borde inferior y 8,0 del superior |
 
 **Resultado de la v0.1 (D035):**
 - **Taladros:** los resaltes quedaban 2,5 mm más abajo que los taladros del PCB. Con la pantalla en su posición (flex abajo), el PCB está 2,5 mm más arriba respecto al cristal de lo previsto (`screen_pcb_dz = 2.5`). Corregido en el marco, en la capucha y en el volumétrico.
-- **Ventana:** la v0.1 se generó en espejo. Como se imprime boca abajo, la ventana quedaba al revés: se veían 4 mm de borde negro a la derecha y tapaba 3 mm de imagen a la izquierda. La v0.2 está corregida. La capucha no tenía ese error.
+- **Ventana:** la v0.1 se generó en espejo. Como se imprime boca abajo, la ventana quedaba al revés: se veían 4 mm de borde negro a la derecha y tapaba 3 mm de imagen a la izquierda. Corregido desde la v0.2. La capucha no tenía ese error.
+- **v0.2:** aplicó los 2,5 mm en horizontal por error (174 × 130,9 mm). La **v0.3** los aplica en vertical, como debe.
 
 Sirve para comprobar el encaje real antes de imprimir la carcasa:
 - ventana = área visible + 0,5 mm por lado, con chaflán de 1,5 mm hacia delante;
