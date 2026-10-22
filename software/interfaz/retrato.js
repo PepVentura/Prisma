@@ -107,11 +107,7 @@ export async function inicia(raiz = "/retrato/") {
   addEventListener("resize", ajusta); ajusta();
 
   let estado = "reposo", nivelVoz = 0, simulado = false;
-  let proxParpadeo = 2.4 + Math.random() * 2.2, parpadeo = 0, apertura = 0, visema = bocas[0], proxVisema = 0;
-  // Objetivos lentos y no periódicos: evitan el balanceo robótico de una senoide constante.
-  let proxMovimiento = 1.8 + Math.random() * 2.4;
-  let objetivoAng = 0, objetivoMx = 0, objetivoMy = 0;
-  let ultimoEstado = estado;
+  let proxParpadeo = 2, parpadeo = 0, apertura = 0, visema = bocas[0], proxVisema = 0;
   const desde = {};
   let frase = 1, ang = 0, mx = 0, my = 0, acumulado = 0, ultimo = performance.now();
   const t0 = performance.now();
@@ -134,28 +130,13 @@ export async function inicia(raiz = "/retrato/") {
     const t = (ahora - t0) / 1000;
     const piensa = estado === "pensando" || estado === "buscando";
 
-    // Movimiento de cabeza discreto, con objetivos irregulares y transiciones suaves.
-    // No se mueve constantemente: las pausas son importantes para que parezca presente.
-    if (estado !== ultimoEstado) {
-      ultimoEstado = estado;
-      if (estado === "escucha") { objetivoAng = 0.012; objetivoMx = -0.003; objetivoMy = 0.004; }
-      else if (piensa) { objetivoAng = -0.010; objetivoMx = 0.002; objetivoMy = -0.006; }
-      else { objetivoAng = 0; objetivoMx = 0; objetivoMy = 0; }
-    }
-    proxMovimiento -= paso;
-    if (proxMovimiento <= 0) {
-      objetivoAng += (Math.random() - 0.5) * 0.018;
-      objetivoMx = (Math.random() - 0.5) * 0.012;
-      objetivoMy = (Math.random() - 0.5) * 0.010;
-      proxMovimiento = 2.2 + Math.random() * 3.8;
-    }
-    const angObj = objetivoAng + (estado === "hablando" ? Math.sin(t * 1.7) * 0.0015 : 0);
-    const suaviza = 1 - Math.exp(-paso * 1.7);
-    ang += (angObj - ang) * suaviza;
-    mx += (objetivoMx * cab.r - mx) * suaviza;
-    my += (objetivoMy * cab.r - my) * suaviza;
-    // Respiración casi imperceptible, lenta y sin subida/bajada brusca.
-    const respira = (Math.sin(t * 1.05) * 0.5 + 0.5) * cab.r * 0.004;
+    // Cabeza: balanceo lento; al escuchar se inclina; al pensar se ladea hacia arriba
+    const angObj = Math.sin(t * 0.45) * 0.012 + Math.sin(t * 1.1) * 0.004 + (estado === "escucha" ? 0.035 : 0) + (piensa ? -0.025 : 0);
+    const habla = estado === "hablando" ? Math.sin(t * 2.1) * 0.006 : 0;   // acompaña la frase
+    ang += (angObj + habla - ang) * Math.min(1, paso * 3);
+    mx += ((Math.sin(t * 0.3) * 0.006) * cab.r - mx) * Math.min(1, paso * 3);
+    my += (((piensa ? -0.02 : 0) + Math.sin(t * 0.7) * 0.003) * cab.r - my) * Math.min(1, paso * 3);
+    const respira = (Math.sin(t * 1.55) * 0.5 + 0.5) * cab.r * 0.012;
 
     // Parpadeo (no al pensar si hay imagen «piensa»)
     proxParpadeo -= paso;
@@ -189,12 +170,10 @@ export async function inicia(raiz = "/retrato/") {
       } else v = nivelVoz;
     }
     apertura += (v - apertura) * Math.min(1, paso * 14);
-    if (apertura < 0.10 && bocas.length && proxVisema <= 0) {
-      const candidatas = bocas.filter(b => b !== "boca_a");
-      visema = candidatas.length ? candidatas[Math.floor(Math.random() * candidatas.length)] : bocas[0];
-      proxVisema = 0.12 + Math.random() * 0.10;
+    if (apertura < 0.12 && bocas.length) {
+      const r = Math.random();
+      visema = r < 0.45 && capas.boca_e ? "boca_e" : r < 0.75 && capas.boca_o ? "boca_o" : bocas[Math.floor(Math.random() * bocas.length)];
     }
-    proxVisema -= paso;
     for (const b of bocas) {
       const otraPostura = sustituyen.reduce((m, n) => Math.max(m, capas[n].alfa), 0);
       const meta = b === visema ? Math.min(1, Math.max(0, (apertura - 0.12) * 1.6)) * (1 - otraPostura) : 0;
@@ -241,6 +220,6 @@ export async function inicia(raiz = "/retrato/") {
     simula(si) { simulado = si; },
     info: () => ({ estado, apertura, visema, bocas, capas: Object.fromEntries(Object.entries(capas).map(([k, c]) => [k, +c.alfa.toFixed(2)])) }),
   };
-  // La simulación labial queda desactivada por defecto; solo se activa desde el modo demo.
+  window.avatar.simula(true);
   return true;
 }
