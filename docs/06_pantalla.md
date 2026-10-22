@@ -39,14 +39,17 @@ El modelo reserva 15 mm libres a la derecha del conector. Con la pantalla centra
 El interruptor de retroiluminación queda accesible solo con la carcasa abierta. Déjalo en ON.
 
 ## Marco de prueba
-`enclosure/openscad/marco_pantalla_prueba.scad` → **`stl/marco_pantalla_prueba_v0_3.stl`** (171,5 × 133,4 × 9,9 mm, ≈58 cm³).
+`enclosure/openscad/marco_pantalla_prueba.scad` → **`stl/marco_pantalla_prueba_v0_4.stl`** (175,5 × 130,9 × 9,9 mm).
 
 Cómo distinguir las versiones con el calibre (mirando la cara vista, flex abajo):
 | Versión | Exterior | Taladros |
 |---|---|---|
 | v0.1 | 171,5 × 130,9 | en espejo, 2,5 mm demasiado abajo |
 | v0.2 (errónea) | **174** × 130,9 | desplazados 2,5 mm en horizontal |
-| **v0.3 (buena)** | 171,5 × **133,4** | 7,3 mm de cada lateral; 10,5 mm del borde inferior y 8,0 del superior |
+| v0.3 | 171,5 × 133,4 | centrados respecto al cristal (según el plano): no coinciden |
+| **v0.4 (buena)** | **175,5** × 130,9 | medidos en la pantalla: izquierdo a 8 mm del borde del cristal, inferior a 10 mm por debajo del cristal |
+
+**Medida en la pantalla (22/10/2026, D043):** con el cristal como referencia, el centro del taladro izquierdo está a 8 mm de su borde izquierdo y el inferior a 10 mm por debajo de su borde inferior; los centros, a 156,9 × 114,96 mm como dice el plano. Por tanto el taladro superior queda ≈5 mm por encima del cristal, el derecho justo a la altura del borde derecho del cristal y el PCB (con sus conectores) unos 4 mm a la derecha del cristal. En la v0.4, medido desde los bordes exteriores del marco (cara vista, flex abajo): taladros a 11,3 mm del lateral izquierdo, 7,3 mm del derecho y 8,0 mm de arriba y de abajo.
 
 **Resultado de la v0.1 (D035):**
 - **Taladros:** los resaltes quedaban 2,5 mm más abajo que los taladros del PCB. Con la pantalla en su posición (flex abajo), el PCB está 2,5 mm más arriba respecto al cristal de lo previsto (`screen_pcb_dz = 2.5`). Corregido en el marco, en la capucha y en el volumétrico.

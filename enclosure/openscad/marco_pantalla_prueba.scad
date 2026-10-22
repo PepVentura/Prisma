@@ -1,6 +1,8 @@
-// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.3 (D035) → stl/marco_pantalla_prueba_v0_3.stl
-// Exterior 171,5 × 133,4 × 9,9 mm. Taladros centrados a lo ancho (7,3 mm de cada lateral) y a
-// 10,5 mm del borde inferior / 8,0 mm del superior (flex abajo).
+// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.4 (D043) → stl/marco_pantalla_prueba_v0_4.stl
+// v0.4: taladros colocados con las medidas tomadas en la pantalla (22/10): el izquierdo a 8 mm del
+// borde izquierdo del cristal y el inferior a 10 mm por debajo del cristal; el superior queda a
+// ≈5 mm por encima y el derecho, en el borde derecho del cristal. El PCB va 4 mm a la derecha del
+// cristal, así que el marco crece por ese lado.
 // v0.3: la v0.2 tenía el desplazamiento de 2,5 mm en horizontal (174 × 130,9 mm); es vertical.
 // v0.2: la v0.1 salía en espejo (la ventana quedaba desplazada: 4 mm de borde negro a la
 // derecha y 3 mm de imagen tapados a la izquierda). Ahora X va de izquierda a derecha
@@ -42,9 +44,13 @@ fpc_x0 = 50; fpc_x1 = 115; fpc_drop = 6;   // cubre la posición de la v0.1 (que
 T = skin + screen_t;   // grosor total: cara vista → cara delantera del PCB
 
 // Posiciones derivadas (coordenadas de pantalla)
-hole_x0 = (screen_w - screen_hole_dx) / 2;
-holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
-            [hole_x0 + dx, screen_hole_z0 + screen_pcb_dz + dz]];
+holes = screen_holes;
+// Contorno del PCB (con el desplazamiento medido) y de la placa del marco, que abarca cristal y PCB
+pcb = [screen_pcb_dx, screen_pcb_dz, screen_w, screen_h];
+px0 = min(0, screen_pcb_dx) - fit - frame_wall;
+px1 = max(screen_w, screen_pcb_dx + screen_w) + fit + frame_wall;
+pz0 = min(glass_z0, screen_pcb_dz) - fit - frame_wall;
+pz1 = max(glass_z0 + glass_h, screen_pcb_dz + screen_h) + fit + frame_wall;
 glass = [0, glass_z0, screen_w, glass_h];                       // x, y, ancho, alto
 win   = [screen_active_x0 - win_margin, screen_active_z0 - win_margin,
          screen_active_w + 2 * win_margin, screen_active_h + 2 * win_margin];
@@ -56,8 +62,7 @@ module rect(r, z0, h, grow = 0) {
 module marco() {
     difference() {
         // placa
-        translate([-fit - frame_wall, -fit - frame_wall, 0])
-            cube([screen_w + 2 * (fit + frame_wall), screen_h + screen_pcb_dz + 2 * (fit + frame_wall), T]);
+        translate([px0, pz0, 0]) cube([px1 - px0, pz1 - pz0, T]);
 
         // ventana con chaflán hacia la cara vista
         hull() {
@@ -71,7 +76,7 @@ module marco() {
 
         // rebaje del PCB (contorno completo con pestañas), excepto los resaltes
         difference() {
-            translate([-fit, screen_pcb_dz - fit, T - pcb_relief]) cube([screen_w + 2 * fit, screen_h + 2 * fit, T]);
+            translate([pcb[0] - fit, pcb[1] - fit, T - pcb_relief]) cube([pcb[2] + 2 * fit, pcb[3] + 2 * fit, T]);
             for (h = holes) translate([h[0], h[1], 0]) cylinder(d = boss_d, h = T);
         }
 
@@ -87,7 +92,7 @@ module marco() {
 // Referencia visual de la pantalla (no se imprime)
 module pantalla_ref() {
     color([0.1, 0.1, 0.1, 0.6]) rect(glass, skin, screen_t);
-    color([0.1, 0.25, 0.5, 0.6]) translate([0, screen_pcb_dz, T]) cube([screen_w, screen_h, screen_pcb_t]);
+    color([0.1, 0.25, 0.5, 0.6]) translate([screen_pcb_dx, screen_pcb_dz, T]) cube([screen_w, screen_h, screen_pcb_t]);
 }
 
 show_ref = false;

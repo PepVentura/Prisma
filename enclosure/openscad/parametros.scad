@@ -49,16 +49,25 @@ screen_active_z0 = glass_z0 + 9.0; // margen inferior ≈ 9,0 (superior ≈ 4,9)
 screen_hole_dx = 156.9; screen_hole_dz = 114.96;    // taladros (plano), a 4,0 mm de los laterales
 screen_hole_z0 = (screen_h - screen_hole_dz) / 2;   // 4,655
 screen_hole_d = 3.0;     // medido → tornillos M2.5
-// Corrección medida con el marco de prueba v0.1 (D035): el PCB (taladros, pestañas y conectores)
-// está 2,5 mm más ARRIBA respecto al cristal de lo que se suponía (hacia el lado contrario al flex)
-screen_pcb_dz = 2.5;
+// Posición real de los taladros respecto al cristal, medida en la pantalla (22/10/2026, D043):
+// centro del taladro izquierdo a 8 mm del borde izquierdo del cristal y centro del inferior a
+// 10 mm por debajo del borde inferior del cristal (lado del flex). Los centros, a 156,9 × 114,96.
+// De ahí sale cuánto está desplazado el PCB (taladros, pestañas y conectores) respecto al cristal:
+screen_hole_glass_x = 8.0;
+screen_hole_glass_below = 10.0;
+screen_pcb_dx = screen_hole_glass_x - (screen_w - screen_hole_dx) / 2;          // 4,0 → PCB 4 mm a la derecha
+screen_pcb_dz = (glass_z0 - screen_hole_glass_below) - screen_hole_z0;          // 1,745 (antes 2,5, D035)
+// Taladros en coordenadas del cristal (x desde su borde izquierdo, z como glass_z0)
+screen_holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
+                   [screen_hole_glass_x + dx, glass_z0 - screen_hole_glass_below + dz]];
 // Conectores en el canto derecho (plano), desde el borde superior de las pestañas:
 // HDMI 18–34 mm, micro-USB táctil 41–49 mm, interruptor 54–62 mm
 screen_conn_top = 15;
 screen_conn_bot = 65;
 screen_conn_proud = 2;
 screen_conn_depth = 7;
-plug_clear = 15;         // hueco lateral para clavijas acodadas a 90°
+plug_clear = 13;         // hueco lateral para clavijas acodadas a 90° (era 15; ver D043)
+screen_x_shift = 2;      // pantalla 2 mm a la izquierda del centro: el PCB va 4 mm a la derecha del cristal (D043)
 screen_s0 = 118.5;       // posición del borde inferior de las pestañas a lo largo del frontal (s)
 
 // ---------------------------------------------------------------------------

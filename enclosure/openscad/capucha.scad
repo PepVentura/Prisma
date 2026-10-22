@@ -56,12 +56,11 @@ pin_z = split_z + wall_int;                          // cara superior de la band
 // Geometría derivada
 // ---------------------------------------------------------------------------
 fa = front_angle;
-screen_x0 = (outer_w - screen_w) / 2;
+screen_x0 = (outer_w - screen_w) / 2 - screen_x_shift;
 cam_s0 = glass_z0 + glass_h + cam_gap;
 cam_x = outer_w / 2 - screen_x0;
 cam_lz = cam_s0 + cam_lens_from_bottom;
-hole_x0 = (screen_w - screen_hole_dx) / 2;
-screen_holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz]) [hole_x0 + dx, screen_hole_z0 + screen_pcb_dz + dz]];
+// screen_holes: en parametros.scad (posición medida respecto al cristal, D043)
 cam_holes = [for (dx = [-cam_hole_dx / 2, cam_hole_dx / 2], dz = [0, -cam_hole_dz]) [cam_x + dx, cam_lz + dz]];
 mic_cx = [outer_w / 2 - mic_spacing / 2, outer_w / 2 + mic_spacing / 2];
 mic_cy = mic_y + mic_d / 2;
