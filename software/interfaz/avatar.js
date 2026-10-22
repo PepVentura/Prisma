@@ -54,7 +54,13 @@ export async function inicia() {
   const VISEMAS = ["aa", "ih", "ou", "ee", "oh"];
 
   let estado = "reposo", nivelVoz = 0, nivelSimulado = false;
-  let proxParpadeo = 2, parpadeo = 0, visema = "aa", proxVisema = 0, apertura = 0;
+  let proxParpadeo = 2.4 + Math.random() * 2.2, parpadeo = 0, visema = "aa", proxVisema = 0, apertura = 0;
+  let proxMovimiento = 1.8 + Math.random() * 2.4;
+  const cuelloBase = hueso("neck") ? hueso("neck").rotation.clone() : new THREE.Euler();
+  const cabezaBase = cabeza.rotation.clone();
+  let objetivoCuelloZ = cuelloBase.z, objetivoCuelloY = cuelloBase.y;
+  let objetivoCabezaX = cabezaBase.x, objetivoCabezaY = cabezaBase.y;
+  let objetivoMiradaX = 0, objetivoMiradaY = 0;
   const animo = { happy: 0, relaxed: 0, sad: 0, surprised: 0 };
   const objetivo = { happy: 0, relaxed: 0, sad: 0, surprised: 0 };
   const reloj = new THREE.Clock();
@@ -73,20 +79,33 @@ export async function inicia() {
     const paso = acumulado; acumulado = 0;
     const t = reloj.elapsedTime;
 
-    // Respiración y pequeños movimientos de cabeza
+    // Respiración muy sutil; el personaje permanece quieto durante pausas largas.
     const pecho = hueso("chest") || hueso("spine");
-    if (pecho) pecho.rotation.x = Math.sin(t * 1.6) * 0.012;
+    if (pecho) pecho.rotation.x = Math.sin(t * 1.05) * 0.004;
     const cuello = hueso("neck");
-    if (cuello) {
-      const inclina = estado === "escucha" ? 0.08 : 0;
-      cuello.rotation.z += ((Math.sin(t * 0.45) * 0.03 + inclina) - cuello.rotation.z) * 0.08;
-      cuello.rotation.y += ((Math.sin(t * 0.3) * 0.05) - cuello.rotation.y) * 0.08;
-    }
-
-    // Mirada: a la persona; al pensar, arriba a un lado
     const piensa = estado === "pensando" || estado === "buscando";
-    const mx = piensa ? 0.35 : Math.sin(t * 0.37) * 0.06, my = piensa ? 0.35 : Math.sin(t * 0.23) * 0.04;
-    mirada.position.lerp(new THREE.Vector3(camara.position.x + mx, camara.position.y + my, camara.position.z), 0.12);
+
+    // Cambios de objetivo poco frecuentes, con amplitud reducida y suavizado exponencial.
+    proxMovimiento -= paso;
+    if (proxMovimiento <= 0) {
+      objetivoCuelloZ = cuelloBase.z + (Math.random() - 0.5) * 0.035;
+      objetivoCuelloY = cuelloBase.y + (Math.random() - 0.5) * 0.045;
+      objetivoCabezaX = cabezaBase.x + (Math.random() - 0.5) * 0.025;
+      objetivoCabezaY = cabezaBase.y + (Math.random() - 0.5) * 0.035;
+      objetivoMiradaX = (Math.random() - 0.5) * 0.10;
+      objetivoMiradaY = (Math.random() - 0.5) * 0.06;
+      proxMovimiento = 2.2 + Math.random() * 3.8;
+    }
+    if (estado === "escucha") objetivoCuelloZ = cuelloBase.z + 0.025;
+    if (piensa) { objetivoMiradaX = -0.10; objetivoMiradaY = 0.04; }
+    const suaviza = 1 - Math.exp(-paso * 1.8);
+    if (cuello) {
+      cuello.rotation.z += (objetivoCuelloZ - cuello.rotation.z) * suaviza;
+      cuello.rotation.y += (objetivoCuelloY - cuello.rotation.y) * suaviza;
+    }
+    cabeza.rotation.x += (objetivoCabezaX - cabeza.rotation.x) * suaviza;
+    cabeza.rotation.y += (objetivoCabezaY - cabeza.rotation.y) * suaviza;
+    mirada.position.lerp(new THREE.Vector3(camara.position.x + objetivoMiradaX, camara.position.y + objetivoMiradaY, camara.position.z), suaviza);
 
     // Parpadeo
     proxParpadeo -= paso;
@@ -108,7 +127,10 @@ export async function inicia() {
     if (estado === "hablando" && nivelSimulado) v = Math.max(0, Math.sin(t * 15) * 0.5 + Math.sin(t * 9.3) * 0.35 + 0.25);
     if (estado !== "hablando") v = 0;
     proxVisema -= paso;
-    if (proxVisema <= 0) { visema = VISEMAS[Math.floor(Math.random() * VISEMAS.length)]; proxVisema = 0.09 + Math.random() * 0.08; }
+    if (apertura < 0.12 && proxVisema <= 0) {
+      visema = VISEMAS[Math.floor(Math.random() * VISEMAS.length)];
+      proxVisema = 0.12 + Math.random() * 0.10;
+    }
     apertura += (v - apertura) * 0.5;
     for (const n of VISEMAS) pon(n, n === visema ? Math.min(1, apertura) : 0);
 
@@ -122,6 +144,6 @@ export async function inicia() {
     nivel(x) { nivelVoz = x; nivelSimulado = false; },
     simula(si) { nivelSimulado = si; },
   };
-  window.avatar.simula(true);
+  // La simulación labial queda desactivada por defecto; el modo demo la activará explícitamente.
   return true;
 }
