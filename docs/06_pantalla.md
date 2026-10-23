@@ -49,7 +49,7 @@ Cómo distinguir las versiones con el calibre (mirando la cara vista, flex abajo
 | v0.3 | 171,5 × 133,4 | centrados respecto al cristal (según el plano): no coinciden |
 | v0.4 | 175,5 × 130,9 | con la medida del 22/10; la plantilla mostró que había que subirlos 2,5 mm y llevarlos 5 mm a la izquierda (vista de frente) |
 | v0.5 | 172,5 × 130,9 | izquierdo a 3 mm del borde izquierdo del cristal, inferior a 7,5 mm por debajo; la plantilla pedía 1 mm más abajo |
-| **v0.6 (actual)** | **172,5** × 130,9 | izquierdo a 3 mm del borde izquierdo del cristal, inferior a 8,5 mm por debajo del cristal (vista de frente) |
+| **v0.6 (buena, comprobada 23/10)** | **172,5** × 130,9 | izquierdo a 3 mm del borde izquierdo del cristal, inferior a 8,5 mm por debajo del cristal (vista de frente) |
 
 **v0.5 (23/10/2026):** con la plantilla v0.4 montada, los taladros de la placa quedaban 2,5 mm más arriba y 5 mm a la derecha mirando la placa por detrás, que de frente es a la izquierda. En la v0.6, desde los bordes exteriores (cara vista, flex abajo): 7,3 mm del lateral izquierdo, 8,3 mm del derecho y 8,0 mm de arriba y de abajo. El PCB queda prácticamente alineado con el cristal (1 mm a la izquierda), así que la capucha vuelve a tener la pantalla centrada y 15 mm para las clavijas.
 
