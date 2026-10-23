@@ -95,9 +95,26 @@ module pantalla_ref() {
     color([0.1, 0.25, 0.5, 0.6]) translate([screen_pcb_dx, screen_pcb_dz, T]) cube([screen_w, screen_h, screen_pcb_t]);
 }
 
+// Plantilla rápida para comprobar medidas (≈20–25 min y ≈15 g): placa de 2 mm con el contorno del marco,
+// el hueco exacto del cristal y los 4 taladros pasantes. Se apoya por delante sobre la pantalla con el
+// cristal metido en el hueco: si un tornillo M2.5 pasa por los 4 taladros hasta el PCB, la posición vale.
+plantilla_t = 2.0;
+module plantilla() {
+    difference() {
+        translate([px0, pz0, 0]) cube([px1 - px0, pz1 - pz0, plantilla_t]);
+        rect(glass, -1, plantilla_t + 2, fit);                                   // cristal
+        translate([fpc_x0, glass_z0 - fit - fpc_drop, -1]) cube([fpc_x1 - fpc_x0, fpc_drop + 1, plantilla_t + 2]);  // flex
+        for (h = holes) translate([h[0], h[1], -1]) cylinder(d = 2.8, h = plantilla_t + 2);                    // M2.5 pasa
+        // marca en la cara de atrás (la que toca la cama no): «FLEX» en el borde del flex
+        translate([(px0 + px1) / 2, pz0 + 2.2, plantilla_t - 0.6]) mirror([1, 0, 0])
+            linear_extrude(1) text("FLEX ↓", size = 3.2, halign = "center");
+    }
+}
+
+pieza = "marco";        // "marco" (pieza de prueba completa) o "plantilla" (comprobación rápida)
 show_ref = false;
 // espejo: vista desde la cara frontal (z < 0), X crece hacia la derecha
 mirror([1, 0, 0]) {
-    color([0.85, 0.85, 0.88]) marco();
+    color([0.85, 0.85, 0.88]) if (pieza == "plantilla") plantilla(); else marco();
     if (show_ref) pantalla_ref();
 }

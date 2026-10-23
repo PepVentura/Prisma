@@ -49,6 +49,8 @@ Cómo distinguir las versiones con el calibre (mirando la cara vista, flex abajo
 | v0.3 | 171,5 × 133,4 | centrados respecto al cristal (según el plano): no coinciden |
 | **v0.4 (buena)** | **175,5** × 130,9 | medidos en la pantalla: izquierdo a 8 mm del borde del cristal, inferior a 10 mm por debajo del cristal |
 
+**Comprobación rápida antes de imprimir el marco:** `stl/marco_pantalla_plantilla_v0_4.stl` es una placa de 2 mm con el mismo contorno, el hueco exacto del cristal y los 4 taladros pasantes (≈15 g, 20–25 min). Ponla por delante sobre la pantalla con el cristal metido en el hueco y la marca «FLEX ↓» abajo: si un tornillo M2.5 entra por los 4 taladros hasta el PCB, las posiciones valen y ya se puede imprimir el marco (o la capucha). Se genera con `openscad -D 'pieza="plantilla"' …`. Para que salga aún más rápida: capa de 0,3 mm y 2 perímetros; la precisión en el plano no cambia con la altura de capa.
+
 **Medida en la pantalla (22/10/2026, D043):** con el cristal como referencia, el centro del taladro izquierdo está a 8 mm de su borde izquierdo y el inferior a 10 mm por debajo de su borde inferior; los centros, a 156,9 × 114,96 mm como dice el plano. Por tanto el taladro superior queda ≈5 mm por encima del cristal, el derecho justo a la altura del borde derecho del cristal y el PCB (con sus conectores) unos 4 mm a la derecha del cristal. En la v0.4, medido desde los bordes exteriores del marco (cara vista, flex abajo): taladros a 11,3 mm del lateral izquierdo, 7,3 mm del derecho y 8,0 mm de arriba y de abajo.
 
 **Resultado de la v0.1 (D035):**
