@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** `stl/capucha_v0_6.stl` y sus piezas sueltas.
+- **STL:** `stl/capucha_v0_7.stl` y sus piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -58,3 +58,5 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 **v0.5 (D043):** resaltes de la pantalla en su posición medida respecto al cristal (izquierdo a 8 mm del borde del cristal, inferior a 10 mm por debajo). El PCB va 4 mm a la derecha del cristal, así que la pantalla se desplaza 2 mm a la izquierda del centro y el hueco para las clavijas acodadas queda en 13 mm (antes 15).
 
 **v0.6:** resaltes 2,5 mm más arriba y 5 mm a la izquierda (vista de frente), comprobados con la plantilla. Pantalla centrada otra vez y hueco de clavijas de 15 mm.
+
+**v0.7:** resaltes de la pantalla 1 mm más abajo (plantilla v0.5).
