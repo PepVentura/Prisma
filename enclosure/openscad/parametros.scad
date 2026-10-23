@@ -54,9 +54,9 @@ screen_hole_d = 3.0;     // medido → tornillos M2.5
 // 10 mm por debajo del borde inferior del cristal (lado del flex). Los centros, a 156,9 × 114,96.
 // De ahí sale cuánto está desplazado el PCB (taladros, pestañas y conectores) respecto al cristal:
 screen_hole_glass_x = 3.0;      // v0.5: 5 mm a la izquierda (vista de frente) tras la plantilla v0.4
-screen_hole_glass_below = 7.5;   // v0.5: 2,5 mm más arriba tras la plantilla v0.4
+screen_hole_glass_below = 8.5;   // v0.6: 1 mm más abajo que la v0.5 (plantilla, 23/10)
 screen_pcb_dx = screen_hole_glass_x - (screen_w - screen_hole_dx) / 2;          // −1,0 → PCB 1 mm a la izquierda del cristal
-screen_pcb_dz = (glass_z0 - screen_hole_glass_below) - screen_hole_z0;          // 4,245 (D035: 2,5; D043: 1,745)
+screen_pcb_dz = (glass_z0 - screen_hole_glass_below) - screen_hole_z0;          // 3,245 (D035: 2,5; D043: 1,745 → 4,245 → 3,245)
 // Taladros en coordenadas del cristal (x desde su borde izquierdo, z como glass_z0)
 screen_holes = [for (dx = [0, screen_hole_dx], dz = [0, screen_hole_dz])
                    [screen_hole_glass_x + dx, glass_z0 - screen_hole_glass_below + dz]];

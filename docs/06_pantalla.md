@@ -39,7 +39,7 @@ El modelo reserva 15 mm libres a la derecha del conector. Con la pantalla centra
 El interruptor de retroiluminación queda accesible solo con la carcasa abierta. Déjalo en ON.
 
 ## Marco de prueba
-`enclosure/openscad/marco_pantalla_prueba.scad` → **`stl/marco_pantalla_prueba_v0_5.stl`** (172,5 × 130,9 × 9,9 mm).
+`enclosure/openscad/marco_pantalla_prueba.scad` → **`stl/marco_pantalla_prueba_v0_6.stl`** (172,5 × 130,9 × 9,9 mm).
 
 Cómo distinguir las versiones con el calibre (mirando la cara vista, flex abajo):
 | Versión | Exterior | Taladros |
@@ -48,11 +48,12 @@ Cómo distinguir las versiones con el calibre (mirando la cara vista, flex abajo
 | v0.2 (errónea) | **174** × 130,9 | desplazados 2,5 mm en horizontal |
 | v0.3 | 171,5 × 133,4 | centrados respecto al cristal (según el plano): no coinciden |
 | v0.4 | 175,5 × 130,9 | con la medida del 22/10; la plantilla mostró que había que subirlos 2,5 mm y llevarlos 5 mm a la izquierda (vista de frente) |
-| **v0.5 (actual)** | **172,5** × 130,9 | izquierdo a 3 mm del borde izquierdo del cristal, inferior a 7,5 mm por debajo del cristal (vista de frente) |
+| v0.5 | 172,5 × 130,9 | izquierdo a 3 mm del borde izquierdo del cristal, inferior a 7,5 mm por debajo; la plantilla pedía 1 mm más abajo |
+| **v0.6 (actual)** | **172,5** × 130,9 | izquierdo a 3 mm del borde izquierdo del cristal, inferior a 8,5 mm por debajo del cristal (vista de frente) |
 
-**v0.5 (23/10/2026):** con la plantilla v0.4 montada, los taladros de la placa quedaban 2,5 mm más arriba y 5 mm a la derecha mirando la placa por detrás, que de frente es a la izquierda. En la v0.5, desde los bordes exteriores (cara vista, flex abajo): 7,3 mm del lateral izquierdo, 8,3 mm del derecho y 8,0 mm de arriba y de abajo. El PCB queda prácticamente alineado con el cristal (1 mm a la izquierda), así que la capucha vuelve a tener la pantalla centrada y 15 mm para las clavijas.
+**v0.5 (23/10/2026):** con la plantilla v0.4 montada, los taladros de la placa quedaban 2,5 mm más arriba y 5 mm a la derecha mirando la placa por detrás, que de frente es a la izquierda. En la v0.6, desde los bordes exteriores (cara vista, flex abajo): 7,3 mm del lateral izquierdo, 8,3 mm del derecho y 8,0 mm de arriba y de abajo. El PCB queda prácticamente alineado con el cristal (1 mm a la izquierda), así que la capucha vuelve a tener la pantalla centrada y 15 mm para las clavijas.
 
-**Comprobación rápida antes de imprimir el marco:** `stl/marco_pantalla_plantilla_v0_5.stl` es una placa de 2 mm con el mismo contorno, el hueco exacto del cristal y los 4 taladros pasantes (≈15 g, 20–25 min). Ponla por delante sobre la pantalla con el cristal metido en el hueco y la marca «FLEX ↓» abajo: si un tornillo M2.5 entra por los 4 taladros hasta el PCB, las posiciones valen y ya se puede imprimir el marco (o la capucha). Se genera con `openscad -D 'pieza="plantilla"' …`. Para que salga aún más rápida: capa de 0,3 mm y 2 perímetros; la precisión en el plano no cambia con la altura de capa.
+**Comprobación rápida antes de imprimir el marco:** `stl/marco_pantalla_plantilla_v0_6.stl` es una placa de 2 mm con el mismo contorno, el hueco exacto del cristal y los 4 taladros pasantes (≈15 g, 20–25 min). Ponla por delante sobre la pantalla con el cristal metido en el hueco y la marca «FLEX ↓» abajo: si un tornillo M2.5 entra por los 4 taladros hasta el PCB, las posiciones valen y ya se puede imprimir el marco (o la capucha). Se genera con `openscad -D 'pieza="plantilla"' …`. Para que salga aún más rápida: capa de 0,3 mm y 2 perímetros; la precisión en el plano no cambia con la altura de capa.
 
 **Medida en la pantalla (22/10/2026, D043):** con el cristal como referencia, el centro del taladro izquierdo está a 8 mm de su borde izquierdo y el inferior a 10 mm por debajo de su borde inferior; los centros, a 156,9 × 114,96 mm como dice el plano. Por tanto el taladro superior queda ≈5 mm por encima del cristal, el derecho justo a la altura del borde derecho del cristal y el PCB (con sus conectores) unos 4 mm a la derecha del cristal. En la v0.4, medido desde los bordes exteriores del marco (cara vista, flex abajo): taladros a 11,3 mm del lateral izquierdo, 7,3 mm del derecho y 8,0 mm de arriba y de abajo.
 

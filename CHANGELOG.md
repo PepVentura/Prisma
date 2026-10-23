@@ -1,4 +1,7 @@
 # Changelog
+## v0.6.5
+- Pantalla: taladros 1 mm más abajo (plantilla v0.5). Marco de prueba y plantilla **v0.6**, capucha **v0.7**. Sin interferencias.
+
 ## v0.6.4
 - Pantalla: tras la plantilla v0.4, taladros 2,5 mm más arriba y 5 mm a la izquierda (vista de frente). Marco de prueba y plantilla **v0.5** (172,5 × 130,9 mm), capucha **v0.6** con la pantalla centrada y 15 mm para las clavijas. Sin interferencias.
 
