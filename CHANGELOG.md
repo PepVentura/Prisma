@@ -1,4 +1,7 @@
 # Changelog
+## v0.7
+- Capucha **v0.8 en dos piezas** (D044): `capucha_frente_v0_8.stl` (plana, cara vista abajo) y `capucha_cuerpo_v0_8.stl` (boca abajo), sin soportes; labio + 3 M3 × 10 a insertos. Botones del techo 6 mm más atrás. `comprobar_capucha.py` comprueba también las dos mitades.
+
 ## v0.6.5
 - Pantalla: taladros 1 mm más abajo (plantilla v0.5). Marco de prueba y plantilla **v0.6**, capucha **v0.7**. Sin interferencias.
 
