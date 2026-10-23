@@ -1,4 +1,6 @@
-// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.4 (D043) → stl/marco_pantalla_prueba_v0_4.stl
+// Prisma — marco de pantalla, PIEZA DE PRUEBA v0.5 (D043) → stl/marco_pantalla_prueba_v0_5.stl
+// v0.5: tras montar la plantilla v0.4, taladros 2,5 mm más arriba y 5 mm a la izquierda (vista de
+// frente; a la derecha mirando la placa por detrás). El PCB queda casi alineado con el cristal.
 // v0.4: taladros colocados con las medidas tomadas en la pantalla (22/10): el izquierdo a 8 mm del
 // borde izquierdo del cristal y el inferior a 10 mm por debajo del cristal; el superior queda a
 // ≈5 mm por encima y el derecho, en el borde derecho del cristal. El PCB va 4 mm a la derecha del

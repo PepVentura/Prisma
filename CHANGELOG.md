@@ -1,4 +1,7 @@
 # Changelog
+## v0.6.4
+- Pantalla: tras la plantilla v0.4, taladros 2,5 mm más arriba y 5 mm a la izquierda (vista de frente). Marco de prueba y plantilla **v0.5** (172,5 × 130,9 mm), capucha **v0.6** con la pantalla centrada y 15 mm para las clavijas. Sin interferencias.
+
 ## v0.6.3
 - Pantalla (D043): taladros colocados con la medida tomada en la pantalla (izquierdo a 8 mm del borde del cristal, inferior a 10 mm por debajo). El PCB va 4 mm a la derecha del cristal: marco de prueba **v0.4** (175,5 × 130,9 mm), capucha **v0.5**, pantalla 2 mm a la izquierda del centro y hueco de clavijas de 13 mm. Capucha y volumétrico sin interferencias.
 
