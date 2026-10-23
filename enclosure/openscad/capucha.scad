@@ -12,7 +12,9 @@
 // Medidas: 205 × 150 × 154 mm (cabe en la Kobra X).
 //
 // Piezas en este archivo (variable `pieza`):
-//   "capucha", "capucha_impresion" (ya girada), "difusor", "corredera",
+//   "capucha", "capucha_impresion" (ya girada, de una pieza),
+//   "frente", "frente_impresion", "cuerpo", "cuerpo_impresion" (capucha en dos piezas, D044),
+//   "difusor", "corredera",
 //   "capuchon" (botón de 8 mm), "deslizador" (mando del silencio), "placa_botones",
 //   "franja_sup" (inserto transparente de las franjas, imprimir 2), "montaje"
 
@@ -192,6 +194,83 @@ module capucha() {
 }
 
 // ---------------------------------------------------------------------------
+// Capucha en dos piezas (D044): FRENTE (todo lo que está a menos de cut_n del frontal: pantalla,
+// cámara, franja LED, franjas de los cantos, pasadores) y CUERPO (techo, laterales y trasera).
+// El frente se imprime plano, con la cara vista sobre la cama; el cuerpo, boca abajo. Ninguno
+// necesita soportes. Se unen con un labio que entra por dentro del cuerpo (laterales y techo) y
+// 3 tornillos M3 × 10 de cabeza Allen en el techo, del cuerpo a insertos M3 × 5 del frente (se
+// atornillan desde dentro). Abajo, el frente queda sujeto por sus 2 pasadores en la bandeja.
+// En los laterales no caben tacos: detrás están la caja de la cámara acústica (hasta z 187) y, a
+// la derecha, los conectores de la pantalla.
+// ---------------------------------------------------------------------------
+cut_n = 22;                 // junta: plano paralelo al frontal a 22 mm de su cara exterior
+lip_h = 4; lip_t = 1.4; lip_clr = 0.2;
+blk = 9;                    // lado de los tacos de unión
+blk_front = 11.6;           // los tacos del frente bajan hasta apoyarse en el canal de las franjas (n = 10,4)
+blk_back = 8;
+ins_d = 4.0; ins_l = 5.5;   // inserto M3 × 5
+scr_d = 3.3; cb_d = 6.2; cb_l = 3;
+function s_at(z, n) = (z + n * sin(fa)) / cos(fa);
+roof_x = [30, 70, 160];     // fuera de la cámara (x 90–115) y de los botones (x ≈ 179)
+roof_s = s_at(outer_h - wall, cut_n);
+
+// Taco en coordenadas del frontal: x0..x0+w, n0..n1, s0..s1
+module taco(x0, w, n0, n1, s0, s1) on_front_() translate([x0, n0, s0]) cube([w, n1 - n0, s1 - s0]);
+module tacos(lado) {   // lado: "frente" o "cuerpo"
+    n0 = lado == "frente" ? cut_n - blk_front : cut_n;
+    n1 = lado == "frente" ? cut_n : cut_n + blk_back;
+    intersection() {
+        union() {
+            for (x = roof_x) {
+                if (lado == "frente") hull() {   // cartabón a 45° hacia la cara vista (el frente se imprime boca abajo)
+                    taco(x - blk / 2, blk, n0, n1, roof_s - blk - 2, roof_s + 20);
+                    taco(x - blk / 2, blk, n0 - blk, n0 - blk + 0.1, roof_s - 2, roof_s + 20);
+                } else taco(x - blk / 2, blk, n0, n1, roof_s - blk - 2, roof_s + 20);
+            }
+        }
+        body(1);
+    }
+}
+module tacos_agujeros(lado) {
+    pts = [for (x = roof_x) [x, roof_s - blk / 2 - 2]];
+    for (p = pts) on_front_() translate([p[0], 0, p[1]]) rotate([-90, 0, 0]) {
+        if (lado == "frente") translate([0, 0, cut_n - ins_l]) cylinder(d = ins_d, h = ins_l + 0.01);
+        else {
+            translate([0, 0, cut_n - 0.01]) cylinder(d = scr_d, h = blk_back + 0.02);
+            translate([0, 0, cut_n + blk_back - cb_l]) cylinder(d = cb_d, h = cb_l + 0.02);
+        }
+    }
+}
+// Región del frente: delante del plano de la junta, más los bloques de los pasadores (que la cruzan)
+module region_frente() {
+    difference() { translate([-10, -10, split_z - 1]) cube([outer_w + 20, outer_d + 20, outer_h]); behind(cut_n); }
+    for (x = [wall + 0.01, outer_w - wall - pin_block - 0.5])
+        translate([x, pin_y - pin_block / 2 - 0.3, pin_z - pin_len - 1]) cube([pin_block + 0.49, pin_block + 0.6, 12 + pin_len + 1.5]);
+}
+// Labio del frente: anillo por dentro de las paredes del cuerpo, del plano de la junta hacia atrás
+module labio() difference() {
+    intersection() {
+        union() {
+            // la parte que entra en el cuerpo, con holgura
+            intersection() { difference() { body(wall + lip_clr); body(wall + lip_clr + lip_t); } behind(cut_n - 0.01); }
+            // y su raíz, metida en la pared del frente para que quede unida
+            intersection() { difference() { body(wall - 0.8); body(wall + lip_clr + lip_t); }
+                             behind(cut_n - 1.2); difference() { translate([-1, -1, 0]) cube([outer_w + 2, outer_d + 2, outer_h + 1]); behind(cut_n); } }
+        }
+        difference() { translate([-1, -1, pin_z]) cube([outer_w + 2, outer_d + 2, outer_h]); behind(cut_n + lip_h); }
+    }
+    // sin labio donde el cuerpo tiene tacos o los resaltes de la placa de botones
+    minkowski() { tacos("cuerpo"); cube(0.6, center = true); }
+    translate([btn_x - 15, -1, outer_h - 25]) cube([30, outer_d, 30]);
+}
+module capucha_union() difference() {
+    union() { capucha(); tacos("frente"); tacos("cuerpo"); }
+    tacos_agujeros("frente"); tacos_agujeros("cuerpo");
+}
+module frente() { intersection() { capucha_union(); region_frente(); } labio(); }
+module cuerpo() difference() { capucha_union(); region_frente(); }
+
+// ---------------------------------------------------------------------------
 // Piezas pequeñas
 // ---------------------------------------------------------------------------
 module difusor() {   // transparente (D033): rellena la ranura; la pestaña se pega por dentro
@@ -236,6 +315,11 @@ module placa_botones() difference() {
 
 if (pieza == "capucha") capucha();
 if (pieza == "capucha_impresion") translate([0, 0, outer_h]) rotate([180, 0, 0]) capucha();
+if (pieza == "frente") frente();
+if (pieza == "cuerpo") cuerpo();
+// frente tumbado con la cara vista sobre la cama: (x, n, s) → (x, −s, n)
+if (pieza == "frente_impresion") rotate([90, 0, 0]) rotate([fa, 0, 0]) frente();
+if (pieza == "cuerpo_impresion") translate([0, 0, outer_h]) rotate([180, 0, 0]) cuerpo();
 if (pieza == "difusor") difusor();
 if (pieza == "corredera") corredera();
 if (pieza == "capuchon") { capuchon(0); translate([14, 0, 0]) capuchon(1); translate([28, 0, 0]) capuchon(2); }

@@ -119,8 +119,8 @@ power_btn_x = 52; power_btn_z = dc_z;
 // Botones del techo (D032): capuchones de 8 mm enrasados sobre pulsadores de 6 × 6 mm,
 // e interruptor deslizante de silencio de micrófonos (corta la alimentación USB del ReSpeaker)
 btn_cap_d = 8; btn_x = outer_w - 26;
-btn_y = [78, 96];               // volumen −, volumen +
-mute_y = 118;                   // interruptor deslizante
+btn_y = [84, 102];              // volumen −, volumen + (6 mm más atrás que en v0.7: junta de la capucha, D044)
+mute_y = 124;                   // interruptor deslizante
 mute_travel = 4; mute_knob = [3, 4];
 
 // Iluminación y captación

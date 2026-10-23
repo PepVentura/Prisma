@@ -32,21 +32,29 @@ def export(expr, out, use="capucha.scad"):
 
 
 def main():
+    """Comprueba la capucha de una pieza y sus dos mitades (frente y cuerpo, D044), y que entre
+    las dos no se solapen."""
     tmp = tempfile.mkdtemp(); problems = []
-    m = export("capucha();", os.path.join(tmp, "capucha.stl"))
-    print(f"Capucha: {m.volume/1000:.0f} cm³ (≈{m.volume/1000*1.24:.0f} g de PLA al 100 %), cerrada: {m.is_watertight}")
-    print(f"Medidas: {m.extents[0]:.0f} × {m.extents[1]:.0f} × {m.extents[2]:.0f} mm")
-    if not m.is_watertight: problems.append("la malla no está cerrada")
-    if any(e > b for e, b in zip(sorted(m.extents), sorted(BED))): problems.append("no cabe en la cama")
+    piezas = {}
+    for nombre in ["capucha", "frente", "cuerpo"]:
+        m = export(f"{nombre}();", os.path.join(tmp, nombre + ".stl"))
+        piezas[nombre] = m
+        print(f"{nombre.capitalize()}: {m.volume/1000:.0f} cm³ (≈{m.volume/1000*1.24:.0f} g de PLA al 100 %), "
+              f"cerrada: {m.is_watertight}, medidas {m.extents[0]:.0f} × {m.extents[1]:.0f} × {m.extents[2]:.0f} mm")
+        if not m.is_watertight: problems.append(f"{nombre}: la malla no está cerrada")
+        if any(e > b for e, b in zip(sorted(m.extents), sorted(BED))): problems.append(f"{nombre}: no cabe en la cama")
+    v = trimesh.boolean.intersection([piezas["frente"], piezas["cuerpo"]], engine="manifold").volume
+    if v > 0.5: problems.append(f"frente ↔ cuerpo se solapan: {v:.0f} mm³")
     for c in COMPONENTS:
         comp = export(f'component("{c}");', os.path.join(tmp, c + ".stl"))
         if comp is None or comp.volume == 0: continue
-        v = trimesh.boolean.intersection([m, comp], engine="manifold").volume
-        if v > TOLERANCE_MM3.get(c, 0.5):
-            problems.append(f"capucha ↔ {c}: {v:.0f} mm³")
+        for nombre in ["capucha", "frente", "cuerpo"]:
+            v = trimesh.boolean.intersection([piezas[nombre], comp], engine="manifold").volume
+            if v > TOLERANCE_MM3.get(c, 0.5):
+                problems.append(f"{nombre} ↔ {c}: {v:.0f} mm³")
     if problems:
         print("PROBLEMAS:"); [print("  -", p) for p in problems]; sys.exit(1)
-    print(f"OK: sin interferencias con {len(COMPONENTS)} componentes.")
+    print(f"OK: sin interferencias con {len(COMPONENTS)} componentes, y frente y cuerpo no se solapan.")
 
 
 if __name__ == "__main__":
