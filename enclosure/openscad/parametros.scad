@@ -111,6 +111,19 @@ buck_w = 25.4; buck_d = 25.4; buck_h = 9.5;    // Pololu D36V50F5
 bracket_z = bay_floor_z + pi_h + 3;            // balda del KABD-250
 port_clear = 20;
 
+// SSD (D045): NVMe M.2 2230/2242 en caja USB 3, pegado con velcro en el suelo de la bahía, delante
+// del conversor y del DAC y bajo la balda del KABD. Cable USB corto acodado a un USB 3 de la Pi.
+// (Una placa NVMe bajo la Pi la subiría ≈ 14 mm y el KABD chocaría con el ReSpeaker y los botones.)
+ssd_w = 75; ssd_d = 27; ssd_h = 11;            // caja típica de 2242 (verificar con la comprada)
+ssd_pos = [117, 88];                           // esquina x, y sobre el suelo de la bahía
+
+// Salida HDMI para el televisor (D045): conector keystone HDMI hembra-hembra en el lateral izquierdo,
+// unido por dentro al micro-HDMI 1 de la Pi con un cable micro-HDMI → HDMI corto
+hdmi_y = 110; hdmi_z = 239;                    // centro del hueco en el lateral izquierdo
+ks_w = 14.5; ks_h = 16.2;                      // hueco keystone estándar (probar con prueba_keystone)
+ks_t = 2.0;                                    // grosor de pared en el hueco (las pestañas del keystone piden ≤ 2,2)
+ks_pocket = [26, 28];                          // rebaje interior (y, z) donde la pared baja a ks_t
+
 // Entrada DC y botón de encendido en la trasera
 dc_d = 11.2; dc_depth = 20;
 dc_x = 30; dc_z = bay_floor_z + 58;
