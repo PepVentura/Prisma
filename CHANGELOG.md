@@ -1,4 +1,7 @@
 # Changelog
+## v0.7.1
+- Holgura de los insertos transparentes 0,10 mm por lado (prueba de franjas: muesca 1). Nuevos `franja_sup_v0_2.stl`, `franja_inf_v0_2.stl` y `difusor_led_v0_3.stl` (el difusor usa ahora la misma holgura). Capucha y cubeta no cambian.
+
 ## v0.7
 - Capucha **v0.8 en dos piezas** (D044): `capucha_frente_v0_8.stl` (plana, cara vista abajo) y `capucha_cuerpo_v0_8.stl` (boca abajo), sin soportes; labio + 3 M3 × 10 a insertos. Botones del techo 6 mm más atrás. `comprobar_capucha.py` comprueba también las dos mitades.
 

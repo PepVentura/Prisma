@@ -274,8 +274,9 @@ module cuerpo() difference() { capucha_union(); region_frente(); }
 // Piezas pequeñas
 // ---------------------------------------------------------------------------
 module difusor() {   // transparente (D033): rellena la ranura; la pestaña se pega por dentro
-    cube([led_slot_w - 0.3, led_slot_h - 0.3, wall]);
-    translate([-diff_flange, -diff_flange, wall]) cube([led_slot_w - 0.3 + 2 * diff_flange, led_slot_h - 0.3 + 2 * diff_flange, diff_flange_t]);
+    c = 2 * edge_ins_clear;   // misma holgura por lado que las franjas
+    cube([led_slot_w - c, led_slot_h - c, wall]);
+    translate([-diff_flange, -diff_flange, wall]) cube([led_slot_w - c + 2 * diff_flange, led_slot_h - c + 2 * diff_flange, diff_flange_t]);
 }
 module corredera() {
     w = track_h - 2 * clear; d = track_d - clear;

@@ -140,7 +140,7 @@ edge_strip_s1 = 248;                    // y acaba antes del redondeo del techo
 edge_ch_w   = 7;                        // hueco del canal (tira de 5 mm + holgura)
 edge_ch_n   = 9;                        // fondo del hueco (la tira queda a ≈6 mm de la cara exterior)
 edge_ch_t   = 1.5;                      // paredes del canal
-edge_ins_clear = 0.15;                  // holgura por lado de los insertos
+edge_ins_clear = 0.10;                  // holgura por lado de los insertos y del difusor (elegida con prueba_franja: muesca 1)
 
 // Bandeja (2a) y caja superior (2b) de la cámara acústica (D027, D034)
 tray_screw_x = 25;          // 2 tornillos M3 avellanados de la bandeja a insertos en la cubeta (x desde cada lateral)

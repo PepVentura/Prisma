@@ -8,7 +8,8 @@
 // Impresión: pared en PLA negro mate, de pie (como la cubeta); insertos en PETG o PLA
 // transparente, tumbados con la cara vista sobre la cama.
 // Los insertos entran deslizando por arriba. Marcas en la pestaña: 1 muesca = 0,10 mm por lado,
-// 2 = 0,15 mm (la del diseño), 3 = 0,20 mm.
+// 2 = 0,15 mm, 3 = 0,20 mm.
+// Elegida: 1 muesca (0,10 mm), probada en la Kobra X con PLA/PETG transparente.
 
 use <prisma_volumetrica_v0_5.scad>;
 include <parametros.scad>;

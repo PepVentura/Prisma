@@ -21,7 +21,7 @@ Es la parte inferior de la carcasa (z 0–108 mm) y forma el bloque principal de
 | Resaltes de la bandeja | 2, junto al frontal y a 25 mm de cada lateral, con inserto M3 |
 | Refuerzos | 2 nervios verticales por lateral |
 | Patas | 4 alojamientos de 16 mm para patas de TPU de 5 mm |
-| Franjas de luz (D033) | Ranura de 4 mm en cada canto del frontal y canal cerrado detrás para la tira WS2812B. El canal está separado de la cámara acústica y solo se abre por arriba, hacia la capucha. El inserto transparente `franja_inf_v0_1.stl` (2 iguales) entra deslizando desde arriba |
+| Franjas de luz (D033) | Ranura de 4 mm en cada canto del frontal y canal cerrado detrás para la tira WS2812B. El canal está separado de la cámara acústica y solo se abre por arriba, hacia la capucha. El inserto transparente `franja_inf_v0_2.stl` (2 iguales) entra deslizando desde arriba |
 
 ## Volumen de la cámara
 `tools/comprobar_cubeta.py` mide el volumen real:
