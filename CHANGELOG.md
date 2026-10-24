@@ -1,4 +1,7 @@
 # Changelog
+## v0.8
+- Salida HDMI al televisor y sitio para un SSD (D045). Capucha cuerpo **v0.9** con hueco keystone HDMI en el lateral izquierdo (`capucha_cuerpo_v0_9.stl`, `capucha_v0_9.stl`; el frente sigue en v0.8) y pieza de prueba `prueba_keystone_v0_1.stl`. SSD NVMe en caja USB 3 en el suelo de la bahía. `comprobar_capucha.py` comprueba también el SSD y el HDMI: sin interferencias.
+
 ## v0.7.1
 - Holgura de los insertos transparentes 0,10 mm por lado (prueba de franjas: muesca 1). Nuevos `franja_sup_v0_2.stl`, `franja_inf_v0_2.stl` y `difusor_led_v0_3.stl` (el difusor usa ahora la misma holgura). Capucha y cubeta no cambian.
 

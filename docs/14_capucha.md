@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_8.stl` + `stl/capucha_cuerpo_v0_8.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_8.stl`. Más las piezas sueltas.
+- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_8.stl` + `stl/capucha_cuerpo_v0_9.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_9.stl`. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente no cambia. Más las piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -42,7 +42,16 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 | `placa_botones_v0_1.stl` | PLA o PETG | Lleva 2 pulsadores de 6 × 6 × 5 mm y el SS12D00. Se fija con 2 tornillos M2 |
 | `difusor_led_v0_3.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |
 | `franja_sup_v0_2.stl` | PETG o PLA transparente | Tramo superior de las franjas (2 iguales). Entra deslizando por abajo, antes de montar la capucha; una gota de pegamento lo fija |
+| `prueba_keystone_v0_1.stl` | PLA negro | Trozo de pared con el hueco del keystone HDMI (D045). Imprímelo y prueba el conector antes que el cuerpo |
 | `tapa_camara_corredera_v0_2.stl` | PLA negro | Usa la holgura que te haya ido bien con la pieza de prueba |
+
+## Salida HDMI para el televisor (D045)
+![Hueco HDMI en el lateral izquierdo](img/v0_9_hdmi_lateral.png)
+
+- **Hueco keystone** de 14,5 × 16,2 mm en el **lateral izquierdo**, arriba y hacia atrás (y = 110, z = 239 mm). Por dentro, la pared se rebaja a 2 mm en un recuadro de 26 × 28 mm para que encajen las pestañas del keystone.
+- **Conector:** keystone HDMI hembra-hembra. Por dentro, un cable **micro-HDMI → HDMI de 30 cm** va al puerto **HDMI1** de la Pi (el que no usa la pantalla). La tele se enchufa con un cable HDMI normal.
+- Va en el lateral porque en la trasera no cabe: arriba está el ReSpeaker y, más abajo, el perforado de ventilación y la Pi.
+- Antes de imprimir el cuerpo, imprime `prueba_keystone_v0_1.stl` (unos minutos) y comprueba que el keystone entra y queda sujeto. Si no, se ajustan `ks_w`, `ks_h` y `ks_t` en `parametros.scad`.
 
 ## Dos piezas (D044)
 Para no necesitar soportes, la capucha se divide por un plano paralelo al frontal, a 22 mm de su cara exterior:

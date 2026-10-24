@@ -200,6 +200,12 @@ module pi_port_clear() {
         translate([pi_pos[0] + 5, pi_pos[1] - port_clear, bay_floor_z + 2]) cube([50, port_clear, 10]);
     }
 }
+module ssd() { color([0.2, 0.2, 0.25]) cut() translate([ssd_pos[0], ssd_pos[1], bay_floor_z]) cube([ssd_w, ssd_d, ssd_h]); }
+// keystone HDMI (≈ 22 mm hacia dentro) y la clavija del cable que entra en él (≈ 40 mm más)
+module hdmi_tv() color([0.9, 0.5, 0.1]) cut() {
+    translate([wall, hdmi_y - 10, hdmi_z - 11]) cube([22, 20, 22]);
+    translate([wall + 22, hdmi_y - 8, hdmi_z - 6]) cube([40, 16, 12]);
+}
 module dc_jack() {
     color([0.9, 0.7, 0.1]) cut() translate([dc_x, outer_d - dc_depth, dc_z]) rotate([-90, 0, 0]) cylinder(d = dc_d, h = dc_depth);
 }
@@ -240,6 +246,8 @@ module component(name) {
     else if (name == "dac")           dac();
     else if (name == "bracket")       bracket();
     else if (name == "dc_jack")       dc_jack();
+    else if (name == "ssd")           ssd();
+    else if (name == "hdmi_tv")       hdmi_tv();
     else if (name == "power_button")  power_button();
     else if (name == "top_buttons")   top_buttons();
     else if (name == "led_bar")       led_bar();
@@ -260,7 +268,7 @@ module component(name) {
 module scene() {
     if (show_screen) { screen(); screen_active(); screen_connectors(); }
     if (show_audio)  { speaker(); pr(); }
-    if (show_electronics) { pi5(); pi_port_clear(); kabd(); bracket(); buck(); dac(); dc_jack(); power_button(); top_buttons(); led_bar(); edge_leds(); mics(); camera(); }
+    if (show_electronics) { pi5(); pi_port_clear(); kabd(); bracket(); buck(); dac(); dc_jack(); power_button(); ssd(); hdmi_tv(); top_buttons(); led_bar(); edge_leds(); mics(); camera(); }
     chamber_walls();
     if (show_chamber_air) color([0.2, 0.7, 1, 0.35]) cut() chamber_air();
     if (show_shell) color([0.15, 0.15, 0.17, 0.25]) cut() shell();
