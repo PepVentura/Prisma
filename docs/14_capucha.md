@@ -49,7 +49,7 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 ![Hueco HDMI en el lateral izquierdo](img/v0_9_hdmi_lateral.png)
 
 - **Hueco keystone** de 14,5 × 16,2 mm en el **lateral izquierdo**, arriba y hacia atrás (y = 110, z = 239 mm). Por dentro, la pared se rebaja a 2 mm en un recuadro de 26 × 28 mm para que encajen las pestañas del keystone.
-- **Conector:** keystone HDMI hembra-hembra. Por dentro, un cable **micro-HDMI → HDMI de 30 cm** va al puerto **HDMI1** de la Pi (el que no usa la pantalla). La tele se enchufa con un cable HDMI normal.
+- **Conector:** keystone HDMI hembra-hembra, por ejemplo InLine 76202M (30 × 22 × 18 mm). Por dentro, un cable **micro-HDMI → HDMI de 30 cm** va al puerto **HDMI1** de la Pi (el que no usa la pantalla). La tele se enchufa con un cable HDMI normal.
 - Va en el lateral porque en la trasera no cabe: arriba está el ReSpeaker y, más abajo, el perforado de ventilación y la Pi.
 - Antes de imprimir el cuerpo, imprime `prueba_keystone_v0_1.stl` (unos minutos) y comprueba que el keystone entra y queda sujeto. Si no, se ajustan `ks_w`, `ks_h` y `ks_t` en `parametros.scad`.
 

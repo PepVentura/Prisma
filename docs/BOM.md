@@ -22,7 +22,7 @@
 | Cableado | Cable micro-USB acodado → USB-A (táctil) | 1 | Necesario | Al cerrar diseño |
 | Almacenamiento | SSD NVMe M.2 2230 o 2242 (D045) | 1 | Propuesto | Cuando quieras |
 | Almacenamiento | Caja USB 3 (10 Gbps) para NVMe 2230/2242, ≤ 75 × 27 × 11 mm, + cable USB-C → USB-A corto y acodado | 1 | Propuesto | Cuando quieras |
-| Cableado | Keystone HDMI hembra-hembra (D045) | 1 | Necesario | Comprar ahora |
+| Cableado | Keystone HDMI hembra-hembra, p. ej. InLine 76202M (D045) | 1 | Necesario | Comprar ahora |
 | Cableado | Cable micro-HDMI → HDMI de 30 cm (HDMI1 de la Pi → keystone) | 1 | Necesario | Al cerrar diseño |
 | Mecánica | Tornillos M2.5 × 6 autorroscantes (pantalla) | 4 | Necesario | Comprar ahora |
 | Electrónica | Adaptador de nivel SN74AHCT125 + resistencia 330 Ω + condensador 1000 µF (LEDs) | 1 | Propuesto | Al cerrar diseño |
