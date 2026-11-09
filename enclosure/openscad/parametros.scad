@@ -83,10 +83,11 @@ bracing_allow_l   = 0.10;
 // ---------------------------------------------------------------------------
 // Audio
 // ---------------------------------------------------------------------------
-speaker_d = 105; speaker_depth = 48;   // DMA105-4 (marco / fondo total; SoundImports: fondo 47,2 mm)
-drv_frame = 104.1; drv_cut = 90;       // marco cuadrado y recorte (3,54") — confirmar con la pieza
-pr_frame  = 104.1; pr_cut  = 98.4;     // DMA105-PR: marco y recorte (3,875")
-pr_d      = 104; pr_depth  = 55.1;
+speaker_d = 105; speaker_depth = 50.2; // DMA105-4 (marco / fondo total, medido)
+drv_frame = 104.1; drv_cut = 99.8;     // marco cuadrado (medido) y recorte: la cesta mide 98,8
+pr_frame  = 104.1; pr_cut  = 99.8;     // DMA105-PR: marco (medido) y recorte: la cesta mide 98,8
+pr_d      = 104; pr_depth  = 50;       // hasta la goma trasera (medido)
+pr_bolt_depth = 60; pr_xmax = 9;      // hasta la palometa de la masa (medido) y recorrido
 drv_clear = 7;                          // marco del altavoz a 7 mm de la rejilla (suspensión + Xmax + margen)
 pr_clear  = 14;                         // radiador: Xmax 9 mm
 bolt_off  = 44.9;                       // taladros en las esquinas, ±44,9 mm — medir
@@ -105,7 +106,9 @@ grille_margin_x = 22;                   // la banda ocupa todo el ancho salvo 22
 bay_floor_z = chamber_up_top + wall_int;   // 187
 
 pi_w = 85; pi_d = 56; pi_h = 25;   // Pi 5 con Active Cooler; USB a la derecha, micro-HDMI/USB-C hacia delante
-kabd_w = 91.4; kabd_d = 68.6; kabd_h = 23;
+kabd_w = 91.4; kabd_d = 68.6; kabd_h = 23;   // medido
+kabd_hole_in = 3; kabd_hole_d = 4;          // 4 taladros Ø4 a 3 mm de los bordes (medido)
+kabd_standoff = 5;                          // separadores de nailon M3 de 5 mm sobre la balda
 dac_w = 32; dac_d = 14; dac_h = 10;            // GY-PCM5102
 buck_w = 25.4; buck_d = 25.4; buck_h = 9.5;    // Pololu D36V50F5
 bracket_z = bay_floor_z + pi_h + 3;            // balda del KABD-250

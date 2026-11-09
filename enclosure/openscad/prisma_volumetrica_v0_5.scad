@@ -176,6 +176,8 @@ module pr() {
     color([0.25, 0.25, 0.28]) cut() translate([outer_w / 2, outer_d, audio_center_z]) rotate([90, 0, 0]) {
         translate([-pr_frame / 2, -pr_frame / 2, outer_d - pr_flange_y]) cube([pr_frame, pr_frame, 4]);
         translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 90, h = pr_depth);
+        // tornillo de la masa con su palometa, más el recorrido hacia dentro
+        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 20, h = pr_bolt_depth + pr_xmax);
         translate([0, 0, wall + 1]) cylinder(d = 92, h = outer_d - pr_flange_y - wall - 0.99);
     }
 }
@@ -185,7 +187,7 @@ function bay_front_y(z) = sn2y((z + (part_n + wall_int) * sin(fa)) / cos(fa), pa
 pi_pos   = [8, outer_d - wall - pi_d - 2, bay_floor_z];
 buck_pos = [pi_pos[0] + pi_w + port_clear + 2, outer_d - wall - buck_d - 6, bay_floor_z];
 dac_pos  = [buck_pos[0] + buck_w + 10, outer_d - wall - dac_d - 10, bay_floor_z];
-kabd_pos = [98, outer_d - wall - kabd_d - 1.5, bracket_z + 3];
+kabd_pos = [98, outer_d - wall - kabd_d - 1.5, bracket_z + 3 + kabd_standoff];
 
 module pi5()  { color([0.1, 0.45, 0.15]) cut() translate(pi_pos)   cube([pi_w, pi_d, pi_h]); }
 module kabd() { color([0.15, 0.3, 0.7]) cut()  translate(kabd_pos) cube([kabd_w, kabd_d, kabd_h]); }
