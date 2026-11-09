@@ -1,4 +1,13 @@
-// Prisma — CUBETA ACÚSTICA v0.3 (pieza 1 de la carcasa) — diseño del boceto original (D031)
+// Prisma — CUBETA ACÚSTICA v0.5 (pieza 1 de la carcasa) — diseño del boceto original (D031)
+//
+// v0.5 (D046): se imprime en TRES piezas para no tener la impresora 23 h seguidas:
+//   frente  — frontal con lamas, anillo del altavoz, canales de las franjas y resaltes de la bandeja;
+//   centro  — suelo y laterales, con los nervios y los rebordes;
+//   trasera — trasera con la rejilla y el anillo del radiador.
+// Cortes: plano paralelo al frontal a cut_f de la cara exterior, y plano vertical en y = cut_r.
+// Guías: el frente y la trasera llevan un labio interior (U por suelo y laterales) que entra en el
+// centro con holgura lip_clr y lo alinea. Se pegan (CA en gel o epoxi) por labio y cantos: la
+// cámara acústica tiene que quedar estanca. Las patas pasan a y = foot_y para no caer en un corte.
 //
 // Parte inferior de la carcasa (z 0–108 mm): bloque inferior de la cámara acústica.
 //  - Frontal inclinado 11° con la banda de lamas a todo lo ancho; detrás, el DMA105-4
@@ -19,7 +28,8 @@ use <prisma_volumetrica_v0_5.scad>;
 include <parametros.scad>;
 $fn = 48;
 
-pieza = "cubeta";   // "cubeta" | "pata" | "franja_inf" | "montaje"
+pieza = "cubeta";   // "cubeta" | "frente" | "centro" | "trasera" | "frente_impresion" |
+                    // "centro_impresion" | "trasera_impresion" | "despiece" | "pata" | "franja_inf" | "montaje"
 
 H = chamber_low_top;             // 108
 cx = outer_w / 2;
@@ -37,6 +47,12 @@ insert_hole = 4.0; insert_depth = 5;
 ledge_w = 7; ledge_h = 6;
 side_ribs_y = [55, 105]; side_rib_t = 4; side_rib_d = 6;
 foot_d = 16; foot_pocket = 1.5; foot_h = 5; foot_inset = 20;
+foot_y = [36, 132];              // fuera de los cortes (D046)
+
+// Despiece (D046)
+cut_f = 20;                      // corte del frente: a 20 mm de la cara exterior del frontal
+cut_r = 122;                     // corte de la trasera: plano y = 122
+lip_h = 6; lip_t = 1.6; lip_clr = 0.2;   // labio-guía: entra 6 mm en el centro
 
 module on_front_() rotate([-fa, 0, 0]) children();
 module lower() translate([-1, -1, -1]) cube([outer_w + 2, outer_d + 2, H + 1]);
@@ -133,7 +149,7 @@ module side_ribs() intersection() {
     component("body_inner");
 }
 
-module foot_pockets() for (x = [foot_inset, outer_w - foot_inset], y = [foot_inset + 8, outer_d - foot_inset])
+module foot_pockets() for (x = [foot_inset, outer_w - foot_inset], y = foot_y)
     translate([x, y, -0.01]) cylinder(d = foot_d + 0.4, h = foot_pocket + 0.01);
 
 module cubeta() {
@@ -160,7 +176,43 @@ module franja_inf() for (i = [0, 1]) translate([0, i * 10, 0])
     multmatrix([[0, 0, 1, -edge_strip_s0], [1, 0, 0, -edge_strip_xc], [0, 1, 0, 0]]) rotate([fa, 0, 0])
         intersection() { component("edge_inserts"); translate([-1, -50, -1]) cube([outer_w / 2, outer_d + 100, H + 1]); }
 
+// ---------------------------------------------------------------------------
+// Despiece en tres piezas (D046)
+// ---------------------------------------------------------------------------
+module todo_() translate([-1, -1, -1]) cube([outer_w + 2, outer_d + 2, H + 2]);
+module region_f() on_front_() translate([-50, -100, -100]) cube([outer_w + 100, 100 + cut_f, 400]);
+module region_r() translate([-1, cut_r, -1]) cube([outer_w + 2, outer_d, H + 2]);
+lip_top = H - ledge_h - 1.5;
+raiz_w = 0.8 + lip_clr + lip_t; raiz_n = 6;   // grosor de la raíz del labio y escalones del chaflán     // el labio para debajo de los rebordes laterales
+// Banda en U pegada a la cara interior del suelo y los laterales
+module banda_(i0, i1) intersection() { difference() { body(i0); body(i1); } translate([-1, -1, -1]) cube([outer_w + 2, outer_d + 2, lip_top + 1]); }
+module labio_f() {
+    intersection() { banda_(wall + lip_clr, wall + lip_clr + lip_t);              // dentro del centro, con holgura
+                     difference() { behind(cut_f - 0.01); behind(cut_f + lip_h); } }
+    // raíz, metida en la pared del frente, con chaflán escalonado a 45° para imprimir sin soportes
+    for (i = [1 : raiz_n]) intersection() { banda_(wall - 0.8, wall - 0.8 + i * raiz_w / raiz_n);
+        difference() { behind(cut_f - 1.5 - (raiz_n - i) * raiz_w / raiz_n); behind(cut_f); } }
+}
+module labio_r() {
+    intersection() { banda_(wall + lip_clr, wall + lip_clr + lip_t);
+                     translate([-1, cut_r - lip_h, -1]) cube([outer_w + 2, lip_h + 0.01, H + 2]); }
+    for (i = [1 : raiz_n]) intersection() { banda_(wall - 0.8, wall - 0.8 + i * raiz_w / raiz_n);
+        translate([-1, cut_r, -1]) cube([outer_w + 2, 1.5 + (raiz_n - i) * raiz_w / raiz_n, H + 2]); }
+}
+module frente() { intersection() { cubeta(); region_f(); } labio_f(); }
+module trasera() { intersection() { cubeta(); region_r(); } labio_r(); }
+module centro() difference() { cubeta(); region_f(); region_r(); }
+
 if (pieza == "cubeta") cubeta();
+if (pieza == "frente") frente();
+if (pieza == "centro") centro();
+if (pieza == "trasera") trasera();
+// Para imprimir: frente y trasera con la cara vista sobre la cama (labios hacia arriba); centro de pie
+if (pieza == "frente_impresion") rotate([90, 0, 0]) rotate([fa, 0, 0]) frente();
+if (pieza == "trasera_impresion") rotate([-90, 0, 0]) trasera();
+if (pieza == "centro_impresion") centro();
+if (pieza == "despiece") { color([0.75, 0.3, 0.2]) translate([0, -40, 0]) frente(); color([0.2, 0.2, 0.22]) centro();
+                           color([0.2, 0.45, 0.75]) translate([0, 40, 0]) trasera(); }
 if (pieza == "pata") pata();
 if (pieza == "franja_inf") franja_inf();
 if (pieza == "montaje") { color([0.12, 0.12, 0.13]) cubeta(); component("speaker"); component("pr");

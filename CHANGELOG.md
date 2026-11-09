@@ -1,4 +1,7 @@
 # Changelog
+## v0.8.1
+- Cubeta **v0.5 en tres piezas** (D046): `cubeta_frente_v0_5.stl`, `cubeta_centro_v0_5.stl` y `cubeta_trasera_v0_5.stl`, de ≈ 7–8,5 h cada una en lugar de 23 h seguidas. Labio-guía interior en U y unión pegada. Patas movidas fuera de los cortes. Sin soportes.
+
 ## v0.8
 - Salida HDMI al televisor y sitio para un SSD (D045). Capucha cuerpo **v0.9** con hueco keystone HDMI en el lateral izquierdo (`capucha_cuerpo_v0_9.stl`, `capucha_v0_9.stl`; el frente sigue en v0.8) y pieza de prueba `prueba_keystone_v0_1.stl`. SSD NVMe en caja USB 3 en el suelo de la bahía. `comprobar_capucha.py` comprueba también el SSD y el HDMI: sin interferencias.
 
