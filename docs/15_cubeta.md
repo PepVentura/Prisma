@@ -4,7 +4,7 @@
 
 Es la parte inferior de la carcasa (z 0–108 mm) y forma el bloque principal de la cámara acústica.
 - **Archivo:** `enclosure/openscad/cubeta.scad`.
-- **STL en tres piezas (D046), ya orientadas para imprimir:** `stl/cubeta_frente_v0_5.stl`, `stl/cubeta_centro_v0_5.stl` y `stl/cubeta_trasera_v0_5.stl`, más `stl/pata_tpu_v0_2.stl` (× 4). De una pieza, `stl/cubeta_v0_5.stl` (205 × 148 × 108 mm, unos 390 cm³).
+- **STL en tres piezas (D046), ya orientadas para imprimir:** `stl/cubeta_frente_v0_6.stl`, `stl/cubeta_centro_v0_6.stl` y `stl/cubeta_trasera_v0_6.stl`, más `stl/pata_tpu_v0_2.stl` (× 4). De una pieza, `stl/cubeta_v0_6.stl` (205 × 148 × 108 mm, unos 390 cm³).
 
 ## Tres piezas (D046)
 ![Despiece de la cubeta](img/v0_5_cubeta_despiece.png)
@@ -30,7 +30,8 @@ Tiempos estimados con un perfil genérico (3 perímetros, 20 % de relleno) que d
 - **Resto de la banda:** es decorativo. Las lamas solo tienen 1,8 mm de fondo, así que la cámara queda cerrada.
 - **Montaje del altavoz:** va por dentro, sobre un anillo paralelo al frontal que deja 7 mm hasta la rejilla, y queda inclinado 11° hacia el usuario.
 - **Radiador:** va detrás, con una rejilla circular de 94 mm y un anillo de 14 mm (su recorrido llega a 9 mm).
-- **Fijación:** 4 insertos M3 por anillo (±44,9 mm según la tienda, **medir**) y junta de espuma de 2 mm.
+- **Fijación:** 4 insertos M3 por anillo a ±44,9 mm (89,8 entre centros, medido) y junta de espuma de 2 mm.
+- **Recortes (v0.6, medidos):** la cesta del altavoz y la del radiador miden 98,8 mm, así que los dos recortes pasan a 99,8 mm (antes 90 y 98,4). Fondo del altavoz 50,2 mm; radiador 50 mm hasta la goma y 60 mm hasta la palometa de la masa.
 
 ## Resto de la pieza
 | Elemento | Detalle |
@@ -61,5 +62,5 @@ La simulación con 3,1 L ya está hecha (ver `05_audio.md`): radiador + 10 g, si
 - Insertos de las franjas: PETG o PLA transparente, tumbados con la cara vista sobre la cama (la textura de la cama los deja esmerilados y difunden mejor).
 
 ## Pendiente de verificar con las piezas reales
-- Taladros, recortes y grosor del marco del altavoz y del radiador.
-- Cuánto sobresale la suspensión de cada cono por delante del marco (`drv_clear`, `pr_clear`).
+- **Holgura entre el imán del altavoz y la palometa del radiador:** con las profundidades medidas, la palometa queda casi tocando la parte trasera del altavoz en reposo, y al moverse el radiador (9 mm hacia dentro) chocaría. El modelo del altavoz es conservador (cilindro de 85 mm hasta el fondo); falta el diámetro real del imán y el ancho de la palometa para decidir si hay que desplazar el radiador hacia un lado.
+- Grosor del marco y cuánto sobresale la suspensión de cada cono por delante del marco (`drv_clear`, `pr_clear`).

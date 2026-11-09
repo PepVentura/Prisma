@@ -1,4 +1,7 @@
 # Changelog
+## v0.8.2
+- Medidas reales del DMA105-4, DMA105-PR y KABD-250. Cubeta **v0.6**: recortes de los anillos a 99,8 mm (cestas de 98,8). Caja superior y balda **v0.2**: taladros del KABD con separadores de nailon M3 de 5 mm, patas de la balda e insertos de la tapa recolocados, paso de cables fuera del SSD. Pendiente: holgura entre el imán del altavoz y la palometa del radiador.
+
 ## v0.8.1
 - Cubeta **v0.5 en tres piezas** (D046): `cubeta_frente_v0_5.stl`, `cubeta_centro_v0_5.stl` y `cubeta_trasera_v0_5.stl`, de ≈ 7–8,5 h cada una en lugar de 23 h seguidas. Labio-guía interior en U y unión pegada. Patas movidas fuera de los cortes. Sin soportes.
 
