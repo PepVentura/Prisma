@@ -153,6 +153,18 @@ module power_hole() translate([power_btn_x, outer_d - wall - 1, power_btn_z]) ro
 module power_bosses() for (dx = [-8, 8]) translate([power_btn_x + dx, outer_d - wall + 0.01, power_btn_z])
     rotate([90, 0, 0]) difference() { cylinder(d = 5, h = switch_h + cap_flange_t); translate([0, 0, 1]) cylinder(d = 2.2, h = 10); }
 
+// Salida HDMI al televisor (D045): hueco keystone en el lateral izquierdo, con la pared rebajada a ks_t por dentro
+module hdmi_hole() {
+    translate([-1, hdmi_y - ks_w / 2, hdmi_z - ks_h / 2]) cube([wall + 2, ks_w, ks_h]);
+    translate([ks_t, hdmi_y - ks_pocket[0] / 2, hdmi_z - ks_pocket[1] / 2]) cube([wall - ks_t + 0.5, ks_pocket[0], ks_pocket[1]]);
+}
+// Prueba del keystone: un trozo de pared con el mismo hueco y rebaje (≈ 5 min de impresión)
+module prueba_keystone() difference() {
+    cube([ks_pocket[0] + 10, ks_pocket[1] + 10, wall]);
+    translate([5, 5, ks_t]) cube([ks_pocket[0], ks_pocket[1], wall]);
+    translate([(ks_pocket[0] + 10 - ks_w) / 2, (ks_pocket[1] + 10 - ks_h) / 2, -1]) cube([ks_w, ks_h, wall + 2]);
+}
+
 module rear_screws() for (x = rear_screw_x) {
     translate([x, outer_d - wall - 1, rear_screw_z]) rotate([-90, 0, 0]) cylinder(d = rear_screw_d, h = wall + 2);
     translate([x, outer_d - 1.8, rear_screw_z]) rotate([-90, 0, 0]) cylinder(d1 = rear_screw_d, d2 = rear_csk_d, h = 1.81);
@@ -187,6 +199,7 @@ module capucha() {
         mic_holes();
         top_button_holes();
         power_hole();
+        hdmi_hole();
         rear_screws();
         translate([dc_x, outer_d - wall - 1, dc_z]) rotate([-90, 0, 0]) cylinder(d = dc_d, h = wall + 2);
     }
@@ -322,6 +335,7 @@ if (pieza == "cuerpo") cuerpo();
 if (pieza == "frente_impresion") rotate([90, 0, 0]) rotate([fa, 0, 0]) frente();
 if (pieza == "cuerpo_impresion") translate([0, 0, outer_h]) rotate([180, 0, 0]) cuerpo();
 if (pieza == "difusor") difusor();
+if (pieza == "prueba_keystone") prueba_keystone();
 if (pieza == "corredera") corredera();
 if (pieza == "capuchon") { capuchon(0); translate([14, 0, 0]) capuchon(1); translate([28, 0, 0]) capuchon(2); }
 if (pieza == "deslizador") deslizador();

@@ -19,6 +19,8 @@ Primera fase con lo que ya hay: **Pi 5 + pantalla Waveshare 7" (C) + cámara OV5
 | Pantalla, vídeo | Cable micro-HDMI → HDMI al puerto **HDMI0** de la Pi (el que está junto al USB-C de alimentación) |
 | Pantalla, táctil y alimentación | Cable micro-USB del conector *Touch* de la pantalla a un USB de la Pi |
 | Cámara | Cable de 22 → 15 pines: el extremo estrecho al conector **CAM/DISP 0** de la Pi y el ancho a la cámara. Con la Pi apagada; contactos dorados según el dibujo del conector |
+| Televisor (opcional) | Cable micro-HDMI → HDMI del puerto **HDMI1** de la Pi al keystone del lateral. En el sistema aparece como `HDMI-A-2` |
+| SSD (opcional) | Caja USB del SSD a un USB 3 (azul) de la Pi. Para arrancar desde el SSD: `sudo raspi-config` → *Advanced Options* → *Boot Order* → *USB Boot*, y copiar la tarjeta con *SD Card Copier* |
 | Alimentación | De momento, la fuente oficial de 27 W (5 V, 5 A) de la Pi 5 |
 
 El interruptor *Backlight* de la pantalla, en ON.
