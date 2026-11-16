@@ -27,7 +27,7 @@ fa = front_angle;
 insert_hole = 4.0; insert_depth = 5;
 tube_d = 7.5;
 rear_screw_x = [40, outer_w - 40]; rear_screw_z = 150;      // como en la capucha
-cable_hole = [outer_w - 30, 110]; cable_d = 5;
+cable_hole = [outer_w - 9, 100]; cable_d = 5;     // junto al lateral derecho, fuera del SSD
 
 // Bahía (posiciones del volumétrico)
 pi_pos = [8, outer_d - wall - pi_d - 2, bay_floor_z];
@@ -35,7 +35,7 @@ pi_holes = [for (dx = [3.5, 61.5], dy = [3.5, 52.5]) [pi_pos[0] + dx, pi_pos[1] 
 pi_standoff_h = 3;     // la Pi apoya sobre separadores de 3 mm con inserto M2.5
 kabd_pos = [98, outer_d - wall - kabd_d - 1.5];
 shelf = [kabd_pos[0] - 2, kabd_pos[1] - 1, kabd_w + 4, kabd_d + 2, 3];   // x, y, ancho, fondo, grueso
-post_xy = [[99, 82], [188, 82], [145, 141], [188, 141]];                  // libres de puertos, buck y DAC
+post_xy = [[112, 80], [176, 80], [145, 141], [164, 142.5]];   // libres de puertos, buck, DAC, SSD y de los taladros del KABD
 post_d = 8;
 
 module envelope() difference() {
@@ -99,6 +99,9 @@ module balda() difference() {
     }
     for (p = post_xy) translate([p[0], p[1], -1]) { cylinder(d = 3.4, h = leg_h + 10); translate([0, 0, leg_h + 1]) cylinder(d = 6.2, h = 10); }
     translate([shelf[0] + 20, shelf[1] + 18, leg_h - 1]) cube([shelf[2] - 40, shelf[3] - 36, 10]);   // aligerado y paso de aire
+    // taladros del KABD-250: separadores de nailon M3 macho-hembra de kabd_standoff mm, tuerca por debajo
+    for (dx = [kabd_hole_in, kabd_w - kabd_hole_in], dy = [kabd_hole_in, kabd_d - kabd_hole_in])
+        translate([kabd_pos[0] + dx, kabd_pos[1] + dy, leg_h - 1]) cylinder(d = 3.4, h = 10);
 }
 
 if (pieza == "caja") caja();

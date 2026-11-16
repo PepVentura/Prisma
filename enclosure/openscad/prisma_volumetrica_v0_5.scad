@@ -123,7 +123,7 @@ module speaker_displacement() {
         cylinder(d1 = speaker_d * 0.9, d2 = 50, h = speaker_depth);
 }
 module pr_displacement() {
-    translate([outer_w / 2, pr_flange_y, audio_center_z]) rotate([90, 0, 0]) cylinder(d1 = pr_d * 0.95, d2 = 70, h = pr_depth);
+    translate([outer_w / 2 + pr_dx, pr_flange_y, audio_center_z]) rotate([90, 0, 0]) cylinder(d1 = pr_d * 0.95, d2 = 70, h = pr_depth);
 }
 module chamber_air() {
     difference() {
@@ -167,15 +167,20 @@ module screen_connectors() {
 // Altavoz montado por dentro en el frontal inclinado; radiador en la trasera
 module speaker() {
     color([0.18, 0.18, 0.18]) cut() translate([outer_w / 2, 0, 0]) on_front() translate([0, 0, drv_s]) rotate([-90, 0, 0]) {
-        translate([-drv_frame / 2, -drv_frame / 2, drv_n]) cube([drv_frame, drv_frame, 4]);
-        translate([0, 0, drv_n]) cylinder(d = 85, h = speaker_depth - 1);
+        translate([-drv_frame / 2, -drv_frame / 2, drv_n]) cube([drv_frame, drv_frame, frame_t]);
+        // cesta (cono conservador desde Ø98,8 hasta el imán) e imán
+        translate([0, 0, drv_n + frame_t - 0.01]) cylinder(d1 = 98.8, d2 = spk_magnet_d + 6, h = speaker_depth - frame_t - spk_magnet_l + 0.02);
+        translate([0, 0, drv_n + speaker_depth - spk_magnet_l]) cylinder(d = spk_magnet_d + 1, h = spk_magnet_l);
         translate([0, 0, drv_n - 3]) cylinder(d = 86, h = 3.01);
     }
 }
 module pr() {
-    color([0.25, 0.25, 0.28]) cut() translate([outer_w / 2, outer_d, audio_center_z]) rotate([90, 0, 0]) {
-        translate([-pr_frame / 2, -pr_frame / 2, outer_d - pr_flange_y]) cube([pr_frame, pr_frame, 4]);
+    color([0.25, 0.25, 0.28]) cut() translate([outer_w / 2 + pr_dx, outer_d, audio_center_z]) rotate([90, 0, 0]) {
+        translate([-pr_frame / 2, -pr_frame / 2, outer_d - pr_flange_y]) cube([pr_frame, pr_frame, frame_t]);
         translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 90, h = pr_depth);
+        // parte móvil (masa y suspensión trasera) y tornillo con su palometa, con el recorrido hacia dentro
+        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 60, h = pr_depth + pr_xmax);
+        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = pr_nut_w + 2, h = pr_bolt_depth + pr_xmax);
         translate([0, 0, wall + 1]) cylinder(d = 92, h = outer_d - pr_flange_y - wall - 0.99);
     }
 }
@@ -185,7 +190,7 @@ function bay_front_y(z) = sn2y((z + (part_n + wall_int) * sin(fa)) / cos(fa), pa
 pi_pos   = [8, outer_d - wall - pi_d - 2, bay_floor_z];
 buck_pos = [pi_pos[0] + pi_w + port_clear + 2, outer_d - wall - buck_d - 6, bay_floor_z];
 dac_pos  = [buck_pos[0] + buck_w + 10, outer_d - wall - dac_d - 10, bay_floor_z];
-kabd_pos = [98, outer_d - wall - kabd_d - 1.5, bracket_z + 3];
+kabd_pos = [98, outer_d - wall - kabd_d - 1.5, bracket_z + 3 + kabd_standoff];
 
 module pi5()  { color([0.1, 0.45, 0.15]) cut() translate(pi_pos)   cube([pi_w, pi_d, pi_h]); }
 module kabd() { color([0.15, 0.3, 0.7]) cut()  translate(kabd_pos) cube([kabd_w, kabd_d, kabd_h]); }

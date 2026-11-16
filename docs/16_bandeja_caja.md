@@ -4,7 +4,7 @@
 
 Cierran la cámara acústica por arriba y forman el suelo de la bahía de electrónica (D027, D034).
 - **Archivos:** `enclosure/openscad/bandeja.scad` y `enclosure/openscad/caja_superior.scad`.
-- **STL:** `stl/bandeja_v0_1.stl`, `stl/caja_superior_v0_1.stl` (ya girada para imprimir) y `stl/balda_kabd_v0_1.stl`.
+- **STL:** `stl/bandeja_v0_1.stl`, `stl/caja_superior_v0_2.stl` (ya girada para imprimir) y `stl/balda_kabd_v0_2.stl`.
 
 | Pieza | Medidas | Material | Impresión |
 |---|---|---|---|
@@ -32,9 +32,11 @@ Cierran la cámara acústica por arriba y forman el suelo de la bahía de electr
 - El conversor y el DAC se fijan con cinta de doble cara o velcro.
 
 ## Balda del KABD-250
-- Placa de 3 mm sobre 4 patas de 28 mm, encima de la Pi 5. Las patas evitan los puertos de la Pi, el conversor y el DAC.
+- Placa de 3 mm sobre 4 patas de 28 mm, encima de la Pi 5. Las patas evitan los puertos de la Pi, el conversor, el DAC, el SSD y los taladros del KABD-250.
 - Tornillos M3 × 35 desde arriba, por dentro de las patas, hasta los insertos de la tapa.
-- Los taladros del KABD-250 se añadirán cuando llegue y se pueda medir.
+- **KABD-250 (v0.2, medido):** 91,4 × 68,6 × 23 mm, 4 taladros de Ø4 a 3 mm de los bordes. Se sujeta con 4 separadores de nailon M3 macho-hembra de 5 mm: la rosca macho pasa por la balda y se aprieta con tuerca por debajo; la placa se atornilla encima con M3 × 6. Queda 3 mm por debajo de la placa de botones del techo y 5 mm por debajo del ReSpeaker.
+- Monta los separadores y sus tuercas en la balda **antes** de atornillarla a la caja.
+- **v0.2:** las patas de la balda cambian de sitio (los taladros del KABD caían encima de tres de ellas), y con ellas los 4 insertos de la tapa de la caja superior. El paso de los cables del altavoz pasa a x = 196, y = 100, fuera del SSD.
 
 ## Volumen de la cámara con todas las piezas
 `python3 tools/comprobar_camara.py` comprueba las tres piezas (mallas, cama, choques con la cubeta, la capucha y los componentes) y mide el volumen neto:

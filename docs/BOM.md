@@ -41,6 +41,7 @@
 | Mecánica | Tornillos M3 × 80 avellanados (caja superior) | 4 | Necesario | Comprar ahora |
 | Mecánica | Tornillos M3 × 10 avellanados (bandeja) | 2 | Necesario | Comprar ahora |
 | Mecánica | Tornillos M3 × 35 (balda del KABD) | 4 | Necesario | Comprar ahora |
+| Mecánica | Separadores de nailon M3 macho-hembra 5 mm + tuercas M3 + tornillos M3 × 6 (KABD-250 sobre la balda) | 4 | Necesario | Comprar ahora |
 | Mecánica | Insertos M3 × 5 + tornillos M3 × 10 de cabeza Allen (unión frente ↔ cuerpo de la capucha, D044) | 3 | Necesario | Comprar ahora |
 | Mecánica | Insertos M2.5 + separadores de nailon M2.5 × 3 + tornillos M2.5 × 6 (Pi 5) | 4 | Necesario | Comprar ahora |
 | Acústica | Silicona neutra (paso de cables del altavoz) | 1 | Necesario | Al montar |

@@ -80,24 +80,25 @@ module drv_ring() intersection() {
 module drv_inserts() on_front_() for (dx = [-bolt_off, bolt_off], ds = [-bolt_off, bolt_off])
     translate([cx + dx, drv_n - insert_depth, drv_s + ds]) rotate([-90, 0, 0]) cylinder(d = insert_hole, h = insert_depth + 0.01);
 
+px = cx + pr_dx;   // eje del radiador, desplazado para que la palometa no choque con el imán (D047)
 // Radiador: anillo en la trasera y rejilla circular con dos nervios
 module pr_ring() intersection() {
     difference() {
-        translate([cx - mount_zone / 2, pr_flange_y, wall - 0.01]) cube([mount_zone, outer_d - wall - pr_flange_y + 0.01, H - wall]);
-        translate([cx, pr_flange_y - 1, audio_center_z]) rotate([-90, 0, 0]) cylinder(d = pr_cut, h = outer_d);
+        translate([px - mount_zone / 2, pr_flange_y, wall - 0.01]) cube([mount_zone, outer_d - wall - pr_flange_y + 0.01, H - wall]);
+        translate([px, pr_flange_y - 1, audio_center_z]) rotate([-90, 0, 0]) cylinder(d = pr_cut, h = outer_d);
     }
     component("body_inner");
 }
 module pr_grille() difference() {
     intersection() {
         union() for (z = [audio_center_z - grille_d_pr / 2 : slat_pitch : audio_center_z + grille_d_pr / 2])
-            translate([cx - grille_d_pr / 2, outer_d - wall - 1, z]) cube([grille_d_pr, wall + 2, slat_h]);
-        translate([cx, outer_d - wall - 1, audio_center_z]) rotate([-90, 0, 0]) cylinder(d = grille_d_pr, h = wall + 2);
+            translate([px - grille_d_pr / 2, outer_d - wall - 1, z]) cube([grille_d_pr, wall + 2, slat_h]);
+        translate([px, outer_d - wall - 1, audio_center_z]) rotate([-90, 0, 0]) cylinder(d = grille_d_pr, h = wall + 2);
     }
-    for (dx = pr_ribs) translate([cx + dx - rib_w / 2, outer_d - wall - 2, audio_center_z - grille_d_pr / 2]) cube([rib_w, wall + 4, grille_d_pr]);
+    for (dx = pr_ribs) translate([px + dx - rib_w / 2, outer_d - wall - 2, audio_center_z - grille_d_pr / 2]) cube([rib_w, wall + 4, grille_d_pr]);
 }
 module pr_inserts() for (dx = [-bolt_off, bolt_off], dz = [-bolt_off, bolt_off])
-    translate([cx + dx, pr_flange_y - 0.01, audio_center_z + dz]) rotate([-90, 0, 0]) cylinder(d = insert_hole, h = insert_depth + 0.01);
+    translate([px + dx, pr_flange_y - 0.01, audio_center_z + dz]) rotate([-90, 0, 0]) cylinder(d = insert_hole, h = insert_depth + 0.01);
 
 // Rebordes: laterales completos (desde detrás del altavoz) y trasero fuera del radiador
 module ledges() {
@@ -114,8 +115,8 @@ module ledges() {
         union() {
             ledge_x(wall - 0.01, y0, outer_d - wall - y0, -1);
             ledge_x(outer_w - wall - ledge_w + 0.01, y0, outer_d - wall - y0, 1);
-            ledge_y(wall, cx - pr_frame / 2 - 2);
-            ledge_y(cx + pr_frame / 2 + 2, outer_w - wall);
+            ledge_y(wall, px - pr_frame / 2 - 2);
+            ledge_y(px + pr_frame / 2 + 2, outer_w - wall);
         }
         component("body_inner");
     }

@@ -4,7 +4,7 @@
 
 Es la parte inferior de la carcasa (z 0–108 mm) y forma el bloque principal de la cámara acústica.
 - **Archivo:** `enclosure/openscad/cubeta.scad`.
-- **STL en tres piezas (D046), ya orientadas para imprimir:** `stl/cubeta_frente_v0_5.stl`, `stl/cubeta_centro_v0_5.stl` y `stl/cubeta_trasera_v0_5.stl`, más `stl/pata_tpu_v0_2.stl` (× 4). De una pieza, `stl/cubeta_v0_5.stl` (205 × 148 × 108 mm, unos 390 cm³).
+- **STL en tres piezas (D046), ya orientadas para imprimir:** `stl/cubeta_frente_v0_6.stl`, `stl/cubeta_centro_v0_6.stl` y `stl/cubeta_trasera_v0_6.stl`, más `stl/pata_tpu_v0_2.stl` (× 4). De una pieza, `stl/cubeta_v0_6.stl` (205 × 148 × 108 mm, unos 390 cm³).
 
 ## Tres piezas (D046)
 ![Despiece de la cubeta](img/v0_5_cubeta_despiece.png)
@@ -30,7 +30,11 @@ Tiempos estimados con un perfil genérico (3 perímetros, 20 % de relleno) que d
 - **Resto de la banda:** es decorativo. Las lamas solo tienen 1,8 mm de fondo, así que la cámara queda cerrada.
 - **Montaje del altavoz:** va por dentro, sobre un anillo paralelo al frontal que deja 7 mm hasta la rejilla, y queda inclinado 11° hacia el usuario.
 - **Radiador:** va detrás, con una rejilla circular de 94 mm y un anillo de 14 mm (su recorrido llega a 9 mm).
-- **Fijación:** 4 insertos M3 por anillo (±44,9 mm según la tienda, **medir**) y junta de espuma de 2 mm.
+- **Fijación:** 4 insertos M3 por anillo a ±44,9 mm (89,8 entre centros, medido) y junta de espuma de 2 mm.
+- **Recortes (v0.6, medidos):** la cesta del altavoz y la del radiador miden 98,8 mm, así que los dos recortes pasan a 99,8 mm (antes 90 y 98,4). Altavoz: 53 mm del marco al fondo, imán de Ø35 mm, marco de 6 mm, la suspensión sobresale 3 mm. Radiador: 50 mm hasta la goma trasera, 60 mm hasta la palometa (22 mm de ancho), marco de 6 mm, la suspensión sobresale 4 mm.
+- **Radiador desplazado (D047):** coaxial con el altavoz, la palometa tocaba el imán ya en reposo. El radiador, su anillo y su rejilla se desplazan 35 mm a la derecha (vistos de frente); la palometa queda a más de 10 mm del imán incluso con el recorrido completo. El altavoz se adelanta 1 mm (marco a 6 mm de la rejilla: 3 de suspensión + 2,5 de Xmax).
+
+![Trasera con la rejilla desplazada](img/v0_6_cubeta_trasera.png)
 
 ## Resto de la pieza
 | Elemento | Detalle |
@@ -61,5 +65,4 @@ La simulación con 3,1 L ya está hecha (ver `05_audio.md`): radiador + 10 g, si
 - Insertos de las franjas: PETG o PLA transparente, tumbados con la cara vista sobre la cama (la textura de la cama los deja esmerilados y difunden mejor).
 
 ## Pendiente de verificar con las piezas reales
-- Taladros, recortes y grosor del marco del altavoz y del radiador.
-- Cuánto sobresale la suspensión de cada cono por delante del marco (`drv_clear`, `pr_clear`).
+- **Goma trasera del radiador:** el modelo la trata como un disco móvil de Ø60 mm que entra 9 mm. Con esa suposición y la cesta del altavoz modelada como un cono macizo, todavía se rozan en el extremo del recorrido (≈ 1 mm). Falta el diámetro real de esa goma para confirmar que hay holgura.
