@@ -1,5 +1,6 @@
 # Changelog
 ## v0.8.2
+- Medidas del imán, la palometa, los marcos y las suspensiones: radiador desplazado 35 mm a la derecha para que su palometa no choque con el imán (D047); altavoz 1 mm más adelante.
 - Medidas reales del DMA105-4, DMA105-PR y KABD-250. Cubeta **v0.6**: recortes de los anillos a 99,8 mm (cestas de 98,8). Caja superior y balda **v0.2**: taladros del KABD con separadores de nailon M3 de 5 mm, patas de la balda e insertos de la tapa recolocados, paso de cables fuera del SSD. Pendiente: holgura entre el imán del altavoz y la palometa del radiador.
 
 ## v0.8.1
