@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_8.stl` + `stl/capucha_cuerpo_v0_9.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_9.stl`. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente no cambia. Más las piezas sueltas.
+- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_9.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_9.stl`. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -43,7 +43,7 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 | `difusor_led_v0_3.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |
 | `franja_sup_v0_2.stl` | PETG o PLA transparente | Tramo superior de las franjas (2 iguales). Entra deslizando por abajo, antes de montar la capucha; una gota de pegamento lo fija |
 | `prueba_keystone_v0_1.stl` | PLA negro | Trozo de pared con el hueco del keystone HDMI (D045). Imprímelo y prueba el conector antes que el cuerpo |
-| `tapa_camara_corredera_v0_2.stl` | PLA negro | Usa la holgura que te haya ido bien con la pieza de prueba |
+| `tapa_camara_corredera_v0_3.stl` | PLA negro | Muescas en V y extremos achaflanados para el resalte en rampa; pruébala antes con `tapa_camara_prueba_v0_2.stl` |
 
 ## Salida HDMI para el televisor (D045)
 ![Hueco HDMI en el lateral izquierdo](img/v0_9_hdmi_lateral.png)
