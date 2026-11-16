@@ -38,7 +38,9 @@ win_margin = 0.5; win_chamfer = 1.5;
 boss_d = 6; pilot_d = 2.2; pilot_depth = 6;          // M2.5 × 6 autorroscantes
 // Cámara y tapa deslizante (D026)
 cam_boss_d = 4.5; cam_pilot_d = 1.6;
-track_h = 12; track_d = 1.6; dovetail = 0.6; slider_l = 16; travel = 14; clear = 0.25; grip_h = 1.0; detent = 0.3;
+track_h = 12; track_d = 1.6; dovetail = 0.6; slider_l = 16; travel = 14; clear = 0.25; grip_h = 1.0;
+// Retención (v0.2 de la prueba): un resalte en rampa y dos muescas en V separadas el recorrido; tope de un solo sentido al final
+detent = 0.35; det_l = 2; det_w = 4; notch_d = 0.45; notch_x = [1.2, 1.2 + travel]; stop_h = 0.5;
 // Franja LED
 led_slot_w = 142; led_slot_h = 3;
 diff_flange = 3; diff_flange_t = 1.2;
@@ -113,10 +115,13 @@ module guide() {
     translate([guide_x0 + guide_len - 0.01, -wall - 0.01, cam_lz - track_h / 2 - dovetail])
         cube([slider_l + 1, track_d + 0.01, track_h + 2 * dovetail]);
 }
+// Resalte en rampa (cerrada: muesca derecha; abierta: muesca izquierda) y tope de fin de guía.
+// Sobresalen del fondo de la guía (y = -wall + track_d) hacia fuera (-y).
 module guide_detents() {
-    for (p = [[cam_x - slider_l / 2 + 1.5, detent], [cam_x + travel - slider_l / 2 + 1.5, detent],
-              [guide_x0 + guide_len - 0.8, detent + 0.2]])
-        translate([p[0], -wall + track_d - p[1], cam_lz - track_h / 2 + 1]) cube([0.8, p[1] + 0.3, track_h - 2]);
+    translate([cam_x - slider_l / 2 + notch_x[1], -wall + track_d + 0.01, cam_lz - det_w / 2]) linear_extrude(det_w)
+        polygon([[-det_l / 2, 0], [det_l / 2, 0], [0, -detent - 0.01]]);
+    translate([cam_x - slider_l / 2 + slider_l + travel + 0.3, -wall + track_d + 0.01, cam_lz - det_w / 2]) linear_extrude(det_w)
+        polygon([[0, 0], [2.5, 0], [0, -stop_h - 0.01]]);
 }
 
 module led_slot() on_front_() translate([(outer_w - led_slot_w) / 2, -1, led_s]) cube([led_slot_w, wall + 2, led_slot_h]);
@@ -298,7 +303,9 @@ module corredera() {
             rotate([90, 0, 90]) linear_extrude(slider_l) polygon([[-w / 2 - dovetail, 0], [w / 2 + dovetail, 0], [w / 2, d], [-w / 2, d]]);
             translate([slider_l / 2 - 2, -3, d - 0.05]) cube([4, 6, grip_h + 0.05]);
         }
-        for (x = [1.5, slider_l - 2.3]) translate([x - 0.1, -w / 2 - 2, -0.01]) cube([1, w + 4, detent + 0.1]);
+        for (x = notch_x) translate([x, w / 2 + dovetail + 1, -0.01]) rotate([90, 0, 0])
+            linear_extrude(w + 2 * dovetail + 2) polygon([[-det_l / 2 - 0.3, 0], [det_l / 2 + 0.3, 0], [0, notch_d]]);
+        for (x = [0, slider_l]) translate([x, 0, 0]) rotate([0, 45, 0]) cube([0.9, w + 4, 0.9], center = true);
     }
 }
 // Capuchón de 8 mm: asoma 0,5 mm; pestaña interior que lo retiene; símbolo grabado (0 = −, 1 = +, 2 = liso)

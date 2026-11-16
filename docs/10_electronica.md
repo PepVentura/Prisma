@@ -111,7 +111,8 @@ Opciones descartadas:
 **Privacidad (D026): tapa deslizante obligatoria.**
 - Corredera de 16 × 12 mm en una guía en cola de milano rebajada 1,6 mm en el frontal. Queda casi enrasada y no se puede perder.
 - Se desliza 14 mm hacia la derecha para descubrir el objetivo. Dos resaltes marcan las posiciones abierta y cerrada.
-- Pieza de prueba para ajustar holguras antes del frontal definitivo: `enclosure/openscad/tapa_camara_prueba.scad` → `stl/tapa_camara_prueba_v0_1.stl`. Se imprimen la placa y la corredera planas, sin soportes; si la corredera va dura o floja, ajusta `clear`.
+- Pieza de prueba para ajustar holguras antes del frontal definitivo: `enclosure/openscad/tapa_camara_prueba.scad` → `stl/tapa_camara_prueba_v0_2.stl`. Se imprimen la placa y la corredera planas, sin soportes; si la corredera va dura o floja, ajusta `clear`.
+- **Retención (v0.2):** un único resalte en rampa de 0,35 mm en el fondo de la guía y dos muescas en V en la corredera, separadas exactamente el recorrido (14 mm): hace clic en cerrada y en abierta, y en medio la corredera pasa por encima. Al final de la guía, un tope de un solo sentido deja meter la corredera pero no sacarla. En la v0.1 había dos escalones rectos de 0,3 mm y el del lado de la tapa no la dejaba pasar.
 - Además, el software encenderá un LED de la barra mientras la cámara esté activa.
 
 ![Tapa de la cámara](img/tapa_camara_prueba.png)

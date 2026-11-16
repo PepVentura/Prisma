@@ -1,4 +1,7 @@
 # Changelog
+## v0.8.3
+- Tapa de la cámara: la v0.1 de la prueba se quedaba trabada en el escalón entre el objetivo y la tapa. Ahora un solo resalte en rampa y dos muescas en V separadas el recorrido, más un tope de un solo sentido al final de la guía. `tapa_camara_prueba_v0_2.stl`, `tapa_camara_corredera_v0_3.stl` y `capucha_frente_v0_9.stl`.
+
 ## v0.8.2
 - Medidas del imán, la palometa, los marcos y las suspensiones: radiador desplazado 40 mm a la derecha para que su masa y su palometa no choquen con el imán (D047); altavoz 1 mm más adelante; tubos traseros de la caja superior a y = 128.
 - Medidas reales del DMA105-4, DMA105-PR y KABD-250. Cubeta **v0.6**: recortes de los anillos a 99,8 mm (cestas de 98,8). Caja superior y balda **v0.2**: taladros del KABD con separadores de nailon M3 de 5 mm, patas de la balda e insertos de la tapa recolocados, paso de cables fuera del SSD. Pendiente: holgura entre el imán del altavoz y la palometa del radiador.
