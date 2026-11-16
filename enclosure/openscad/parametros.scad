@@ -90,7 +90,8 @@ drv_frame = 104.1; drv_cut = 99.8;     // marco cuadrado (medido) y recorte: la 
 pr_frame  = 104.1; pr_cut  = 99.8;     // DMA105-PR: marco (medido) y recorte: la cesta mide 98,8
 pr_d      = 104; pr_depth  = 50;       // hasta la goma trasera (medido)
 pr_bolt_depth = 60; pr_nut_w = 22; pr_xmax = 9;   // hasta la palometa (medido), su ancho (medido) y recorrido
-pr_dx = 35;                             // radiador desplazado 35 mm a la derecha (D047): coaxial, la palometa tocaba el imán
+pr_ring_d = 60; pr_mass_d = 42;         // aro trasero de la cesta y tubo central con arandelas (estimados de la foto)
+pr_dx = 40;                             // radiador desplazado 40 mm a la derecha (D047): coaxial, su masa y palometa chocaban con el imán
 drv_clear = 6;                          // marco a 6 mm de la rejilla: suspensión 3 (medido) + Xmax 2,5 + margen (D047)
 pr_clear  = 14;                         // radiador: suspensión 4 (medido) + Xmax 9 + margen
 bolt_off  = 44.9;                       // taladros en las esquinas, ±44,9 mm (89,8 entre centros, medido)
@@ -167,7 +168,7 @@ tray_screw_n = 10;          // ... a 10 mm detrás de la cara exterior del front
 tray_front_gap = 1.0;       // holgura delantera: la capucha baja en vertical y su frontal inclinado avanza ≈1 mm en los últimos 5 mm
 box_t   = 2.5;              // paredes de la caja superior (PETG)
 box_gap = 0.3;              // holgura entre la caja y la capucha
-box_screw_y = [80, 135];    // 4 tubos con tornillos M3 × 80 desde el suelo de la bahía hasta los rebordes de la cubeta
+box_screw_y = [80, 128];    // 4 tubos con tornillos M3 × 80 desde el suelo de la bahía hasta los rebordes de la cubeta
 box_screw_x = wall + 3.5;   // centro de los rebordes laterales (6,5)
 
 // Uniones capucha ↔ bandeja delantera (D029)

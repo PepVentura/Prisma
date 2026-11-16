@@ -32,7 +32,7 @@ Tiempos estimados con un perfil genérico (3 perímetros, 20 % de relleno) que d
 - **Radiador:** va detrás, con una rejilla circular de 94 mm y un anillo de 14 mm (su recorrido llega a 9 mm).
 - **Fijación:** 4 insertos M3 por anillo a ±44,9 mm (89,8 entre centros, medido) y junta de espuma de 2 mm.
 - **Recortes (v0.6, medidos):** la cesta del altavoz y la del radiador miden 98,8 mm, así que los dos recortes pasan a 99,8 mm (antes 90 y 98,4). Altavoz: 53 mm del marco al fondo, imán de Ø35 mm, marco de 6 mm, la suspensión sobresale 3 mm. Radiador: 50 mm hasta la goma trasera, 60 mm hasta la palometa (22 mm de ancho), marco de 6 mm, la suspensión sobresale 4 mm.
-- **Radiador desplazado (D047):** coaxial con el altavoz, la palometa tocaba el imán ya en reposo. El radiador, su anillo y su rejilla se desplazan 35 mm a la derecha (vistos de frente); la palometa queda a más de 10 mm del imán incluso con el recorrido completo. El altavoz se adelanta 1 mm (marco a 6 mm de la rejilla: 3 de suspensión + 2,5 de Xmax).
+- **Radiador desplazado (D047):** coaxial con el altavoz, la palometa tocaba el imán ya en reposo. El radiador, su anillo y su rejilla se desplazan 40 mm a la derecha (vistos de frente). El tubo central del radiador, con las arandelas de masa y la palometa, es lo que se mueve hacia dentro (9 mm); con el desplazamiento queda a 2 mm de la cesta del altavoz en el peor caso, contando la cesta como un cono macizo. Para dejar sitio al anillo, los dos tubos traseros de la caja superior pasan de y = 135 a y = 128. El altavoz se adelanta 1 mm (marco a 6 mm de la rejilla: 3 de suspensión + 2,5 de Xmax).
 
 ![Trasera con la rejilla desplazada](img/v0_6_cubeta_trasera.png)
 
@@ -65,4 +65,4 @@ La simulación con 3,1 L ya está hecha (ver `05_audio.md`): radiador + 10 g, si
 - Insertos de las franjas: PETG o PLA transparente, tumbados con la cara vista sobre la cama (la textura de la cama los deja esmerilados y difunden mejor).
 
 ## Pendiente de verificar con las piezas reales
-- **Goma trasera del radiador:** el modelo la trata como un disco móvil de Ø60 mm que entra 9 mm. Con esa suposición y la cesta del altavoz modelada como un cono macizo, todavía se rozan en el extremo del recorrido (≈ 1 mm). Falta el diámetro real de esa goma para confirmar que hay holgura.
+- Diámetros del aro trasero de la cesta del radiador (estimado en 60 mm) y del tubo central con las arandelas (estimado en 42 mm), sacados de la foto. Si alguno es mayor, revisar la holgura con el altavoz.
