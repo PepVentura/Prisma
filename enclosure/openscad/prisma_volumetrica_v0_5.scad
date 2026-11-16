@@ -177,10 +177,10 @@ module speaker() {
 module pr() {
     color([0.25, 0.25, 0.28]) cut() translate([outer_w / 2 + pr_dx, outer_d, audio_center_z]) rotate([90, 0, 0]) {
         translate([-pr_frame / 2, -pr_frame / 2, outer_d - pr_flange_y]) cube([pr_frame, pr_frame, frame_t]);
-        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 90, h = pr_depth);
-        // parte móvil (masa y suspensión trasera) y tornillo con su palometa, con el recorrido hacia dentro
-        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = 60, h = pr_depth + pr_xmax);
-        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = pr_nut_w + 2, h = pr_bolt_depth + pr_xmax);
+        // cesta fija: radios desde el marco hasta el aro trasero (Ø pr_ring_d a pr_depth)
+        translate([0, 0, outer_d - pr_flange_y + frame_t - 0.01]) cylinder(d1 = 98.8, d2 = pr_ring_d, h = pr_depth - frame_t + 0.01);
+        // parte móvil: tubo central con las arandelas de masa y la palometa, con el recorrido hacia dentro
+        translate([0, 0, outer_d - pr_flange_y]) cylinder(d = pr_mass_d, h = pr_bolt_depth + pr_xmax);
         translate([0, 0, wall + 1]) cylinder(d = 92, h = outer_d - pr_flange_y - wall - 0.99);
     }
 }
