@@ -23,7 +23,7 @@ Cierran la cámara acústica por arriba y forman el suelo de la bahía de electr
 - Tabique inclinado de 5 mm paralelo al frontal (detrás de la pantalla), laterales y trasera de 2,5 mm y tapa de 5 mm. Abierta por abajo.
 - Holgura de 0,3 mm con la capucha por todos lados.
 - Apoya en los rebordes laterales y trasero de la cubeta y en el anillo del radiador, y el tabique pisa la parte trasera de la bandeja. Burlete de espuma en todo el apoyo.
-- **Fijación:** 4 tubos verticales con tornillos M3 × 80 avellanados desde la tapa hasta los insertos de los rebordes laterales (y = 80 y 135 mm).
+- **Fijación:** 4 tubos verticales con tornillos M3 × 80 avellanados desde la tapa hasta los insertos de los rebordes laterales (y = 80 y 128 mm; los traseros se movieron de 135 a 128 para dejar sitio al anillo del radiador, D047).
 - **Capucha:** 2 resaltes con inserto M3 en la trasera, a la altura de los tornillos traseros de la capucha (D029).
 - **Cables del altavoz:** agujero de 5 mm en la tapa (detrás, a la derecha). Se sella con silicona neutra después de pasar los cables.
 - **Bahía:** la tapa queda lisa por fuera para poder imprimirla sobre la cama. Lleva insertos ciegos (4 mm en una tapa de 5, así que no abren la cámara):
