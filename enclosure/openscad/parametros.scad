@@ -146,8 +146,8 @@ mute_travel = 4; mute_knob = [3, 4];
 // Iluminación y captación
 led_bar_w = 140; led_bar_h = 3;
 led_s = 117;                    // franja LED a lo largo del frontal (s)
-mic_w = 86; mic_d = 35; mic_h = 8;     // ReSpeaker Lite USB
-mic_spacing = 64;                      // verificar en la placa
+mic_w = 83; mic_d = 34.4; mic_h = 8;   // ReSpeaker Lite USB: placa 82,7 × 33,9 (foto de Seeed con regla) + holgura
+mic_spacing = 72;                      // 72,1 entre puertos (foto de Seeed); confirmar con la placa
 mic_y = 97;
 mic_rail_gap = 1.8;
 

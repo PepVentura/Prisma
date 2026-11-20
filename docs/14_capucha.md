@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_9.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_9.stl`. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
+- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_10.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_10.stl`. El cuerpo v0.10 coloca los micrófonos según la foto con regla de Seeed. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -73,7 +73,7 @@ Comprobado con `tools/comprobar_capucha.py`: las dos piezas cerradas, sin solapa
 `python3 tools/comprobar_capucha.py` comprueba que la malla está cerrada, que cabe en la cama y que no choca con los componentes.
 
 ## Pendiente de verificar
-- Posición de los micrófonos del ReSpeaker Lite (los grupos de agujeros toleran ±3 mm).
+- Confirmar con la placa del ReSpeaker Lite: de la foto con regla de Seeed salen 82,7 × 33,9 mm y 72,1 mm entre los puertos de los micrófonos, a ≈ 5,3 mm de los extremos y a 16 y 18 mm de los bordes largos (los grupos de agujeros toleran ±3 mm; los raíles necesitan el ancho real ±0,3 mm).
 - Alto del objetivo de la cámara (`cam_standoff`).
 - Ajuste del deslizador sobre la palanca del SS12D00 y del capuchón sobre el pulsador.
 

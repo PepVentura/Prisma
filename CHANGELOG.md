@@ -1,4 +1,7 @@
 # Changelog
+## v0.8.4
+- ReSpeaker Lite según la foto con regla de Seeed: placa 82,7 × 33,9 mm, micrófonos a 72 mm (antes 64). Capucha cuerpo **v0.10** (`capucha_cuerpo_v0_10.stl`, `capucha_v0_10.stl`). Pendiente de confirmar con la placa.
+
 ## v0.8.3
 - Tapa de la cámara: la v0.1 de la prueba se quedaba trabada en el escalón entre el objetivo y la tapa. Ahora un solo resalte en rampa y dos muescas en V separadas el recorrido, más un tope de un solo sentido al final de la guía. `tapa_camara_prueba_v0_2.stl`, `tapa_camara_corredera_v0_3.stl` y `capucha_frente_v0_9.stl`.
 
