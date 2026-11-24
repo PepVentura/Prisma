@@ -47,11 +47,15 @@ diff_flange = 3; diff_flange_t = 1.2;
 // Micrófonos
 mic_hole_d = 1.2; mic_cluster_r = 3; mic_rail_w = 3;
 // Botones (D032)
-cap_hole = btn_cap_d + 0.4; cap_flange = 11; cap_flange_t = 1.2; cap_proud = 0.5;
-switch_h = 5;                                        // pulsador 6 × 6 × 5 mm
+cap_hole = btn_cap_d + 0.4; cap_flange = 11; cap_flange_t = 1.2;
+cap_proud = 0.8;                                     // asoma 0,8 mm: holgura 0,1 + recorrido 0,4 + margen
+cap_play = 0.1;                                      // holgura capuchón–pulsador en reposo
+// Pulsador táctil 12 × 12 (medido): cuerpo 11 × 11 × 2,6, botón Ø6, 6 mm en total, recorrido 0,4
+sw_body = 11; sw_body_h = 2.6; switch_h = 6; sw_travel = 0.4; sw_leg = 1.2;
+sw_pocket_d = 1;                                     // el pulsador se encaja 1 mm en la placa
 mute_slot = [mute_knob[0] + 0.4, mute_knob[1] + mute_travel + 0.4];
-btn_plate = [18, mute_y - btn_y[0] + 18, 2];         // placa bajo el techo
-btn_plate_z = outer_h - wall - switch_h - cap_flange_t - btn_plate[2] - 0.2;   // 0,2 mm de holgura: el pulsador no queda presionado
+btn_plate = [18, mute_y - btn_y[0] + 19.5, 2];       // placa bajo el techo
+btn_plate_z = outer_h - wall - cap_flange_t - cap_play - switch_h + sw_pocket_d - btn_plate[2];
 // Uniones (D029)
 rear_screw_x = [40, outer_w - 40]; rear_screw_z = 150; rear_screw_d = 3.4; rear_csk_d = 6.5;
 pin_z = split_z + wall_int;                          // cara superior de la bandeja
@@ -149,14 +153,16 @@ module top_button_holes() {
     // punto para pintar (o rellenar con filamento rojo): visible con el micro silenciado
     translate([btn_x - 5.5, mute_y + mute_slot[1] / 2 - 1.5, outer_h - 0.6]) cylinder(d = 2, h = 1);
 }
-btn_plate_holes = [[btn_x, btn_y[0] - 7], [btn_x, mute_y + 7]];
+// tornillos de la placa: entre los dos pulsadores de volumen y detrás del interruptor
+btn_plate_holes = [[btn_x, (btn_y[0] + btn_y[1]) / 2], [btn_x, mute_y + 7.5]];
 module top_button_bosses() for (p = btn_plate_holes) translate([p[0], p[1], btn_plate_z + btn_plate[2]])
-    difference() { cylinder(d = 6, h = outer_h - wall - btn_plate_z - btn_plate[2] + 0.01); translate([0, 0, -0.01]) cylinder(d = 2.2, h = 6); }
+    difference() { cylinder(d = 5, h = outer_h - wall - btn_plate_z - btn_plate[2] + 0.01); translate([0, 0, -0.01]) cylinder(d = 2.2, h = 6); }
 
 // Botón de encendido trasero: agujero del capuchón y 2 resaltes para un pulsador en placa
 module power_hole() translate([power_btn_x, outer_d - wall - 1, power_btn_z]) rotate([-90, 0, 0]) cylinder(d = cap_hole, h = wall + 2);
-module power_bosses() for (dx = [-8, 8]) translate([power_btn_x + dx, outer_d - wall + 0.01, power_btn_z])
-    rotate([90, 0, 0]) difference() { cylinder(d = 5, h = switch_h + cap_flange_t); translate([0, 0, 1]) cylinder(d = 2.2, h = 10); }
+// los resaltes quedan a ±10,5 mm, fuera del pulsador de 11 mm y sus patillas; la placa apoya en su extremo
+module power_bosses() for (dx = [-10.5, 10.5]) translate([power_btn_x + dx, outer_d - wall + 0.01, power_btn_z])
+    rotate([90, 0, 0]) difference() { cylinder(d = 5, h = switch_h + cap_flange_t + cap_play); translate([0, 0, 1]) cylinder(d = 2.2, h = 10); }
 
 // Salida HDMI al televisor (D045): hueco keystone en el lateral izquierdo, con la pared rebajada a ks_t por dentro
 module hdmi_hole() {
@@ -310,7 +316,7 @@ module corredera() {
 }
 // Capuchón de 8 mm: asoma 0,5 mm; pestaña interior que lo retiene; símbolo grabado (0 = −, 1 = +, 2 = liso)
 module capuchon(symbol = 0) {
-    h = wall + cap_proud;
+    h = cap_flange_t + wall + cap_proud;
     difference() {
         union() { cylinder(d = btn_cap_d, h = h); cylinder(d = cap_flange, h = cap_flange_t); }
         translate([0, 0, h - 0.5]) {
@@ -325,13 +331,18 @@ module deslizador() difference() {
               translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, 1]); }
     translate([-0.85, -0.85, -0.01]) cube([1.7, 1.7, 2.5]);
 }
-// Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 6 × 6 y el SS12D00
+// Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 12 × 12 y el SS12D00
 module placa_botones() difference() {
-    translate([-btn_plate[0] / 2, -7 - 9 + 7, 0]) translate([0, btn_y[0] - btn_y[0], 0]) cube([btn_plate[0], btn_plate[1], btn_plate[2]]);
+    translate([-btn_plate[0] / 2, -9, 0]) cube([btn_plate[0], btn_plate[1], btn_plate[2]]);
     for (p = btn_plate_holes) translate([p[0] - btn_x, p[1] - btn_y[0], -1]) cylinder(d = 2.4, h = 5);
-    for (y = btn_y) translate([-3.1, y - btn_y[0] - 3.1, 1]) cube([6.2, 6.2, 2]);                 // alojamiento pulsadores
+    for (y = btn_y) {
+        // alojamiento del pulsador, con sitio para las patillas a los lados
+        translate([-sw_body / 2 - sw_leg - 0.1, y - btn_y[0] - sw_body / 2 - 0.1, btn_plate[2] - sw_pocket_d])
+            cube([sw_body + 2 * sw_leg + 0.2, sw_body + 0.2, sw_pocket_d + 1]);
+        // salida de los cables por el lado derecho
+        translate([sw_body / 2, y - btn_y[0] - 2, btn_plate[2] - sw_pocket_d]) cube([btn_plate[0], 4, sw_pocket_d + 1]);
+    }
     translate([-1.9, mute_y - btn_y[0] - 4.4, 0.6]) cube([3.8, 8.8, 2]);                            // alojamiento SS12D00
-    for (y = btn_y) translate([-4, y - btn_y[0] - 1, -1]) cube([1, 2, 5]);                          // pasos de cables
 }
 
 if (pieza == "capucha") capucha();

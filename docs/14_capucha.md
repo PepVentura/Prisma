@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_10.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_10.stl`. El cuerpo v0.10 coloca los micrófonos según la foto con regla de Seeed. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
+- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_11.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_11.stl`. El cuerpo v0.11 adapta los botones a los pulsadores de 12 × 12 mm; el v0.10 colocó los micrófonos según la foto con regla de Seeed. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -37,9 +37,9 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 ## Piezas sueltas
 | STL | Material | Notas |
 |---|---|---|
-| `capuchones_botones_v0_1.stl` | PLA negro | Volumen −, volumen + y uno liso para el encendido. Asoman 0,5 mm y la pestaña interior los retiene |
+| `capuchones_botones_v0_2.stl` | PLA negro (o rojo) | Volumen −, volumen + y uno liso para el encendido. Asoman 0,8 mm (0,7 en reposo sobre el pulsador) y la pestaña interior los retiene |
 | `deslizador_silencio_v0_1.stl` | PLA negro | Mando del SS12D00. Entra a presión en la palanca |
-| `placa_botones_v0_1.stl` | PLA o PETG | Lleva 2 pulsadores de 6 × 6 × 5 mm y el SS12D00. Se fija con 2 tornillos M2 |
+| `placa_botones_v0_2.stl` | PLA o PETG | Lleva 2 pulsadores de 12 × 12 mm (encajados 1 mm, cables por el lado derecho) y el SS12D00. Se fija con 2 tornillos M2: uno entre los dos pulsadores y otro detrás del interruptor |
 | `difusor_led_v0_3.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |
 | `franja_sup_v0_2.stl` | PETG o PLA transparente | Tramo superior de las franjas (2 iguales). Entra deslizando por abajo, antes de montar la capucha; una gota de pegamento lo fija |
 | `prueba_keystone_v0_1.stl` | PLA negro | Trozo de pared con el hueco del keystone HDMI (D045). Imprímelo y prueba el conector antes que el cuerpo |
