@@ -175,10 +175,20 @@ module hdmi_hole() {
     translate([ks_t, hdmi_y - ks_pocket[0] / 2, hdmi_z - ks_pocket[1] / 2]) cube([wall - ks_t + 0.5, ks_pocket[0], ks_pocket[1]]);
 }
 // Prueba del keystone: un trozo de pared con el mismo hueco y rebaje (≈ 5 min de impresión)
-module prueba_keystone() difference() {
-    cube([ks_pocket[0] + 10, ks_pocket[1] + 10, wall]);
-    translate([5, 5, ks_t]) cube([ks_pocket[0], ks_pocket[1], wall]);
-    translate([(ks_pocket[0] + 10 - ks_w) / 2, (ks_pocket[1] + 10 - ks_h) / 2, -1]) cube([ks_w, ks_h, wall + 2]);
+// v0.2: tres huecos con holgura creciente (+0,4 / +0,8 / +1,2 mm sobre ks_w × ks_h), marcados con 1, 2 y 3
+// muescas en el borde. El que entre con un clic y no baile da el valor de ks_extra.
+ks_test_extra = [0.4, 0.8, 1.2];
+module prueba_keystone() {
+    pitch = ks_pocket[0] + 4;
+    difference() {
+        cube([3 * pitch + 4, ks_pocket[1] + 10, wall]);
+        for (i = [0 : 2]) {
+            x0 = 4 + i * pitch; e = ks_test_extra[i];
+            translate([x0, 5, ks_t]) cube([ks_pocket[0], ks_pocket[1], wall]);
+            translate([x0 + (ks_pocket[0] - ks_w - e) / 2, 5 + (ks_pocket[1] - ks_h - e) / 2, -1]) cube([ks_w + e, ks_h + e, wall + 2]);
+            for (j = [0 : i]) translate([x0 + ks_pocket[0] / 2 - 3 + j * 3, -0.01, -1]) cube([1.2, 1.5, wall + 2]);
+        }
+    }
 }
 
 module rear_screws() for (x = rear_screw_x) {
