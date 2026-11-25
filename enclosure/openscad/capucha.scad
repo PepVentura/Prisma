@@ -54,7 +54,7 @@ cap_play = 0.1;                                      // holgura capuchón–puls
 sw_body = 11; sw_body_h = 2.6; switch_h = 6; sw_travel = 0.4; sw_leg = 1.2;
 sw_pocket_d = 1;                                     // el pulsador se encaja 1 mm en la placa
 mute_slot = [mute_knob[0] + 0.4, mute_knob[1] + mute_travel + 0.4];
-btn_plate = [18, mute_y - btn_y[0] + 19.5, 2];       // placa bajo el techo
+btn_plate = [18, mute_y - btn_y[0] + 20.5, 2];       // placa bajo el techo
 btn_plate_z = outer_h - wall - cap_flange_t - cap_play - switch_h + sw_pocket_d - btn_plate[2];
 // Uniones (D029)
 rear_screw_x = [40, outer_w - 40]; rear_screw_z = 150; rear_screw_d = 3.4; rear_csk_d = 6.5;
@@ -154,7 +154,12 @@ module top_button_holes() {
     translate([btn_x - 5.5, mute_y + mute_slot[1] / 2 - 1.5, outer_h - 0.6]) cylinder(d = 2, h = 1);
 }
 // tornillos de la placa: entre los dos pulsadores de volumen y detrás del interruptor
-btn_plate_holes = [[btn_x, (btn_y[0] + btn_y[1]) / 2], [btn_x, mute_y + 7.5]];
+btn_plate_holes = [[btn_x, (btn_y[0] + btn_y[1]) / 2], [btn_x, mute_y + 8.5]];   // el trasero, fuera del recorrido del mando
+// SS12D00 sobre un alza: la punta de la palanca entra 2 mm en el mando, cuya base queda 1 mm bajo el techo
+slide_base_t = 1;
+ss_base_z = outer_h - wall - slide_base_t + 2 - ss_lever[2] - ss_body[2];
+ss_seat = 0.5;                                       // asiento del cuerpo en lo alto del alza
+ss_riser_h = ss_base_z + ss_seat - (btn_plate_z + btn_plate[2]);
 module top_button_bosses() for (p = btn_plate_holes) translate([p[0], p[1], btn_plate_z + btn_plate[2]])
     difference() { cylinder(d = 5, h = outer_h - wall - btn_plate_z - btn_plate[2] + 0.01); translate([0, 0, -0.01]) cylinder(d = 2.2, h = 6); }
 
@@ -325,15 +330,18 @@ module capuchon(symbol = 0) {
         }
     }
 }
-// Mando del interruptor deslizante: encaja en la palanca de un SS12D00 (agujero 1,6 × 1,6)
+// Mando del interruptor deslizante: encaja en la palanca del SS12D00 (1 × 1 mm, agujero 1,3 × 1,3)
 module deslizador() difference() {
-    union() { translate([-mute_knob[0] / 2, -mute_knob[1] / 2, 0]) cube([mute_knob[0], mute_knob[1], wall + cap_proud]);
-              translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, 1]); }
-    translate([-0.85, -0.85, -0.01]) cube([1.7, 1.7, 2.5]);
+    union() { translate([-mute_knob[0] / 2, -mute_knob[1] / 2, 0]) cube([mute_knob[0], mute_knob[1], slide_base_t + wall + cap_proud]);
+              translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, slide_base_t]); }
+    translate([-0.65, -0.65, -0.01]) cube([1.3, 1.3, 2.5]);   // palanca de 1 × 1, a presión
 }
-// Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 12 × 12 y el SS12D00
+// Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 12 × 12 y el SS12D00 sobre un alza
 module placa_botones() difference() {
-    translate([-btn_plate[0] / 2, -9, 0]) cube([btn_plate[0], btn_plate[1], btn_plate[2]]);
+    union() {
+        translate([-btn_plate[0] / 2, -9, 0]) cube([btn_plate[0], btn_plate[1], btn_plate[2]]);
+        translate([-2.75, mute_y - btn_y[0] - 5.5, btn_plate[2] - 0.01]) cube([5.5, 11, ss_riser_h + 0.01]);
+    }
     for (p = btn_plate_holes) translate([p[0] - btn_x, p[1] - btn_y[0], -1]) cylinder(d = 2.4, h = 5);
     for (y = btn_y) {
         // alojamiento del pulsador, con sitio para las patillas a los lados
@@ -342,7 +350,10 @@ module placa_botones() difference() {
         // salida de los cables por el lado derecho
         translate([sw_body / 2, y - btn_y[0] - 2, btn_plate[2] - sw_pocket_d]) cube([btn_plate[0], 4, sw_pocket_d + 1]);
     }
-    translate([-1.9, mute_y - btn_y[0] - 4.4, 0.6]) cube([3.8, 8.8, 2]);                            // alojamiento SS12D00
+    // asiento del SS12D00 en lo alto del alza y ranura pasante para sus 3 patillas
+    translate([-ss_body[0] / 2 - 0.15, mute_y - btn_y[0] - ss_body[1] / 2 - 0.15, btn_plate[2] + ss_riser_h - ss_seat])
+        cube([ss_body[0] + 0.3, ss_body[1] + 0.3, 1]);
+    translate([-0.7, mute_y - btn_y[0] - 3.5, -1]) cube([1.4, 7, btn_plate[2] + ss_riser_h + 2]);
 }
 
 if (pieza == "capucha") capucha();
