@@ -141,7 +141,8 @@ power_btn_x = 52; power_btn_z = dc_z;
 btn_cap_d = 8; btn_x = outer_w - 26;
 btn_y = [84, 102];              // volumen −, volumen + (6 mm más atrás que en v0.7: junta de la capucha, D044)
 mute_y = 124;                   // interruptor deslizante
-mute_travel = 4; mute_knob = [3, 4];
+mute_travel = 4; mute_knob = [3, 4];   // recorrido de la palanca (medido) y sección del mando en la ranura
+ss_body = [3, 8, 2]; ss_lever = [1, 1, 3];   // SS12D00 (medido): cuerpo ancho × largo × alto; palanca 1 × 1, sobresale 3
 
 // Iluminación y captación
 led_bar_w = 140; led_bar_h = 3;

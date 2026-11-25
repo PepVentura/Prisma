@@ -1,4 +1,8 @@
 # Changelog
+## v0.8.5
+- Interruptor de silencio con las medidas del SS12D00 (cuerpo 8 × 3 × 2, palanca 1 × 1 que sobresale 3, recorrido 4): alza de 2,8 mm en la placa de botones, mando `deslizador_silencio_v0_2.stl` con agujero de 1,3 mm y altura corregida (contaba sin la base). Tornillo trasero de la placa a +8,5 mm, fuera del recorrido del mando.
+- Botones con los pulsadores de 12 × 12 mm (medidos: cuerpo 11 × 11 × 2,6, botón Ø6, 6 mm, recorrido 0,4). Capucha cuerpo **v0.11**, `placa_botones_v0_2.stl` y `capuchones_botones_v0_2.stl`. Corregido de paso: con el alojamiento de 1 mm el pulsador quedaba demasiado bajo y el capuchón no llegaba a accionarlo; ahora reposa a 0,1 mm y asoma 0,8 mm. Resaltes del botón de encendido a ±10,5 mm.
+
 ## v0.8.4
 - ReSpeaker Lite según la foto con regla de Seeed: placa 82,7 × 33,9 mm, micrófonos a 72 mm (antes 64). Capucha cuerpo **v0.10** (`capucha_cuerpo_v0_10.stl`, `capucha_v0_10.stl`). Pendiente de confirmar con la placa.
 
