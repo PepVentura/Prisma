@@ -42,7 +42,7 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 | `placa_botones_v0_2.stl` | PLA o PETG | Lleva 2 pulsadores de 12 × 12 mm (encajados 1 mm, cables por el lado derecho) y el SS12D00 sobre un alza de 2,8 mm con ranura pasante para las patillas, para que la palanca entre 2 mm en el mando. Se fija con 2 tornillos M2: uno entre los dos pulsadores y otro detrás del interruptor |
 | `difusor_led_v0_3.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |
 | `franja_sup_v0_2.stl` | PETG o PLA transparente | Tramo superior de las franjas (2 iguales). Entra deslizando por abajo, antes de montar la capucha; una gota de pegamento lo fija |
-| `prueba_keystone_v0_1.stl` | PLA negro | Trozo de pared con el hueco del keystone HDMI (D045). Imprímelo y prueba el conector antes que el cuerpo |
+| `prueba_keystone_v0_2.stl` | PLA negro | Trozo de pared con tres huecos del keystone HDMI (D045), de +0,4, +0,8 y +1,2 mm de holgura (1, 2 y 3 muescas). Prueba el conector antes que el cuerpo |
 | `tapa_camara_corredera_v0_3.stl` | PLA negro | Muescas en V y extremos achaflanados para el resalte en rampa; pruébala antes con `tapa_camara_prueba_v0_2.stl` |
 
 ## Salida HDMI para el televisor (D045)
@@ -51,7 +51,7 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 - **Hueco keystone** de 14,5 × 16,2 mm en el **lateral izquierdo**, arriba y hacia atrás (y = 110, z = 239 mm). Por dentro, la pared se rebaja a 2 mm en un recuadro de 26 × 28 mm para que encajen las pestañas del keystone.
 - **Conector:** keystone HDMI hembra-hembra, por ejemplo InLine 76202M (30 × 22 × 18 mm). Por dentro, un cable **micro-HDMI → HDMI de 30 cm** va al puerto **HDMI1** de la Pi (el que no usa la pantalla). La tele se enchufa con un cable HDMI normal.
 - Va en el lateral porque en la trasera no cabe: arriba está el ReSpeaker y, más abajo, el perforado de ventilación y la Pi.
-- Antes de imprimir el cuerpo, imprime `prueba_keystone_v0_1.stl` (unos minutos) y comprueba que el keystone entra y queda sujeto. Si no, se ajustan `ks_w`, `ks_h` y `ks_t` en `parametros.scad`.
+- Antes de imprimir el cuerpo, imprime `prueba_keystone_v0_2.stl` y elige el hueco en el que el keystone entra con un clic y no baila. En la v0.1 (14,5 × 16,2 mm) entraba demasiado justo.
 
 ## Dos piezas (D044)
 Para no necesitar soportes, la capucha se divide por un plano paralelo al frontal, a 22 mm de su cara exterior:
