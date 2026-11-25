@@ -4,7 +4,7 @@
 
 Es la parte de la carcasa que queda por encima de la cubeta acústica (z > 108 mm).
 - **Archivo:** `enclosure/openscad/capucha.scad`.
-- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_11.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_11.stl`. El cuerpo v0.11 adapta los botones a los pulsadores de 12 × 12 mm; el v0.10 colocó los micrófonos según la foto con regla de Seeed. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
+- **STL:** en dos piezas (recomendado, D044) `stl/capucha_frente_v0_9.stl` + `stl/capucha_cuerpo_v0_12.stl`, ya orientadas para imprimir; de una pieza, `stl/capucha_v0_12.stl`. **v0.12, definitiva:** hueco del keystone de 14,9 × 16,6 mm (elegido con la prueba) y ReSpeaker confirmado con la placa. El cuerpo v0.11 adapta los botones a los pulsadores de 12 × 12 mm; el v0.10 colocó los micrófonos según la foto con regla de Seeed. El cuerpo v0.9 añade el hueco HDMI del lateral (D045); el frente v0.9, la nueva retención de la tapa de la cámara. Más las piezas sueltas.
 
 ## División de la carcasa (D027)
 | Pieza | Medidas | Material | Orientación |
@@ -51,7 +51,7 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 - **Hueco keystone** de 14,5 × 16,2 mm en el **lateral izquierdo**, arriba y hacia atrás (y = 110, z = 239 mm). Por dentro, la pared se rebaja a 2 mm en un recuadro de 26 × 28 mm para que encajen las pestañas del keystone.
 - **Conector:** keystone HDMI hembra-hembra, por ejemplo InLine 76202M (30 × 22 × 18 mm). Por dentro, un cable **micro-HDMI → HDMI de 30 cm** va al puerto **HDMI1** de la Pi (el que no usa la pantalla). La tele se enchufa con un cable HDMI normal.
 - Va en el lateral porque en la trasera no cabe: arriba está el ReSpeaker y, más abajo, el perforado de ventilación y la Pi.
-- Antes de imprimir el cuerpo, imprime `prueba_keystone_v0_2.stl` y elige el hueco en el que el keystone entra con un clic y no baila. En la v0.1 (14,5 × 16,2 mm) entraba demasiado justo.
+- Hueco del keystone de 14,9 × 16,6 mm, elegido con `prueba_keystone_v0_2.stl` (1 muesca). En la v0.1 (14,5 × 16,2 mm) entraba demasiado justo.
 
 ## Dos piezas (D044)
 Para no necesitar soportes, la capucha se divide por un plano paralelo al frontal, a 22 mm de su cara exterior:
@@ -73,7 +73,7 @@ Comprobado con `tools/comprobar_capucha.py`: las dos piezas cerradas, sin solapa
 `python3 tools/comprobar_capucha.py` comprueba que la malla está cerrada, que cabe en la cama y que no choca con los componentes.
 
 ## Pendiente de verificar
-- Confirmar con la placa del ReSpeaker Lite: de la foto con regla de Seeed salen 82,7 × 33,9 mm y 72,1 mm entre los puertos de los micrófonos, a ≈ 5,3 mm de los extremos y a 16 y 18 mm de los bordes largos (los grupos de agujeros toleran ±3 mm; los raíles necesitan el ancho real ±0,3 mm).
+- ReSpeaker Lite (confirmado con la placa): 82,7 × 33,9 mm y 72,1 mm entre los puertos de los micrófonos, a ≈ 5,3 mm de los extremos y a 16 y 18 mm de los bordes largos (los grupos de agujeros toleran ±3 mm; los raíles necesitan el ancho real ±0,3 mm).
 - Alto del objetivo de la cámara (`cam_standoff`).
 - Ajuste del deslizador sobre la palanca del SS12D00 y del capuchón sobre el pulsador.
 
