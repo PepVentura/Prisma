@@ -127,7 +127,7 @@ ssd_pos = [117, 88];                           // esquina x, y sobre el suelo de
 // Salida HDMI para el televisor (D045): conector keystone HDMI hembra-hembra en el lateral izquierdo,
 // unido por dentro al micro-HDMI 1 de la Pi con un cable micro-HDMI → HDMI corto
 hdmi_y = 110; hdmi_z = 239;                    // centro del hueco en el lateral izquierdo
-ks_w = 14.5; ks_h = 16.2;                      // hueco keystone estándar (probar con prueba_keystone)
+ks_w = 14.9; ks_h = 16.6;                      // hueco keystone: elegido con prueba_keystone_v0_2 (1 muesca, +0,4 sobre el estándar)
 ks_t = 2.0;                                    // grosor de pared en el hueco (las pestañas del keystone piden ≤ 2,2)
 ks_pocket = [26, 28];                          // rebaje interior (y, z) donde la pared baja a ks_t
 
@@ -147,8 +147,8 @@ ss_body = [3, 8, 2]; ss_lever = [1, 1, 3];   // SS12D00 (medido): cuerpo ancho �
 // Iluminación y captación
 led_bar_w = 140; led_bar_h = 3;
 led_s = 117;                    // franja LED a lo largo del frontal (s)
-mic_w = 83; mic_d = 34.4; mic_h = 8;   // ReSpeaker Lite USB: placa 82,7 × 33,9 (foto de Seeed con regla) + holgura
-mic_spacing = 72;                      // 72,1 entre puertos (foto de Seeed); confirmar con la placa
+mic_w = 83; mic_d = 34.4; mic_h = 8;   // ReSpeaker Lite USB: placa 82,7 × 33,9 (confirmado con la placa) + holgura
+mic_spacing = 72;                      // 72,1 entre puertos (confirmado con la placa)
 mic_y = 97;
 mic_rail_gap = 1.8;
 

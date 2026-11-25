@@ -1,4 +1,7 @@
 # Changelog
+## v0.9
+- **Capucha definitiva (v0.12):** hueco del keystone a 14,9 × 16,6 mm (prueba v0.2, 1 muesca) y medidas del ReSpeaker Lite confirmadas con la placa. Todas las piezas de la carcasa quedan validadas.
+
 ## v0.8.6
 - Keystone HDMI: la prueba v0.1 quedaba justa. `prueba_keystone_v0_2.stl` con tres huecos de holgura creciente para elegir.
 
