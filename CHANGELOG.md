@@ -1,4 +1,7 @@
 # Changelog
+## v0.9.2
+- Capuchones y mando del silencio **v0.3**: con 0,2 mm por lado rozaban; ahora 0,5 mm (capuchón Ø7,4, mando 2,4 × 3,4). Los huecos de la capucha no cambian.
+
 ## v0.9
 - **Capucha definitiva (v0.12):** hueco del keystone a 14,9 × 16,6 mm (prueba v0.2, 1 muesca) y medidas del ReSpeaker Lite confirmadas con la placa. Todas las piezas de la carcasa quedan validadas.
 
