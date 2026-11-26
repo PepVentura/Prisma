@@ -37,8 +37,8 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 ## Piezas sueltas
 | STL | Material | Notas |
 |---|---|---|
-| `capuchones_botones_v0_2.stl` | PLA negro (o rojo) | Volumen −, volumen + y uno liso para el encendido. Asoman 0,8 mm (0,7 en reposo sobre el pulsador) y la pestaña interior los retiene |
-| `deslizador_silencio_v0_2.stl` | PLA negro (o rojo) | Mando del SS12D00. Agujero de 1,3 × 1,3 mm para la palanca de 1 × 1, a presión; asoma 0,8 mm. Imprímelo de pie, con el agujero hacia abajo |
+| `capuchones_botones_v0_3.stl` | PLA negro (o rojo) | Volumen −, volumen + y uno liso para el encendido. Asoman 0,8 mm (0,7 en reposo sobre el pulsador) y la pestaña interior los retiene. v0.3: Ø7,4 en un agujero de 8,4 (0,5 mm por lado) |
+| `deslizador_silencio_v0_3.stl` | PLA negro (o rojo) | Mando del SS12D00. Agujero de 1,3 × 1,3 mm para la palanca de 1 × 1, a presión; asoma 0,8 mm. Imprímelo de pie, con el agujero hacia abajo |
 | `placa_botones_v0_2.stl` | PLA o PETG | Lleva 2 pulsadores de 12 × 12 mm (encajados 1 mm, cables por el lado derecho) y el SS12D00 sobre un alza de 2,8 mm con ranura pasante para las patillas, para que la palanca entre 2 mm en el mando. Se fija con 2 tornillos M2: uno entre los dos pulsadores y otro detrás del interruptor |
 | `difusor_led_v0_3.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |
 | `franja_sup_v0_2.stl` | PETG o PLA transparente | Tramo superior de las franjas (2 iguales). Entra deslizando por abajo, antes de montar la capucha; una gota de pegamento lo fija |
