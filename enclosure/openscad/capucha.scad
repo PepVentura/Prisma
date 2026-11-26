@@ -51,6 +51,7 @@ cap_hole = btn_cap_d + 0.4; cap_flange = 11; cap_flange_t = 1.2;
 // Holgura de los mandos impresos: se reducen ellos y no los huecos de la capucha (ya impresa).
 // v0.3: 0,2 mm por lado rozaba; ahora 0,5 mm por lado.
 mando_menos = 0.6;
+mando_agujero = 1.6;                                 // agujero del mando para la palanca del SS12D00
 cap_proud = 0.8;                                     // asoma 0,8 mm: holgura 0,1 + recorrido 0,4 + margen
 cap_play = 0.1;                                      // holgura capuchón–pulsador en reposo
 // Pulsador táctil 12 × 12 (medido): cuerpo 11 × 11 × 2,6, botón Ø6, 6 mm en total, recorrido 0,4
@@ -348,7 +349,10 @@ module deslizador() difference() {
     union() { translate([-(mute_knob[0] - mando_menos) / 2, -(mute_knob[1] - mando_menos) / 2, 0])
                   cube([mute_knob[0] - mando_menos, mute_knob[1] - mando_menos, slide_base_t + wall + cap_proud]);
               translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, slide_base_t]); }
-    translate([-0.65, -0.65, -0.01]) cube([1.3, 1.3, 2.5]);   // palanca de 1 × 1, a presión
+    // palanca de 1,1 × 1,1 (medida): agujero de 1,6 (los agujeros pequeños salen más cerrados al imprimir)
+    // y chaflán en la boca, que va contra la cama y se cierra con la primera capa
+    translate([-mando_agujero / 2, -mando_agujero / 2, -0.01]) cube([mando_agujero, mando_agujero, 2.5]);
+    translate([0, 0, -0.01]) rotate([0, 0, 45]) cylinder(d1 = mando_agujero * 1.414 + 1.2, d2 = mando_agujero * 1.414, h = 0.6, $fn = 4);
 }
 // Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 12 × 12 y el SS12D00 sobre un alza
 module placa_botones() difference() {
