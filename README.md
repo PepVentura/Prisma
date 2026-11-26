@@ -16,7 +16,7 @@ Asistente inteligente de sobremesa con Raspberry Pi 5, pantalla táctil de 7", a
 - WS2812B: barra de 8–12 LEDs y dos franjas de tira de 5 mm en los cantos (D033) — propuesto
 - Cámara OV5647 5 MP, sobre la pantalla — disponible
 - Fuente Mean Well GST60A24-P1J (24 V, 60 W) — propuesta
-- Conversor Pololu D36V50F5 (24→5 V, 5,5 A) — propuesto
+- Conversor Pololu D24V50F5 (24→5 V, 5 A) — pedido
 
 ## Arquitectura
 ```text

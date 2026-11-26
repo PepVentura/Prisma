@@ -1,4 +1,10 @@
 # Changelog
+## v0.9.4
+- Mando del silencio **v0.4**: la palanca mide 1,1 × 1,1 y el agujero de 1,3 salía más cerrado; ahora 1,6 × 1,6 con chaflán en la boca.
+
+## v0.9.3
+- Conversor: Pololu D24V50F5 (5 V, 5 A) en lugar del D36V50F5, agotado. Cabe en el hueco reservado; no cambia ninguna pieza.
+
 ## v0.9.2
 - Capuchones y mando del silencio **v0.3**: con 0,2 mm por lado rozaban; ahora 0,5 mm (capuchón Ø7,4, mando 2,4 × 3,4). Los huecos de la capucha no cambian.
 

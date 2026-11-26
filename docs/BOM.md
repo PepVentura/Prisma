@@ -14,7 +14,7 @@
 | LEDs | Conectores JST-GH o JST-SH de 3 pines (unión cubeta ↔ capucha de cada franja) | 2 | Propuesto | Al cerrar diseño |
 | Alimentación | Mean Well GST60A24-P1J (24 V, 60 W, externa) | 1 | Propuesto | Al cerrar diseño |
 | Alimentación | Conector DC de panel 24 V | 1 | En estudio | Al cerrar diseño |
-| Alimentación | Pololu D36V50F5 (24 → 5 V, 5,5 A) | 1 | Propuesto | Al cerrar diseño |
+| Alimentación | Pololu D24V50F5 (ref. 2851; 24 → 5 V, 5 A) | 1 | Pedido (Opencircuit/EXP-Tech) | — |
 | Refrigeración | Pi 5 Active Cooler | 1 | Necesario | Comprar ahora |
 | Acústica | Espuma/relleno acústico para la cámara | 1 | Propuesto | Al cerrar diseño |
 | Acústica | Junta de estanqueidad (burlete EPDM fino) | 1 | Propuesto | Al cerrar diseño |

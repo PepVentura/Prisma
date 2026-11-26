@@ -14,7 +14,7 @@
 | D011 | DAC GY-PCM5102 (PCM5102A) por I²S → AUX del KABD-250 | Propuesta |
 | D012 | Micrófonos ReSpeaker Lite USB (2 micrófonos, AEC por hardware) bajo el techo | Propuesta |
 | D013 | Fuente Mean Well GST60A24-P1J (24 V, 60 W) | Propuesta |
-| D014 | Conversor Pololu D36V50F5 (5 V, 5,5 A) | Propuesta |
+| D014 | Conversor Pololu D24V50F5 (5 V, 5 A, entrada hasta 38 V); el D36V50F5 previsto estaba agotado y racionado | Cerrada |
 | D015 | ~~Frontal inferior vertical + superior inclinado 18°~~ Sustituida por D031 | Sustituida |
 | D016 | Cámara acústica en L: bloque inferior de ancho y fondo completos + bloque superior-trasero detrás de la pantalla | Propuesta (v0.3) |
 | D017 | Electrónica en bahía superior sobre la tapa de la cámara: Pi 5, buck y DAC en el suelo; KABD-250 en una balda encima (lado derecho). Ventilación pasiva solo en la bahía (rejillas trasera superior y laterales). Ningún ventilador ni rejilla en la zona de la cámara | Propuesta (v0.3) |
