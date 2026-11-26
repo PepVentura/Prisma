@@ -114,7 +114,7 @@ kabd_w = 91.4; kabd_d = 68.6; kabd_h = 23;   // medido
 kabd_hole_in = 3; kabd_hole_d = 4;          // 4 taladros Ø4 a 3 mm de los bordes (medido)
 kabd_standoff = 5;                          // separadores de nailon M3 de 5 mm sobre la balda
 dac_w = 32; dac_d = 14; dac_h = 10;            // GY-PCM5102
-buck_w = 25.4; buck_d = 25.4; buck_h = 9.5;    // Pololu D36V50F5
+buck_w = 25.4; buck_d = 25.4; buck_h = 9.5;    // hueco reservado; va el Pololu D24V50F5 (17,8 × 20,3 × 8,8), D014
 bracket_z = bay_floor_z + pi_h + 3;            // balda del KABD-250
 port_clear = 20;
 
