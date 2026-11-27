@@ -51,7 +51,8 @@ cap_hole = btn_cap_d + 0.4; cap_flange = 11; cap_flange_t = 1.2;
 // Holgura de los mandos impresos: se reducen ellos y no los huecos de la capucha (ya impresa).
 // v0.3: 0,2 mm por lado rozaba; ahora 0,5 mm por lado.
 mando_menos = 0.6;
-mando_agujero = 1.6;                                 // agujero del mando para la palanca del SS12D00
+mando_agujero = 1.9;                                 // agujero del mando para la palanca del SS12D00 (prueba: 3 muescas)
+mando_ancho = 2.8;                                   // ancho de la columna del mando en la ranura de 3,4 (prueba)
 cap_proud = 0.8;                                     // asoma 0,8 mm: holgura 0,1 + recorrido 0,4 + margen
 cap_play = 0.1;                                      // holgura capuchón–pulsador en reposo
 // Pulsador táctil 12 × 12 (medido): cuerpo 11 × 11 × 2,6, botón Ø6, 6 mm en total, recorrido 0,4
@@ -345,7 +346,7 @@ module capuchon(symbol = 0) {
     }
 }
 // Mando del interruptor deslizante: encaja en la palanca del SS12D00 (1 × 1 mm, agujero 1,3 × 1,3)
-module deslizador(agujero = mando_agujero, ancho = mute_knob[0] - mando_menos, marcas = 0) difference() {
+module deslizador(agujero = mando_agujero, ancho = mando_ancho, marcas = 0) difference() {
     union() { translate([-ancho / 2, -(mute_knob[1] - mando_menos) / 2, 0])
                   cube([ancho, mute_knob[1] - mando_menos, slide_base_t + wall + cap_proud]);
               translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, slide_base_t]); }
