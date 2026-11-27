@@ -38,7 +38,7 @@ Vuelve al boceto original: frontal inclinado de arriba abajo, aristas redondeada
 | STL | Material | Notas |
 |---|---|---|
 | `capuchones_botones_v0_3.stl` | PLA negro (o rojo) | Volumen −, volumen + y uno liso para el encendido. Asoman 0,8 mm (0,7 en reposo sobre el pulsador) y la pestaña interior los retiene. v0.3: Ø7,4 en un agujero de 8,4 (0,5 mm por lado) |
-| `deslizador_silencio_v0_4.stl` | PLA negro (o rojo) | Mando del SS12D00. Agujero de 1,6 × 1,6 mm con chaflán en la boca para la palanca de 1,1 × 1,1; asoma 0,8 mm. Imprímelo de pie, con el agujero hacia abajo |
+| `deslizador_silencio_v0_5.stl` | PLA negro (o rojo) | Mando del SS12D00: agujero de 1,9 × 1,9 mm con chaflán (elegido con la prueba, 3 muescas) y columna de 2,8 mm en la ranura de 3,4. Asoma 0,8 mm. Imprímelo de pie, con el agujero hacia abajo |
 | `prueba_mando_silencio_v0_1.stl` | PLA negro | Tres mandos de prueba con agujero de 1,5 / 1,7 / 1,9 mm (1, 2 y 3 muescas en la base) y columna de 2,8 mm. Elige el que entra en la palanca sin holgura y pasa por la ranura sin rozar |
 | `placa_botones_v0_2.stl` | PLA o PETG | Lleva 2 pulsadores de 12 × 12 mm (encajados 1 mm, cables por el lado derecho) y el SS12D00 sobre un alza de 2,8 mm con ranura pasante para las patillas, para que la palanca entre 2 mm en el mando. Se fija con 2 tornillos M2: uno entre los dos pulsadores y otro detrás del interruptor |
 | `difusor_led_v0_3.stl` | PETG o PLA transparente | Se pega por dentro con su pestaña |

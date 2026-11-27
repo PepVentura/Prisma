@@ -1,4 +1,7 @@
 # Changelog
+## v0.9.6
+- Mando del silencio **v0.5**: agujero de 1,9 mm y columna de 2,8 mm, elegidos con la prueba (3 muescas).
+
 ## v0.9.5
 - `prueba_mando_silencio_v0_1.stl`: tres mandos con agujero de 1,5 / 1,7 / 1,9 mm para elegir el ajuste con la palanca del SS12D00.
 
