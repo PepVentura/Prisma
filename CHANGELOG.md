@@ -1,4 +1,7 @@
 # Changelog
+## v0.9.5
+- `prueba_mando_silencio_v0_1.stl`: tres mandos con agujero de 1,5 / 1,7 / 1,9 mm para elegir el ajuste con la palanca del SS12D00.
+
 ## v0.9.4
 - Mando del silencio **v0.4**: la palanca mide 1,1 × 1,1 y el agujero de 1,3 salía más cerrado; ahora 1,6 × 1,6 con chaflán en la boca.
 

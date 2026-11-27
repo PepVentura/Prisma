@@ -345,15 +345,21 @@ module capuchon(symbol = 0) {
     }
 }
 // Mando del interruptor deslizante: encaja en la palanca del SS12D00 (1 × 1 mm, agujero 1,3 × 1,3)
-module deslizador() difference() {
-    union() { translate([-(mute_knob[0] - mando_menos) / 2, -(mute_knob[1] - mando_menos) / 2, 0])
-                  cube([mute_knob[0] - mando_menos, mute_knob[1] - mando_menos, slide_base_t + wall + cap_proud]);
+module deslizador(agujero = mando_agujero, ancho = mute_knob[0] - mando_menos, marcas = 0) difference() {
+    union() { translate([-ancho / 2, -(mute_knob[1] - mando_menos) / 2, 0])
+                  cube([ancho, mute_knob[1] - mando_menos, slide_base_t + wall + cap_proud]);
               translate([-4, -mute_knob[1] / 2 - 1.5, 0]) cube([8, mute_knob[1] + 3, slide_base_t]); }
+    // muescas de identificación en el borde de la base (pieza de prueba)
+    for (j = [0 : marcas - 1]) if (marcas > 0) translate([-3.5 + j * 1.6, -mute_knob[1] / 2 - 1.51, -0.01]) cube([0.8, 0.8, slide_base_t + 0.02]);
     // palanca de 1,1 × 1,1 (medida): agujero de 1,6 (los agujeros pequeños salen más cerrados al imprimir)
     // y chaflán en la boca, que va contra la cama y se cierra con la primera capa
-    translate([-mando_agujero / 2, -mando_agujero / 2, -0.01]) cube([mando_agujero, mando_agujero, 2.5]);
-    translate([0, 0, -0.01]) rotate([0, 0, 45]) cylinder(d1 = mando_agujero * 1.414 + 1.2, d2 = mando_agujero * 1.414, h = 0.6, $fn = 4);
+    translate([-agujero / 2, -agujero / 2, -0.01]) cube([agujero, agujero, 2.5]);
+    translate([0, 0, -0.01]) rotate([0, 0, 45]) cylinder(d1 = agujero * 1.414 + 1.2, d2 = agujero * 1.414, h = 0.6, $fn = 4);
 }
+// Prueba del mando: tres mandos con agujero de 1,5 / 1,7 / 1,9 mm (1, 2 y 3 muescas) y la columna
+// algo más ancha (2,8 mm en vez de 2,4) para que las paredes del agujero no sean de una sola línea
+prueba_mando_agujeros = [1.5, 1.7, 1.9];
+module prueba_mando() for (i = [0 : 2]) translate([i * 11, 0, 0]) deslizador(prueba_mando_agujeros[i], 2.8, i + 1);
 // Placa de botones (va bajo el techo con 2 tornillos M2): 2 pulsadores de 12 × 12 y el SS12D00 sobre un alza
 module placa_botones() difference() {
     union() {
@@ -386,6 +392,7 @@ if (pieza == "prueba_keystone") prueba_keystone();
 if (pieza == "corredera") corredera();
 if (pieza == "capuchon") { capuchon(0); translate([14, 0, 0]) capuchon(1); translate([28, 0, 0]) capuchon(2); }
 if (pieza == "deslizador") deslizador();
+if (pieza == "prueba_mando") prueba_mando();
 if (pieza == "placa_botones") placa_botones();
 // Inserto transparente superior (imprimir 2), tumbado con la cara vista sobre la cama
 if (pieza == "franja_sup") for (i = [0, 1]) translate([edge_strip_s0 - split_z / cos(fa), i * 10, 0])
